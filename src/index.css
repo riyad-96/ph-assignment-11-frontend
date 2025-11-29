@@ -1,0 +1,18 @@
+@import 'tailwindcss';
+@plugin 'daisyui';
+
+/* Colors and themes */
+:root {
+
+}
+
+/* Resets */
+* {
+  scrollbar-width: thin;
+}
+
+/* Utils */
+.screen-height {
+  height: 100vh;
+  height: 100dvh;
+}

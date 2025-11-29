@@ -1,0 +1,29 @@
+import { createBrowserRouter } from 'react-router-dom';
+
+import App from '../App';
+import ClientLayout from '../layouts/ClientLayout';
+import AdminLayout from '../layouts/AdminLayout';
+import AuthLayout from '../layouts/AuthLayout';
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <App />,
+    children: [
+      {
+        path: '/',
+        element: <ClientLayout />,
+      },
+      {
+        path: 'admin',
+        element: <AdminLayout />,
+      },
+      {
+        path: 'auth',
+        element: <AuthLayout />,
+      },
+    ],
+  },
+]);
+
+export default router;
