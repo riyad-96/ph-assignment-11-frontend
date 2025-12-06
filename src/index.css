@@ -1,14 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
 @import 'tailwindcss';
 @plugin 'daisyui';
 
-/* Colors and themes */
+/* Light Theme (Default) */
 :root {
+  /* BACKGROUNDS & SURFACES */
+  --color-canvas: #f8fafc; /* Main page background */
+  --color-surface: #ffffff; /* Card/Modal/Container background */
 
+  /* SEMANTIC BRAND COLORS */
+  --color-brand: #2563eb; /* Royal Blue (Primary Brand) */
+  --color-brand-light: #e0f2fe; /* Sky Blue (Secondary Accent) */
+  --color-action: #f59e0b; /* Amber (CTA/Pay Now) */
+
+  /* TEXT & NEUTRALS */
+  --color-content: #1e293b; /* Dark Slate (Body text) */
+  --color-content-light: #64748b; /* A lighter slate for muted text/dividers */
+}
+
+/* 🌙 Dark Mode Overrides (Scoping the variables to the .dark class) */
+.dark {
+  --color-canvas: #0f172a; /* Very Dark Blue/Slate */
+  --color-surface: #1e293b; /* Dark Slate (Cards) */
+
+  --color-brand: #5b8ff9; /* Softer Royal Blue */
+  --color-brand-light: #1e293b; /* Dark Slate (used as a dark accent) */
+  --color-action: #fbbf24; /* Lighter Amber/Yellow */
+
+  --color-content: #f8fafc; /* White/Light Gray text */
+  --color-content-light: #94a3b8; /* Muted light text */
+}
+
+@theme {
+  /* Primary Utility Groupings */
+  --color-primary: var(--color-brand); /* Creates bg-primary, text-primary */
+  --color-secondary: var(--color-brand-light); /* Creates bg-secondary, text-secondary */
+  --color-accent: var(--color-action); /* Creates bg-accent, text-accent */
+
+  /* Semantic Utility Groupings */
+  --color-canvas: var(--color-canvas); /* Creates bg-canvas */
+  --color-surface: var(--color-surface); /* Creates bg-surface */
+  --color-content: var(--color-content); /* Creates text-content */
+
+  /* Optionally override default gray scale */
+  --color-gray-50: var(--color-canvas);
+  --color-gray-900: var(--color-content);
 }
 
 /* Resets */
 * {
   scrollbar-width: thin;
+}
+html {
+  scroll-behavior: smooth;
 }
 
 /* Utils */
