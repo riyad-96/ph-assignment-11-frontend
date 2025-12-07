@@ -1,16 +1,44 @@
 import { GoogleIcon } from '@/assets/Svgs';
-import { Outlet } from 'react-router-dom';
+import Button from '@/pages/auth/components/Button';
+import Logo from '@/components/Logo';
+import { useAuthContext } from '@/hooks/useAuthContext';
+import { useState } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 export default function AuthLayout() {
+  const navigate = useNavigate();
+  const { handleGoogleLogin } = useAuthContext();
+  const [isSigningIn, setIsSigningIn] = useState(false);
+
+  async function tryGoogleLogin() {
+    if (isSigningIn) return;
+    setIsSigningIn(true);
+    try {
+      await handleGoogleLogin();
+    } finally {
+      setIsSigningIn(false);
+    }
+  }
+
   return (
-    <div className="bg-canvas overflow-y-auto grid h-screen place-items-center px-4 pb-26 pt-16">
+    <div className="bg-canvas grid h-screen place-items-center overflow-y-auto px-4 pt-16 pb-26">
+      <div className="fixed top-4 left-4">
+        <Logo onClick={() => navigate('/')} />
+      </div>
       <div className="w-full max-w-[350px]">
         <Outlet />
 
-        <button className="bg-content text-surface mt-4 flex h-10 w-full items-center justify-center gap-1 rounded-full tracking-wide">
-          <span>{<GoogleIcon />}</span>
-          <span>Google</span>
-        </button>
+        <div className="mt-4"></div>
+        <Button
+          onClick={tryGoogleLogin}
+          isLoading={isSigningIn}
+          content={
+            <>
+              <span>{<GoogleIcon />}</span>
+              <span>Google</span>
+            </>
+          }
+        />
       </div>
     </div>
   );

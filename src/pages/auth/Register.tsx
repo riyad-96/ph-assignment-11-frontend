@@ -1,15 +1,17 @@
+// types
+import type { RegisterFormFieldTypes } from '@/pages/auth/auth.types';
+
 import { useForm } from 'react-hook-form';
 import InputField from '@/pages/auth/components/InputField';
 import Button from '@/pages/auth/components/Button';
 import { useState } from 'react';
-
-// types
-import type { RegisterFormFieldTypes } from '@/pages/auth/auth.types';
 import { Link } from 'react-router-dom';
 import { getIsPointerFine } from '@/helpers/helper';
-import { createAccount } from '@/pages/auth/utils/register.utils';
+import { useAuthContext } from '@/hooks/useAuthContext';
 
 export default function RegisterAccount() {
+  const { handleRegistration } = useAuthContext();
+
   const {
     handleSubmit,
     register,
@@ -21,9 +23,11 @@ export default function RegisterAccount() {
   async function requestRegistration(data: RegisterFormFieldTypes) {
     if (isSubmitting) return;
     setIsSubmitting(true);
-    const d = await createAccount(data);
-    setIsSubmitting(false);
-    console.log(d);
+    try {
+      await handleRegistration(data);
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (

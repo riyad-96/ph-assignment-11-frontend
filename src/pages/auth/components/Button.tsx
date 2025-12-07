@@ -15,12 +15,14 @@ export default function Button({
     <button
       onClick={onClick}
       type="submit"
-      className={`bg-content text-surface grid h-10 w-full place-items-center rounded-full tracking-wide ${isLoading ? 'disabled opacity-80' : 'opacity-100'}`}
+      className={`bg-content text-surface grid h-10 w-full place-items-center gap-1 rounded-full tracking-wide ${isLoading ? 'disabled opacity-80' : 'opacity-100'}`}
     >
       {isLoading ? (
         <span className="loading loading-xs loading-spinner"></span>
       ) : (
-        <span>{content}</span>
+        <span className="flex items-center justify-center gap-1">
+          {content}
+        </span>
       )}
     </button>
   );

@@ -1,8 +1,8 @@
 export type RegisterFormFieldTypes = {
-  name: string;
-  photoURL: string;
   email: string;
   password: string;
+  name: string;
+  photoURL: string;
 };
 
 export type LoginFormFieldTypes = {

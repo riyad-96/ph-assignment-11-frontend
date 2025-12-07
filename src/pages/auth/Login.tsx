@@ -1,14 +1,16 @@
+import type { LoginFormFieldTypes } from '@/pages/auth/auth.types';
+
 import { useForm } from 'react-hook-form';
 import InputField from '@/pages/auth/components/InputField';
 import Button from '@/pages/auth/components/Button';
 import { useState } from 'react';
-
-// types
-import type { LoginFormFieldTypes } from '@/pages/auth/auth.types';
 import { Link } from 'react-router-dom';
 import { getIsPointerFine } from '@/helpers/helper';
+import { useAuthContext } from '@/hooks/useAuthContext';
 
 export default function Login() {
+  const { handleLogin } = useAuthContext();
+
   const {
     handleSubmit,
     register,
@@ -18,9 +20,13 @@ export default function Login() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   async function requestLogin(data: LoginFormFieldTypes) {
+    if (isSubmitting) return;
     setIsSubmitting(true);
-    console.log(data);
-    setTimeout(() => setIsSubmitting(false), 1000);
+    try {
+      await handleLogin(data);
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -36,6 +42,7 @@ export default function Login() {
           <InputField
             id="email"
             label="Email"
+            type="email"
             autoFocus={getIsPointerFine()}
             placeholder="Your email"
             error={errors?.email?.message}
@@ -50,30 +57,33 @@ export default function Login() {
               },
             })}
           />
-          <InputField
-            id="password"
-            label="Password"
-            placeholder="Your password"
-            error={errors?.password?.message}
-            {...register('password', {
-              required: {
-                message: 'Password is required',
-                value: true,
-              },
-              minLength: {
-                message: 'Must be 6 characters long',
-                value: 6,
-              },
-              validate: (value: string) => {
-                if (!/(?=.*[A-Z])/.test(value)) {
-                  return 'At least one uppercase character is required';
-                }
-                if (!/(?=.*[a-z])/.test(value)) {
-                  return 'At least one lowercase character is required';
-                }
-              },
-            })}
-          />
+          <div className="relative">
+            <InputField
+              id="password"
+              label="Password"
+              type="password"
+              placeholder="Your password"
+              error={errors?.password?.message}
+              {...register('password', {
+                required: {
+                  message: 'Password is required',
+                  value: true,
+                },
+                minLength: {
+                  message: 'Must be 6 characters long',
+                  value: 6,
+                },
+                validate: (value: string) => {
+                  if (!/(?=.*[A-Z])/.test(value)) {
+                    return 'At least one uppercase character is required';
+                  }
+                  if (!/(?=.*[a-z])/.test(value)) {
+                    return 'At least one lowercase character is required';
+                  }
+                },
+              })}
+            />
+          </div>
 
           <button
             type="button"

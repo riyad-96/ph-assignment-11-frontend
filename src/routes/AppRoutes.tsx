@@ -6,11 +6,17 @@ import AdminLayout from '@/layouts/admin/AdminLayout';
 import AuthLayout from '@/layouts/AuthLayout';
 import Login from '@/pages/auth/Login';
 import Register from '@/pages/auth/Register';
+import AuthContext from '@/contexts/AuthContext';
+import AuthProtectedWrapper from '@/routes/protected-wrappers/AuthProtectedWrapper';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <App />,
+    element: (
+      <AuthContext>
+        <App />
+      </AuthContext>
+    ),
     children: [
       {
         path: '/',
@@ -22,7 +28,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'auth',
-        element: <AuthLayout />,
+        element: <AuthProtectedWrapper children={<AuthLayout />} />,
         children: [
           {
             path: 'login',
