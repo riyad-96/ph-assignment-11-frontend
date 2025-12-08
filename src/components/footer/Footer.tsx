@@ -75,7 +75,7 @@ export default function Footer() {
                 <a
                   href="https://stripe.com"
                   target="_blank"
-                  className="grid rounded-md bg-white text-[#635bff]"
+                  className="grid w-fit rounded-md bg-white text-[#635bff]"
                 >
                   <BsStripe size="30" />
                 </a>
