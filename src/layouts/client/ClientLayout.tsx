@@ -4,11 +4,11 @@ import { Outlet } from 'react-router-dom';
 
 export default function ClientLayout() {
   return (
-    <div className="h-screen overflow-y-auto">
+    <div className="main-scroller grid h-screen grid-rows-[auto_1fr_auto] overflow-y-auto">
       <Header />
-      <div>
+      <main>
         <Outlet />
-      </div>
+      </main>
       <Footer />
     </div>
   );

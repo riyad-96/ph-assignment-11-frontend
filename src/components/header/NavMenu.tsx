@@ -38,43 +38,61 @@ export default function NavMenu() {
   return (
     <nav className="flex items-center gap-1">
       <div className="flex items-center gap-0.5 max-sm:hidden">
-        {user ? (
-          <>
-            <NavLink
-              className={({ isActive }) =>
-                `rounded-full px-4 py-2 text-sm ${isActive ? 'bg-brand text-surface' : 'hover:bg-brand-light'}`
-              }
-              children="Home"
-              to="/"
-            />
+        <NavLink
+          className={({ isActive }) =>
+            `rounded-full px-4 py-2 text-sm tracking-wider ${isActive ? 'bg-brand text-surface' : 'hover:bg-brand-light'}`
+          }
+          to="/"
+        >
+          {({ isActive }) => (
+            <span
+              className={`${isActive ? 'drop-shadow-xs drop-shadow-black/80' : ''}`}
+            >
+              Home
+            </span>
+          )}
+        </NavLink>
 
-            <NavLink
-              className={({ isActive }) =>
-                `rounded-full px-4 py-2 text-sm ${isActive ? 'bg-brand text-surface' : 'hover:bg-brand-light'}`
-              }
-              children="All tickets"
-              to="/all-tockets"
-            />
+        <NavLink
+          className={({ isActive }) =>
+            `rounded-full px-4 py-2 text-sm tracking-wider ${isActive ? 'bg-brand text-surface' : 'hover:bg-brand-light'}`
+          }
+          to="/all-tickets"
+        >
+          {({ isActive }) => (
+            <span
+              className={`${isActive ? 'drop-shadow-xs drop-shadow-black/80' : ''}`}
+            >
+              All Tickets
+            </span>
+          )}
+        </NavLink>
 
-            <NavLink
-              className={({ isActive }) =>
-                `rounded-full px-4 py-2 text-sm ${isActive ? 'bg-brand text-surface' : 'hover:bg-brand-light'}`
-              }
-              children="Dashboard"
-              to="/dashboard"
-            />
-          </>
-        ) : (
+        <NavLink
+          className={({ isActive }) =>
+            `rounded-full px-4 py-2 text-sm tracking-wider ${isActive ? 'bg-brand text-surface' : 'hover:bg-brand-light'}`
+          }
+          to="/dashboard"
+        >
+          {({ isActive }) => (
+            <span
+              className={`${isActive ? 'drop-shadow-xs drop-shadow-black/80' : ''}`}
+            >
+              Dashboard
+            </span>
+          )}
+        </NavLink>
+        {!user && (
           <>
             <Link
               to="/auth/login"
               children="Login"
-              className="hover:bg-brand-light hover:text-brand rounded-full px-5 py-1.5 text-sm font-medium tracking-wide"
+              className="hover:bg-brand-light hover:text-brand rounded-full px-5 py-2 text-sm font-medium tracking-wide"
             />
             <Link
               to="/auth/register"
               children="Register"
-              className="bg-brand-light hover:text-brand rounded-full px-5 py-1.5 text-sm font-medium tracking-wide"
+              className="bg-brand-light hover:text-brand rounded-full px-5 py-2 text-sm font-medium tracking-wide"
             />
           </>
         )}
@@ -107,12 +125,29 @@ export default function NavMenu() {
               >
                 <div className="bg-surface overflow-hidden rounded-lg shadow">
                   <div className="grid">
-                    <button className="hover:bg-brand-light/70 flex px-6 py-2 text-sm">
-                      Profile
-                    </button>
+                    <NavLink
+                      onClick={() =>
+                        setTimeout(
+                          () => setIsDropdownShowing((prev) => !prev),
+                          50,
+                        )
+                      }
+                      className={({ isActive }) =>
+                        `tracking-wide px-6 py-2 text-sm ${isActive ? 'bg-brand text-surface' : 'hover:bg-brand-light'}`
+                      }
+                      to="/profile"
+                    >
+                      {({ isActive }) => (
+                        <span
+                          className={`${isActive ? 'drop-shadow-xs drop-shadow-black/80' : ''}`}
+                        >
+                          Profile
+                        </span>
+                      )}
+                    </NavLink>
                     <button
                       onClick={() => signOut(auth)}
-                      className="hover:bg-brand-light/70 flex px-6 py-2 text-sm"
+                      className="tracking-wide hover:bg-brand-light flex px-6 py-2 text-sm"
                     >
                       Logout
                     </button>
@@ -172,41 +207,84 @@ export default function NavMenu() {
 
                 <div className="grid">
                   {user && (
-                    <Link
-                      className="bg-brand-light/40 hover:bg-brand-light px-4 py-2 text-sm"
+                    <NavLink
+                      onClick={() =>
+                        setTimeout(() => setIsMenuShowing((prev) => !prev), 50)
+                      }
+                      className={({ isActive }) =>
+                        `px-4 py-2 text-sm tracking-wider ${isActive ? 'bg-brand text-surface' : 'hover:bg-brand-light'}`
+                      }
                       to="/profile"
                     >
-                      Profile
-                    </Link>
+                      {({ isActive }) => (
+                        <span
+                          className={`${isActive ? 'drop-shadow-xs drop-shadow-black/80' : ''}`}
+                        >
+                          Profile
+                        </span>
+                      )}
+                    </NavLink>
                   )}
 
                   <NavLink
-                    className={({ isActive }) =>
-                      `px-4 py-2 text-sm ${isActive ? 'bg-brand text-surface' : 'hover:bg-brand-light'}`
+                    onClick={() =>
+                      setTimeout(() => setIsMenuShowing((prev) => !prev), 50)
                     }
-                    children="Home"
+                    className={({ isActive }) =>
+                      `px-4 py-2 text-sm tracking-wider ${isActive ? 'bg-brand text-surface' : 'hover:bg-brand-light'}`
+                    }
                     to="/"
-                  />
+                  >
+                    {({ isActive }) => (
+                      <span
+                        className={`${isActive ? 'drop-shadow-xs drop-shadow-black/80' : ''}`}
+                      >
+                        Home
+                      </span>
+                    )}
+                  </NavLink>
 
                   <NavLink
-                    className={({ isActive }) =>
-                      `px-4 py-2 text-sm ${isActive ? 'bg-brand text-surface' : 'hover:bg-brand-light'}`
+                    onClick={() =>
+                      setTimeout(() => setIsMenuShowing((prev) => !prev), 50)
                     }
-                    children="All tickets"
-                    to="/all-tockets"
-                  />
+                    className={({ isActive }) =>
+                      `px-4 py-2 text-sm tracking-wider ${isActive ? 'bg-brand text-surface' : 'hover:bg-brand-light'}`
+                    }
+                    to="/all-tickets"
+                  >
+                    {({ isActive }) => (
+                      <span
+                        className={`${isActive ? 'drop-shadow-xs drop-shadow-black/80' : ''}`}
+                      >
+                        All Tickets
+                      </span>
+                    )}
+                  </NavLink>
 
                   <NavLink
-                    className={({ isActive }) =>
-                      `px-4 py-2 text-sm ${isActive ? 'bg-brand text-surface' : 'hover:bg-brand-light'}`
+                    onClick={() =>
+                      setTimeout(() => setIsMenuShowing((prev) => !prev), 50)
                     }
-                    children="Dashboard"
+                    className={({ isActive }) =>
+                      `px-4 py-2 text-sm tracking-wider ${isActive ? 'bg-brand text-surface' : 'hover:bg-brand-light'}`
+                    }
                     to="/dashboard"
-                  />
+                  >
+                    {({ isActive }) => (
+                      <span
+                        className={`${isActive ? 'drop-shadow-xs drop-shadow-black/80' : ''}`}
+                      >
+                        Dashboard
+                      </span>
+                    )}
+                  </NavLink>
                   {user ? (
                     <>
                       <button
-                        onClick={() => signOut(auth)}
+                        onClick={() => {
+                          signOut(auth);
+                        }}
                         className="bg-brand-light/40 hover:bg-brand-light mt-px flex items-center justify-center gap-1 py-1.5 text-sm"
                       >
                         <span>

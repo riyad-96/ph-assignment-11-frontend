@@ -43,6 +43,7 @@
   --color-canvas: var(--color-canvas); /* Creates bg-canvas */
   --color-surface: var(--color-surface); /* Creates bg-surface */
   --color-content: var(--color-content); /* Creates text-content */
+  --color-content-light: var(--color-content-light); /* Creates text-content */
 }
 
 /* Resets */
@@ -64,6 +65,10 @@ html {
     'Open Sans',
     'Helvetica Neue',
     sans-serif;
+}
+
+body {
+  overflow:hidden;
 }
 
 @media (pointer: fine) {
