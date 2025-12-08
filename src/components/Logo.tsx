@@ -9,7 +9,7 @@ export default function Logo({ onClick }: LogoPropsType) {
     <div className="w-fit text-2xl font-semibold">
       <button
         onClick={onClick}
-        className="disabled text-brand flex w-fit items-center gap-1"
+        className="text-brand flex w-fit items-center gap-1"
       >
         <FaTrainSubway size="22" />
         <span>TicketBari</span>

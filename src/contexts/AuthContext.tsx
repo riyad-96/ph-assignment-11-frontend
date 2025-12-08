@@ -62,10 +62,10 @@ function AuthContext({ children }: { children: ReactNode }) {
     return unsub;
   }, [server, isRegistering, isGoogleLoging]);
 
-  useEffect(() => {
-    if (isUserLoading) return;
-    console.log(user);
-  }, [user, isUserLoading]);
+  // useEffect(() => {
+  //   if (isUserLoading) return;
+  //   console.log(user);
+  // }, [user, isUserLoading]);
 
   // handle registration
   async function handleRegistration(data: RegisterFormFieldTypes) {

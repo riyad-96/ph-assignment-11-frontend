@@ -72,14 +72,6 @@ html {
   }
 }
 
-button {
-  transform-origin: center;
-}
-
-button:not(button.disabled):active {
-  transform: scale(0.99);
-}
-
 /* Utils */
 .screen-height {
   height: 100vh;
