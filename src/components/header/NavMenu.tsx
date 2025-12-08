@@ -35,6 +35,16 @@ export default function NavMenu() {
     };
   }, []);
 
+  function getRoute(route: string) {
+    if (!user) return route;
+
+    const isUser = user?.role === 'user';
+    if (!isUser) {
+      return `/${user?.role}${route}`;
+    }
+    return route;
+  }
+
   return (
     <nav className="flex items-center gap-1">
       <div className="flex items-center gap-0.5 max-sm:hidden">
@@ -72,7 +82,8 @@ export default function NavMenu() {
           className={({ isActive }) =>
             `rounded-full px-4 py-2 text-sm tracking-wider ${isActive ? 'bg-brand text-surface' : 'hover:bg-brand-light'}`
           }
-          to="/dashboard"
+          end
+          to={getRoute('/dashboard')}
         >
           {({ isActive }) => (
             <span
@@ -133,9 +144,9 @@ export default function NavMenu() {
                         )
                       }
                       className={({ isActive }) =>
-                        `tracking-wide px-6 py-2 text-sm ${isActive ? 'bg-brand text-surface' : 'hover:bg-brand-light'}`
+                        `px-6 py-2 text-sm tracking-wide ${isActive ? 'bg-brand text-surface' : 'hover:bg-brand-light'}`
                       }
-                      to="/profile"
+                      to={getRoute('/dashboard/profile')}
                     >
                       {({ isActive }) => (
                         <span
@@ -147,7 +158,7 @@ export default function NavMenu() {
                     </NavLink>
                     <button
                       onClick={() => signOut(auth)}
-                      className="tracking-wide hover:bg-brand-light flex px-6 py-2 text-sm"
+                      className="hover:bg-brand-light flex px-6 py-2 text-sm tracking-wide"
                     >
                       Logout
                     </button>
@@ -214,7 +225,7 @@ export default function NavMenu() {
                       className={({ isActive }) =>
                         `px-4 py-2 text-sm tracking-wider ${isActive ? 'bg-brand text-surface' : 'hover:bg-brand-light'}`
                       }
-                      to="/profile"
+                      to={getRoute('/dashboard/profile')}
                     >
                       {({ isActive }) => (
                         <span
@@ -269,7 +280,8 @@ export default function NavMenu() {
                     className={({ isActive }) =>
                       `px-4 py-2 text-sm tracking-wider ${isActive ? 'bg-brand text-surface' : 'hover:bg-brand-light'}`
                     }
-                    to="/dashboard"
+                    end
+                    to={getRoute('/dashboard')}
                   >
                     {({ isActive }) => (
                       <span

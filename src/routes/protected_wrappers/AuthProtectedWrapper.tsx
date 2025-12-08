@@ -1,6 +1,6 @@
 import { useAuthContext } from '@/hooks/useAuthContext';
 import type { ReactNode } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 export default function AuthProtectedWrapper({
   children,
@@ -9,9 +9,7 @@ export default function AuthProtectedWrapper({
 }) {
   const { user } = useAuthContext();
 
-  const location = useLocation();
-
-  if (user) return <Navigate to={location.state ? location.state : '/'} />;
+  if (user) return <Navigate to="/" />;
 
   return children;
 }

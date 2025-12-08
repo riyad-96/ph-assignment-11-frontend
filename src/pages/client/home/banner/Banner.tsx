@@ -15,8 +15,8 @@ export default function Banner() {
       </div>
 
       <div className="absolute inset-0 z-2 flex items-end px-2 text-white md:px-3">
-        <div className="mx-auto w-full max-w-[1140px] space-y-2 pb-4 md:pb-8">
-          <h1 className="text-2xl tracking-wider drop-shadow-sm drop-shadow-black/50 sm:text-3xl md:text-4xl lg:text-5xl">
+        <div className="mx-auto w-full max-w-[1300px] space-y-2 pb-4 md:pb-8">
+          <h1 className="text-2xl tracking-wider drop-shadow-sm drop-shadow-black/50 sm:text-3xl md:text-4xl xl:text-5xl">
             Welcome to <span className="font-semibold">TicketBari!</span>
           </h1>
           <p className="tracking-wider drop-shadow-sm drop-shadow-black/50 max-sm:text-sm lg:text-lg">

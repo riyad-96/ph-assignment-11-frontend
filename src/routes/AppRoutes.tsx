@@ -10,9 +10,18 @@ import AuthContext from '@/contexts/AuthContext';
 import AuthProtectedWrapper from '@/routes/protected_wrappers/AuthProtectedWrapper';
 import Home from '@/pages/client/home/Home';
 import AllTickets from '@/pages/client/all_tickets/AllTickets';
-import Dashboard from '@/pages/client/dashboard/Dashboard';
-import Profile from '@/pages/profile/Profile';
 import ProtectedRouteWrapper from './protected_wrappers/ProtectedRouteWrapper';
+import VendorLayout from '@/layouts/vendor/VendorLayout';
+import AdminDashboard from '@/pages/admin/dashboard/AdminDashboard';
+import RoleBasedRouteProtectedWrapper from './protected_wrappers/RoleBasedRouteProtectedWrapper';
+import VendorDashboard from '@/pages/vendor/dashboard/VendorDashboard';
+import AdminProfile from '@/pages/admin/dashboard/AdminProfile';
+import VendorProfile from '@/pages/vendor/dashboard/VendorProfile';
+import AdminDashboardLayout from '@/layouts/admin/AdminDashboardLayout';
+import VendorDashboardLayout from '@/layouts/vendor/VendorDashboardLayout';
+import ClientDashboardLayout from '@/layouts/client/ClientDashboardLayout';
+import ClientDashboard from '@/pages/client/dashboard/ClientDashboard';
+import ClientProfile from '@/pages/client/dashboard/ClientProfile';
 
 const router = createBrowserRouter([
   {
@@ -37,17 +46,77 @@ const router = createBrowserRouter([
           },
           {
             path: 'dashboard',
-            element: <ProtectedRouteWrapper children={<Dashboard />} />,
+            element: (
+              <ProtectedRouteWrapper
+                children={
+                  <RoleBasedRouteProtectedWrapper
+                    requiredRole="user"
+                    children={<ClientDashboardLayout />}
+                  />
+                }
+              />
+            ),
+            children: [
+              {
+                index: true,
+                element: <ClientDashboard />,
+              },
+              {
+                path: 'profile',
+                element: <ClientProfile />,
+              },
+            ],
           },
+        ],
+      },
+      {
+        path: 'vendor',
+        element: <ProtectedRouteWrapper children={<VendorLayout />} />,
+        children: [
           {
-            path: 'profile',
-            element: <ProtectedRouteWrapper children={<Profile />} />,
+            path: 'dashboard',
+            element: (
+              <RoleBasedRouteProtectedWrapper
+                requiredRole="vendor"
+                children={<VendorDashboardLayout />}
+              />
+            ),
+            children: [
+              {
+                index: true,
+                element: <VendorDashboard />,
+              },
+              {
+                path: 'profile',
+                element: <VendorProfile />,
+              },
+            ],
           },
         ],
       },
       {
         path: 'admin',
-        element: <AdminLayout />,
+        element: <ProtectedRouteWrapper children={<AdminLayout />} />,
+        children: [
+          {
+            path: 'dashboard',
+            element: (
+              <RoleBasedRouteProtectedWrapper requiredRole="admin">
+                <AdminDashboardLayout />
+              </RoleBasedRouteProtectedWrapper>
+            ),
+            children: [
+              {
+                index: true,
+                element: <AdminDashboard />,
+              },
+              {
+                path: 'profile',
+                element: <AdminProfile />,
+              },
+            ],
+          },
+        ],
       },
       {
         path: 'auth',

@@ -6,7 +6,7 @@ import { Tooltip } from 'kitzo/react';
 export default function Footer() {
   return (
     <footer className="bg-brand-light px-2 pt-8 md:px-3">
-      <div className="mx-auto max-w-[1140px]">
+      <div className="mx-auto max-w-[1300px]">
         <div className="max-lg:space-y-4 lg:flex">
           <div className="flex-1 max-md:space-y-4 md:flex">
             <div className="flex-1">
