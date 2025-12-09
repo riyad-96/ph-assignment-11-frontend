@@ -6,7 +6,7 @@ import { NavLink } from 'react-router-dom';
 
 export default function ClientSidebar() {
   return (
-    <div className="bg-surface pointer-events-auto relative h-full w-[50px] px-1 transition-[width] lg:h-full lg:w-[180px]">
+    <div className="bg-surface h-full w-[50px] px-1 transition-[width] lg:h-full md:w-[180px]">
       <div className="sticky top-[57px] pt-4">
         <div className="grid">
           <NavLink
@@ -19,7 +19,7 @@ export default function ClientSidebar() {
             <span className="grid size-[26px] shrink-0 place-items-center">
               <RxDashboard size="20" />
             </span>
-            <span className="text-nowrap max-lg:hidden">Dashboard</span>
+            <span className="text-nowrap max-md:hidden">Dashboard</span>
           </NavLink>
           <NavLink
             to="/dashboard/profile"
@@ -31,7 +31,7 @@ export default function ClientSidebar() {
             <span className="grid size-[26px] shrink-0 place-items-center">
               <BsPerson size="20" />
             </span>
-            <span className="text-nowrap max-lg:hidden">Profile</span>
+            <span className="text-nowrap max-md:hidden">Profile</span>
           </NavLink>
           <NavLink
             to="/dashboard/booked-tickets"
@@ -43,7 +43,7 @@ export default function ClientSidebar() {
             <span className="grid size-[26px] shrink-0 place-items-center">
               <IoTicketOutline size="20" />
             </span>
-            <span className="text-nowrap max-lg:hidden">Booked Tickets</span>
+            <span className="text-nowrap max-md:hidden">Booked Tickets</span>
           </NavLink>
           <NavLink
             to="/dashboard/transactions"
@@ -55,7 +55,7 @@ export default function ClientSidebar() {
             <span className="grid size-[26px] shrink-0 place-items-center">
               <TbCoinTaka size="20" />
             </span>
-            <span className="text-nowrap max-lg:hidden">Transactions</span>
+            <span className="text-nowrap max-md:hidden">Transactions</span>
           </NavLink>
         </div>
       </div>

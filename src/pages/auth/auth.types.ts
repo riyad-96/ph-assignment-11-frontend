@@ -2,7 +2,7 @@ export type RegisterFormFieldTypes = {
   email: string;
   password: string;
   name: string;
-  photoURL: string;
+  photoFiles: File[];
 };
 
 export type LoginFormFieldTypes = {

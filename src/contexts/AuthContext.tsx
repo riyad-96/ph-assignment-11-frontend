@@ -19,6 +19,7 @@ import type { Dispatch, SetStateAction } from 'react';
 import type { AxiosError } from 'axios';
 import type { User } from '@/contexts/authContext.type';
 import type { FirebaseError } from 'firebase/app';
+import uploadImageToImgbb from '@/helpers/imageUpload';
 
 //! type for context
 export type AuthContextType = {
@@ -28,6 +29,7 @@ export type AuthContextType = {
   handleRegistration: (data: RegisterFormFieldTypes) => Promise<void>;
   handleLogin: (data: LoginFormFieldTypes) => Promise<void>;
   handleGoogleLogin: () => Promise<void>;
+  updateProfileInfo: (name: string, photoFiles: File[]) => Promise<void>;
 };
 
 //! context wrapper component
@@ -65,11 +67,13 @@ function AuthContext({ children }: { children: ReactNode }) {
   // handle registration
   async function handleRegistration(data: RegisterFormFieldTypes) {
     try {
+      const photoURL = await uploadImageToImgbb(data.photoFiles);
+
       const createResponse = await server.post('/user/create', {
         email: data.email,
         password: data.password,
         name: data.name,
-        photoURL: data.photoURL,
+        photoURL,
       });
       await signInWithCustomToken(auth, createResponse.data.customToken);
       const getResponse = await server.get('/user/get');
@@ -139,6 +143,24 @@ function AuthContext({ children }: { children: ReactNode }) {
     }
   }
 
+  // update profile
+  async function updateProfileInfo(name: string, photoFiles: File[]) {
+    try {
+      const photoURL = await uploadImageToImgbb(photoFiles);
+
+      const updatedData = await server.post('/user/update', {
+        name,
+        photoURL,
+      });
+
+      setUser(updatedData.data);
+      toast.success('Profile was updated');
+    } catch (err) {
+      console.error(err);
+      toast.error("Couldn't update profile");
+    }
+  }
+
   return (
     <CreatedAuthContext.Provider
       value={{
@@ -148,6 +170,7 @@ function AuthContext({ children }: { children: ReactNode }) {
         handleRegistration,
         handleLogin,
         handleGoogleLogin,
+        updateProfileInfo,
       }}
     >
       {children}

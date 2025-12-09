@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom';
 
 export default function AdminSidebar() {
   return (
-    <div className="bg-surface pointer-events-auto relative h-full w-[50px] px-1 transition-[width] lg:h-full lg:w-[180px]">
+    <div className="bg-surface h-full w-[50px] px-1 transition-[width] lg:h-full md:w-[180px]">
       <div className="sticky top-[57px] pt-4">
         <div className="grid">
           <NavLink
@@ -18,7 +18,7 @@ export default function AdminSidebar() {
             <span className="grid size-[26px] shrink-0 place-items-center">
               <RxDashboard size="20" />
             </span>
-            <span className="text-nowrap max-lg:hidden">Dashboard</span>
+            <span className="text-nowrap max-md:hidden">Dashboard</span>
           </NavLink>
           <NavLink
             to="/admin/dashboard/profile"
@@ -30,7 +30,7 @@ export default function AdminSidebar() {
             <span className="grid size-[26px] shrink-0 place-items-center">
               <BsPerson size="20" />
             </span>
-            <span className="text-nowrap max-lg:hidden">Profile</span>
+            <span className="text-nowrap max-md:hidden">Profile</span>
           </NavLink>
           <NavLink
             to="/admin/dashboard/manage-tickets"
@@ -42,7 +42,7 @@ export default function AdminSidebar() {
             <span className="grid size-[26px] shrink-0 place-items-center">
               <IoTicketOutline size="20" />
             </span>
-            <span className="text-nowrap max-lg:hidden">Manage tickets</span>
+            <span className="text-nowrap max-md:hidden">Manage tickets</span>
           </NavLink>
           <NavLink
             to="/admin/dashboard/manage-users"
@@ -54,7 +54,7 @@ export default function AdminSidebar() {
             <span className="grid size-[26px] shrink-0 place-items-center">
               <BsPersonGear size="20" />
             </span>
-            <span className="text-nowrap max-lg:hidden">Manage Users</span>
+            <span className="text-nowrap max-md:hidden">Manage Users</span>
           </NavLink>
           <NavLink
             to="/admin/dashboard/advertise-tickets"
@@ -66,7 +66,7 @@ export default function AdminSidebar() {
             <span className="grid size-[26px] shrink-0 place-items-center">
               <RxSpeakerLoud size="20" />
             </span>
-            <span className="text-nowrap max-lg:hidden">Advertise tickets</span>
+            <span className="text-nowrap max-md:hidden">Advertise tickets</span>
           </NavLink>
         </div>
       </div>

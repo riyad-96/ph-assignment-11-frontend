@@ -23,11 +23,10 @@ export default function RegisterAccount() {
   async function requestRegistration(data: RegisterFormFieldTypes) {
     if (isSubmitting) return;
     setIsSubmitting(true);
-    try {
-      await handleRegistration(data);
-    } finally {
-      setIsSubmitting(false);
-    }
+
+    await handleRegistration(data);
+
+    setIsSubmitting(false);
   }
 
   return (
@@ -53,16 +52,15 @@ export default function RegisterAccount() {
         />
 
         <InputField
-          id="photoURL"
-          label="Photo URL"
-          placeholder="Your name"
-          type="url"
-          autoComplete="off"
-          error={errors?.photoURL?.message}
-          {...register('photoURL', {
+          type="file"
+          id="photoFile"
+          label="Image File"
+          accept="image/*"
+          error={errors.photoFiles?.message}
+          {...register('photoFiles', {
             required: {
-              message: 'PhotoURL is required',
               value: true,
+              message: 'Image file is required',
             },
           })}
         />

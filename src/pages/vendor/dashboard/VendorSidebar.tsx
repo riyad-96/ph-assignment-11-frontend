@@ -7,7 +7,7 @@ import { NavLink } from 'react-router-dom';
 
 export default function VendorSidebar() {
   return (
-    <div className="bg-surface pointer-events-auto relative h-full w-[50px] px-1 transition-[width] lg:h-full lg:w-[180px]">
+    <div className="bg-surface h-full w-[50px] px-1 transition-[width] lg:h-full md:w-[180px]">
       <div className="sticky top-[57px] pt-4">
         <div className="grid">
           <NavLink
@@ -20,7 +20,7 @@ export default function VendorSidebar() {
             <span className="grid size-[26px] shrink-0 place-items-center">
               <RxDashboard size="20" />
             </span>
-            <span className="text-nowrap max-lg:hidden">Dashboard</span>
+            <span className="text-nowrap max-md:hidden">Dashboard</span>
           </NavLink>
           <NavLink
             to="/vendor/dashboard/profile"
@@ -32,7 +32,7 @@ export default function VendorSidebar() {
             <span className="grid size-[26px] shrink-0 place-items-center">
               <BsPerson size="20" />
             </span>
-            <span className="text-nowrap max-lg:hidden">Profile</span>
+            <span className="text-nowrap max-md:hidden">Profile</span>
           </NavLink>
           <NavLink
             to="/vendor/dashboard/add-tickets"
@@ -44,7 +44,7 @@ export default function VendorSidebar() {
             <span className="grid size-[26px] shrink-0 place-items-center">
               <IoTicketOutline size="20" />
             </span>
-            <span className="text-nowrap max-lg:hidden">Add Tickets</span>
+            <span className="text-nowrap max-md:hidden">Add Tickets</span>
           </NavLink>
           <NavLink
             to="/vendor/dashboard/my-tickets"
@@ -56,7 +56,7 @@ export default function VendorSidebar() {
             <span className="grid size-[26px] shrink-0 place-items-center">
               <IoTicket size="20" />
             </span>
-            <span className="text-nowrap max-lg:hidden">My Tickets</span>
+            <span className="text-nowrap max-md:hidden">My Tickets</span>
           </NavLink>
           <NavLink
             to="/vendor/dashboard/bookings"
@@ -68,7 +68,7 @@ export default function VendorSidebar() {
             <span className="grid size-[26px] shrink-0 place-items-center">
               <HiOutlineBookmark size="20" />
             </span>
-            <span className="text-nowrap max-lg:hidden">Bookings</span>
+            <span className="text-nowrap max-md:hidden">Bookings</span>
           </NavLink>
           <NavLink
             to="/vendor/dashboard/revenue-overview"
@@ -80,7 +80,7 @@ export default function VendorSidebar() {
             <span className="grid size-[26px] shrink-0 place-items-center">
               <TbCoinTaka size="20" />
             </span>
-            <span className="text-nowrap max-lg:hidden">Revenue</span>
+            <span className="text-nowrap max-md:hidden">Revenue</span>
           </NavLink>
         </div>
       </div>

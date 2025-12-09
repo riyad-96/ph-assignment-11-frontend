@@ -40,7 +40,7 @@ export default function InputField({
                 : 'password'
               : type
           }
-          className={`hover:border-brand/60 border-brand/20 bg-surface focus:border-brand ring-brand/30 w-full min-w-0 rounded-full border ${type === 'password' ? 'pr-[66px] pl-4' : 'px-4'} py-2 shadow-xs ring-0 transition-[border-color,box-shadow] outline-none focus:ring-3`}
+          className={`hover:border-brand/60 border-brand/20 bg-surface focus:border-brand ring-brand/20 w-full min-w-0 rounded-full border ${type === 'password' ? 'pr-[66px] pl-4' : 'px-4'} py-2 shadow-xs ring-0 transition-[border-color,box-shadow] outline-none focus:ring-3`}
           {...rest}
         />
         {type === 'password' && (
@@ -49,7 +49,7 @@ export default function InputField({
               setIsPasswordVisible((prev) => !prev);
             }}
             type="button"
-            className="hover:bg-brand-light absolute top-1/2 right-1 grid h-[calc(100%-8px)] w-[50px] -translate-y-1/2 place-items-center rounded-full"
+            className="pointer-coarse:bg-brand-light pointer-fine:hover:bg-brand-light absolute top-1/2 right-1 grid h-[calc(100%-8px)] w-[50px] -translate-y-1/2 place-items-center rounded-full"
           >
             {isPasswordVisible ? (
               <span className="grid">
