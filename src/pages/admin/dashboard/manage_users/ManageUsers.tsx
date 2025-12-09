@@ -21,11 +21,15 @@ type UpdateRolePayload = {
   id: string;
   role: string;
 };
+type UpdateIsFraudPayload = {
+  id: string;
+  isFraud: boolean;
+};
 
 export default function ManageUsers() {
   const server = serverAPI(true);
   const queryClient = useQueryClient();
-  const { user, setUser } = useAuthContext();
+  const { setUser } = useAuthContext();
 
   const {
     data: users,
@@ -69,6 +73,24 @@ export default function ManageUsers() {
     },
     onError: () => {
       toast.error("Couldn't update role");
+    },
+  });
+
+  // toggle is fraud
+  const { mutate: updateIsFraud, isPending: updatingIsFraud } = useMutation({
+    mutationFn: async ({ id, isFraud }: UpdateIsFraudPayload) => {
+      const response = await server.post('/admin/update-is-fraud', {
+        id,
+        isFraud,
+      });
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin-manage_users'] });
+      toast.success('Fraud status successfully updated');
+    },
+    onError: () => {
+      toast.error("Couldn't update fraud status");
     },
   });
 
@@ -121,10 +143,10 @@ export default function ManageUsers() {
                           <th className="border-brand-light bg-brand-light border-b px-4 py-2 text-start font-semibold">
                             Email
                           </th>
-                          <th className="border-brand-light bg-brand-light border-b px-4 py-2 text-start font-semibold">
+                          <th className="border-brand-light bg-brand-light border-b px-4 py-2 text-center font-semibold">
                             Change roles
                           </th>
-                          <th className="border-brand-light bg-brand-light border-b px-4 py-2 text-start font-semibold">
+                          <th className="border-brand-light bg-brand-light border-b px-4 py-2 text-center font-semibold">
                             Is fraud
                           </th>
                         </tr>
@@ -136,6 +158,8 @@ export default function ManageUsers() {
                             u={u}
                             i={i}
                             setChangeRole={setChangeRole}
+                            updateIsFraud={updateIsFraud}
+                            updatingIsFraud={updatingIsFraud}
                           />
                         ))}
                       </tbody>
@@ -188,7 +212,7 @@ export default function ManageUsers() {
             <div className="flex justify-end gap-1">
               <button
                 onClick={() => setChangeRole(null)}
-                className="bg-brand-light h-10 w-[100px] rounded-full"
+                className="bg-brand-light border-brand-light h-10 w-[100px] rounded-full border shadow inset-shadow-xs inset-shadow-white"
               >
                 Cancel
               </button>
@@ -199,7 +223,7 @@ export default function ManageUsers() {
                     role: changeRole.changingRoleTo,
                   })
                 }
-                className="bg-brand-light h-10 w-[100px] rounded-full"
+                className="bg-surface h-10 w-[100px] rounded-full border border-red-500 text-red-500 shadow inset-shadow-xs inset-shadow-white"
               >
                 {updatingRole ? (
                   <span className="loading loading-spinner loading-xs"></span>
@@ -245,9 +269,17 @@ type TablePropsType = {
   setChangeRole: React.Dispatch<
     React.SetStateAction<ChangeRolePropsType | null>
   >;
+  updateIsFraud: ({ id, isFraud }: { id: string; isFraud: boolean }) => void;
+  updatingIsFraud: boolean;
 };
 
-function TableRow({ u, i, setChangeRole }: TablePropsType) {
+function TableRow({
+  u,
+  i,
+  setChangeRole,
+  updateIsFraud,
+  updatingIsFraud,
+}: TablePropsType) {
   const { _id, email, isFraud, name, photoURL, role } = u;
   const { user } = useAuthContext();
 
@@ -279,9 +311,7 @@ function TableRow({ u, i, setChangeRole }: TablePropsType) {
             <span className="line-clamp-1 text-sm leading-4 font-semibold">
               {name}
               {user?._id === _id && (
-                <span className="font-light tracking-wider bg-brand absolute top-0 left-0 flex size-[50px] -translate-1/2 -rotate-45 items-end justify-center px-1 text-xs text-surface pointer-events-none select-none">
-                  You
-                </span>
+                <span className="bg-brand text-surface pointer-events-none absolute top-0 left-0 flex size-[30px] -translate-1/2 -rotate-45 items-end justify-center px-1 text-xs font-light tracking-wider select-none"></span>
               )}
             </span>
             <span
@@ -444,7 +474,21 @@ function TableRow({ u, i, setChangeRole }: TablePropsType) {
         </div>
       </td>
       <td className="border-brand-light border-t">
-        <div className="px-4">{isFraud ? 'Yes' : 'No'}</div>
+        <div className="grid size-full place-items-center">
+          {role === 'vendor' && (
+            <button
+              onClick={() => {
+                if (updatingIsFraud) return;
+                updateIsFraud({ id: _id, isFraud: !isFraud });
+              }}
+              className={`group relative h-5 w-10 rounded-full outline-2 transition-colors ${isFraud ? 'bg-red-500 outline-red-500' : 'bg-brand-light outline-brand-light'}`}
+            >
+              <span
+                className={`absolute top-0 left-0 z-1 h-full w-1/2 rounded-full bg-white transition-transform group-active:scale-90 ${isFraud ? 'translate-x-1/1' : 'translate-x-0'}`}
+              ></span>
+            </button>
+          )}
+        </div>
       </td>
     </tr>
   );
