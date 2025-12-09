@@ -2,8 +2,11 @@ import { Link } from 'react-router-dom';
 import Logo from '../Logo';
 import { BsStripe } from 'react-icons/bs';
 import { Tooltip } from 'kitzo/react';
+import { useAuthContext } from '@/hooks/useAuthContext';
 
 export default function Footer() {
+  const { user } = useAuthContext();
+
   return (
     <footer className="bg-brand-light px-2 pt-8 md:px-3">
       <div className="mx-auto max-w-[1300px]">
@@ -35,7 +38,13 @@ export default function Footer() {
                 className="text-content-light hover:text-brand w-fit py-1"
               />
               <Link
-                to="/dashboard"
+                to={
+                  user
+                    ? user?.role !== 'user'
+                      ? `/${user?.role}/dashboard`
+                      : '/dashboard'
+                    : '/dashboard'
+                }
                 children="Dashboard"
                 className="text-content-light hover:text-brand w-fit py-1"
               />

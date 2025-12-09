@@ -7,6 +7,8 @@ import RoleBasedRouteProtectedWrapper from './protected_wrappers/RoleBasedRouteP
 import ClientDashboardLayout from '@/layouts/client/ClientDashboardLayout';
 import ClientDashboard from '@/pages/client/dashboard/ClientDashboard';
 import ClientProfile from '@/pages/client/dashboard/ClientProfile';
+import BookedTickets from '@/pages/client/dashboard/booked_tickets/BookedTickets';
+import TransactionHistory from '@/pages/client/dashboard/transaction_history/TransactionHistory';
 
 const clientRoutes: RouteObject = {
   path: '',
@@ -40,6 +42,14 @@ const clientRoutes: RouteObject = {
         {
           path: 'profile',
           element: <ClientProfile />,
+        },
+        {
+          path: 'booked-tickets',
+          element: <BookedTickets />,
+        },
+        {
+          path: 'transactions',
+          element: <TransactionHistory />,
         },
       ],
     },

@@ -1,5 +1,9 @@
+import DashboardH1 from '@/components/DashboardH1';
+
 export default function AdvertiseTickets() {
   return (
-    <div>AdvertiseUsers</div>
-  )
+    <div className="px-3">
+      <DashboardH1 text="Advertise Tickets" />
+    </div>
+  );
 }
