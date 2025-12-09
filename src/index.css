@@ -37,7 +37,7 @@
   --color-brand-light: var(
     --color-brand-light
   ); /* Creates bg-secondary, text-secondary */
-  --color-accent: var(--color-action); /* Creates bg-accent, text-accent */
+  --color-action: var(--color-action); /* Creates bg-accent, text-accent */
 
   /* Semantic Utility Groupings */
   --color-canvas: var(--color-canvas); /* Creates bg-canvas */
