@@ -2,7 +2,7 @@
 import type { RegisterFormFieldTypes } from '@/pages/auth/auth.types';
 
 import { useForm } from 'react-hook-form';
-import InputField from '@/pages/auth/components/InputField';
+import InputField from '@/components/form/InputField';
 import Button from '@/pages/auth/components/Button';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';

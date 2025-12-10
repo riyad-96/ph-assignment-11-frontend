@@ -6,10 +6,10 @@ import {
 import { IoMdEye, IoMdEyeOff } from 'react-icons/io';
 
 type InputFieldPropsTypes = InputHTMLAttributes<HTMLInputElement> & {
-  id: string;
   label: string;
   type: HTMLInputTypeAttribute;
-  error: string | null | undefined;
+  id: string;
+  error?: string | null | undefined;
 };
 
 export default function InputField({
@@ -17,6 +17,7 @@ export default function InputField({
   label,
   error,
   type,
+  placeholder,
   ...rest
 }: InputFieldPropsTypes) {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -40,7 +41,8 @@ export default function InputField({
                 : 'password'
               : type
           }
-          className={`hover:border-brand/60 border-brand/20 bg-surface focus:border-brand ring-brand/20 w-full min-w-0 rounded-full border ${type === 'password' ? 'pr-[66px] pl-4' : 'px-4'} py-2 shadow-xs ring-0 transition-[border-color,box-shadow] outline-none focus:ring-3`}
+          placeholder={placeholder}
+          className={`hover:border-brand/60 border-brand/20 bg-surface focus:border-brand ring-brand/20 w-full min-w-0 rounded-full border py-2 shadow-xs ring-0 transition-[border-color,box-shadow] outline-none focus:ring-3 ${type === 'password' ? 'pr-[66px] pl-4' : 'px-4'}`}
           {...rest}
         />
         {type === 'password' && (

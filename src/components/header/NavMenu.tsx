@@ -7,11 +7,14 @@ import { Tooltip } from 'kitzo/react';
 import { FiLogOut } from 'react-icons/fi';
 import { signOut } from 'firebase/auth';
 import { auth } from '@/configs/firebase.config';
+import { useQueryClient } from '@tanstack/react-query';
+import TooltipContent from '../TooltipContent';
 
 export default function NavMenu() {
   const { user } = useAuthContext();
   const [dropdownShowing, setIsDropdownShowing] = useState(false);
   const [isMenuShowing, setIsMenuShowing] = useState(false);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     function closeDropdown(e: MouseEvent | TouchEvent) {
@@ -157,7 +160,10 @@ export default function NavMenu() {
                       )}
                     </NavLink>
                     <button
-                      onClick={() => signOut(auth)}
+                      onClick={() => {
+                        signOut(auth);
+                        queryClient.invalidateQueries();
+                      }}
                       className="hover:bg-brand-light flex px-6 py-2 text-sm tracking-wide"
                     >
                       Logout
@@ -176,7 +182,7 @@ export default function NavMenu() {
       <div className="sm:hidden">
         <div className="relative">
           <Tooltip
-            content="Menu"
+            content={<TooltipContent content="Menu" />}
             isHidden={isMenuShowing}
             tooltipOptions={{
               smartHover: true,
@@ -296,6 +302,7 @@ export default function NavMenu() {
                       <button
                         onClick={() => {
                           signOut(auth);
+                          queryClient.invalidateQueries();
                         }}
                         className="bg-brand-light/40 hover:bg-brand-light mt-px flex items-center justify-center gap-1 py-1.5 text-sm"
                       >

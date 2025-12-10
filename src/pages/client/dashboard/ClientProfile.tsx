@@ -1,6 +1,6 @@
 import DashboardH1 from '@/components/DashboardH1';
 import { useAuthContext } from '@/hooks/useAuthContext';
-import InputField from '@/pages/auth/components/InputField';
+import InputField from '@/components/form/InputField';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 

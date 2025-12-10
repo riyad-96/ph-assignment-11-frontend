@@ -4,7 +4,7 @@ import { Outlet } from 'react-router-dom';
 
 export default function VendorLayout() {
   return (
-    <div className="main-scroller grid h-screen grid-rows-[auto_1fr_auto] overflow-y-auto">
+    <div className="overflow-x-hidden main-scroller grid h-screen grid-rows-[auto_1fr_auto] overflow-y-auto">
       <Header />
       <main>
         <Outlet />

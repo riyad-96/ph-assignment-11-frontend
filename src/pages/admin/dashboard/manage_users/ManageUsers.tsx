@@ -212,7 +212,7 @@ export default function ManageUsers() {
             <div className="flex justify-end gap-1">
               <button
                 onClick={() => setChangeRole(null)}
-                className="bg-brand-light border-brand-light h-10 w-[100px] rounded-full border shadow inset-shadow-xs inset-shadow-white"
+                className="bg-brand-light border-brand-light h-10 w-[100px] rounded-full border shadow"
               >
                 Cancel
               </button>
@@ -223,7 +223,7 @@ export default function ManageUsers() {
                     role: changeRole.changingRoleTo,
                   })
                 }
-                className="bg-surface h-10 w-[100px] rounded-full border border-red-500 text-red-500 shadow inset-shadow-xs inset-shadow-white"
+                className="bg-surface h-10 w-[100px] rounded-full border border-red-500 text-red-500 shadow"
               >
                 {updatingRole ? (
                   <span className="loading loading-spinner loading-xs"></span>
@@ -342,136 +342,138 @@ function TableRow({
         </div>
       </td>
       <td className="border-brand-light border-t pl-4">
-        <div className="relative">
-          <Tooltip
-            tooltipOptions={{
-              smartHover: false,
-            }}
-            content={
-              <span className="bg-content text-surface rounded-sm px-1.5 py-1 text-xs tracking-wide text-nowrap shadow-md">
-                Change role
-              </span>
-            }
-          >
-            <button
-              onClick={() => setIsMenuOpen(true)}
-              className={`role-change-menu-open-btn-${i} hover:text-brand text-content-light group-hover:bg-surface grid size-8 place-items-center rounded-full`}
+        {user?.email !== email && (
+          <div className="relative">
+            <Tooltip
+              tooltipOptions={{
+                smartHover: false,
+              }}
+              content={
+                <span className="bg-content text-surface rounded-sm px-1.5 py-1 text-xs tracking-wide text-nowrap shadow-md">
+                  Change role
+                </span>
+              }
             >
-              <span>
-                <TbTool size="20" />
-              </span>
-            </button>
-          </Tooltip>
-
-          <AnimatePresence>
-            {isMenuOpen && (
-              <motion.div
-                ref={menuRef}
-                className="bg-surface divide-brand-light absolute bottom-0 left-0 grid max-w-fit origin-bottom-left divide-y overflow-hidden rounded-md text-sm shadow-md"
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.8 }}
-                transition={{ duration: 0.1 }}
+              <button
+                onClick={() => setIsMenuOpen(true)}
+                className={`role-change-menu-open-btn-${i} hover:text-brand text-content-light group-hover:bg-surface grid size-8 place-items-center rounded-full`}
               >
-                {role === 'user' ? (
-                  <>
-                    <button
-                      onClick={() => {
-                        setChangeRole({
-                          _id,
-                          currentRole: role,
-                          name,
-                          changingRoleTo: 'admin',
-                        });
-                        setIsMenuOpen(false);
-                      }}
-                      className="hover:bg-brand-light/60 px-3 py-1.5 font-medium"
-                    >
-                      Make Admin
-                    </button>
-                    <button
-                      onClick={() => {
-                        setChangeRole({
-                          _id,
-                          currentRole: role,
-                          name,
-                          changingRoleTo: 'vendor',
-                        });
-                        setIsMenuOpen(false);
-                      }}
-                      className="hover:bg-brand-light/60 px-3 py-1.5 font-medium"
-                    >
-                      make vendor
-                    </button>
-                  </>
-                ) : role === 'admin' ? (
-                  <>
-                    <button
-                      onClick={() => {
-                        setChangeRole({
-                          _id,
-                          currentRole: role,
-                          name,
-                          changingRoleTo: 'vendor',
-                        });
-                        setIsMenuOpen(false);
-                      }}
-                      className="hover:bg-brand-light/60 px-3 py-1.5 font-medium"
-                    >
-                      Make Vendor
-                    </button>
-                    <button
-                      onClick={() => {
-                        setChangeRole({
-                          _id,
-                          currentRole: role,
-                          name,
-                          changingRoleTo: 'user',
-                        });
-                        setIsMenuOpen(false);
-                      }}
-                      className="hover:bg-brand-light/60 px-3 py-1.5 font-medium"
-                    >
-                      Make User
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <button
-                      onClick={() => {
-                        setChangeRole({
-                          _id,
-                          currentRole: role,
-                          name,
-                          changingRoleTo: 'admin',
-                        });
-                        setIsMenuOpen(false);
-                      }}
-                      className="hover:bg-brand-light/60 px-3 py-1.5 font-medium"
-                    >
-                      Make Admin
-                    </button>
-                    <button
-                      onClick={() => {
-                        setChangeRole({
-                          _id,
-                          currentRole: role,
-                          name,
-                          changingRoleTo: 'user',
-                        });
-                        setIsMenuOpen(false);
-                      }}
-                      className="hover:bg-brand-light/60 px-3 py-1.5 font-medium"
-                    >
-                      Make User
-                    </button>
-                  </>
-                )}
-              </motion.div>
-            )}
-          </AnimatePresence>
-          <div></div>
-        </div>
+                <span>
+                  <TbTool size="20" />
+                </span>
+              </button>
+            </Tooltip>
+
+            <AnimatePresence>
+              {isMenuOpen && (
+                <motion.div
+                  ref={menuRef}
+                  className="bg-surface divide-brand-light absolute bottom-0 left-0 grid max-w-fit origin-bottom-left divide-y overflow-hidden rounded-md text-sm shadow-md"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ duration: 0.1 }}
+                >
+                  {role === 'user' ? (
+                    <>
+                      <button
+                        onClick={() => {
+                          setChangeRole({
+                            _id,
+                            currentRole: role,
+                            name,
+                            changingRoleTo: 'admin',
+                          });
+                          setIsMenuOpen(false);
+                        }}
+                        className="hover:bg-brand-light/60 px-3 py-1.5 font-medium"
+                      >
+                        Make Admin
+                      </button>
+                      <button
+                        onClick={() => {
+                          setChangeRole({
+                            _id,
+                            currentRole: role,
+                            name,
+                            changingRoleTo: 'vendor',
+                          });
+                          setIsMenuOpen(false);
+                        }}
+                        className="hover:bg-brand-light/60 px-3 py-1.5 font-medium"
+                      >
+                        make vendor
+                      </button>
+                    </>
+                  ) : role === 'admin' ? (
+                    <>
+                      <button
+                        onClick={() => {
+                          setChangeRole({
+                            _id,
+                            currentRole: role,
+                            name,
+                            changingRoleTo: 'vendor',
+                          });
+                          setIsMenuOpen(false);
+                        }}
+                        className="hover:bg-brand-light/60 px-3 py-1.5 font-medium"
+                      >
+                        Make Vendor
+                      </button>
+                      <button
+                        onClick={() => {
+                          setChangeRole({
+                            _id,
+                            currentRole: role,
+                            name,
+                            changingRoleTo: 'user',
+                          });
+                          setIsMenuOpen(false);
+                        }}
+                        className="hover:bg-brand-light/60 px-3 py-1.5 font-medium"
+                      >
+                        Make User
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        onClick={() => {
+                          setChangeRole({
+                            _id,
+                            currentRole: role,
+                            name,
+                            changingRoleTo: 'admin',
+                          });
+                          setIsMenuOpen(false);
+                        }}
+                        className="hover:bg-brand-light/60 px-3 py-1.5 font-medium"
+                      >
+                        Make Admin
+                      </button>
+                      <button
+                        onClick={() => {
+                          setChangeRole({
+                            _id,
+                            currentRole: role,
+                            name,
+                            changingRoleTo: 'user',
+                          });
+                          setIsMenuOpen(false);
+                        }}
+                        className="hover:bg-brand-light/60 px-3 py-1.5 font-medium"
+                      >
+                        Make User
+                      </button>
+                    </>
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
+            <div></div>
+          </div>
+        )}
       </td>
       <td className="border-brand-light border-t">
         <div className="grid size-full place-items-center">
