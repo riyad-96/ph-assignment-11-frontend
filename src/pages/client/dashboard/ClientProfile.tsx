@@ -74,15 +74,10 @@ export default function ClientProfile() {
             <InputField
               type="file"
               id="photoFile"
-              label="Image File"
+              label="Image File (optional):"
               accept="image/*"
               error={errors.photoFiles?.message}
-              {...register('photoFiles', {
-                required: {
-                  value: true,
-                  message: 'Image file is required',
-                },
-              })}
+              {...register('photoFiles')}
             />
 
             <div className="mt-4">

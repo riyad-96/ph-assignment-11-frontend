@@ -10,18 +10,7 @@ import SubmitButton from '@/components/form/SubmitButton';
 import uploadImageToImgbb from '@/helpers/imageUpload';
 import Checkbox from '@/components/form/Checkbox';
 import { perks } from '@/constants/perksData';
-
-type TicketFormFieldType = {
-  title: string;
-  image_files: File[];
-  from: string;
-  to: string;
-  transport: string;
-  price: string;
-  quantity: string;
-  departure_time: number | string | Date;
-  perks: string[];
-};
+import type { TicketFormFieldType } from '../../types';
 
 export default function AddTickets() {
   const { user } = useAuthContext();
@@ -58,7 +47,7 @@ export default function AddTickets() {
       return response.data;
     },
     onSuccess: () => {
-      toast.success('Ticket added, wait for approval', {duration: 3500});
+      toast.success('Ticket added, wait for approval', { duration: 3500 });
       reset();
     },
     onError: () => {

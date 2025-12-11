@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom';
 
 export default function AdminSidebar() {
   return (
-    <div className="bg-surface h-full w-[50px] px-1 transition-[width] lg:h-full md:w-[180px]">
+    <div className="bg-surface border-brand-light h-full w-[50px] border-x px-1 transition-[width] md:w-[180px] lg:h-full">
       <div className="sticky top-[57px] pt-4">
         <div className="grid">
           <NavLink

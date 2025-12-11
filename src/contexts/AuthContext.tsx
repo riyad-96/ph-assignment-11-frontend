@@ -146,7 +146,10 @@ function AuthContext({ children }: { children: ReactNode }) {
   // update profile
   async function updateProfileInfo(name: string, photoFiles: File[]) {
     try {
-      const photoURL = await uploadImageToImgbb(photoFiles);
+      const photoURL =
+        photoFiles.length > 0
+          ? await uploadImageToImgbb(photoFiles)
+          : user?.photoURL;
 
       const updatedData = await server.post('/user/update', {
         name,

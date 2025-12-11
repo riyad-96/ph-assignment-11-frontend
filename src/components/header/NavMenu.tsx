@@ -119,7 +119,7 @@ export default function NavMenu() {
               onClick={() => setIsDropdownShowing((prev) => !prev)}
               className="dropdown-open-btn absolute inset-0 rounded-full"
             ></button>
-            <div className="size-10 overflow-hidden rounded-full">
+            <div className="shadow-xs size-10 overflow-hidden rounded-full">
               <img
                 className="size-full object-cover object-center"
                 src={user?.photoURL}
@@ -208,7 +208,7 @@ export default function NavMenu() {
               >
                 {user && (
                   <div className="space-y-2 py-4">
-                    <div className="mx-auto size-20 overflow-hidden rounded-full">
+                    <div className="mx-auto size-20 overflow-hidden rounded-full shadow-xs">
                       <img
                         className="size-full object-cover object-center"
                         src={user?.photoURL}

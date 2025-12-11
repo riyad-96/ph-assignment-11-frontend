@@ -9,6 +9,7 @@ import { TbTool } from 'react-icons/tb';
 import useClosePopup from '@/hooks/useClosePopup';
 import Modal from '@/components/Modal';
 import { useAuthContext } from '@/hooks/useAuthContext';
+import InfoPill from '@/components/InfoPill';
 
 type ChangeRolePropsType = {
   _id: string;
@@ -108,25 +109,22 @@ export default function ManageUsers() {
             ) : (
               <div className="">
                 <div className="flex flex-wrap gap-1 max-md:text-sm">
-                  <div className="inset-shadow-surface border-brand-light bg-brand-light/60 flex items-center gap-1 rounded-md border px-2 shadow-xs inset-shadow-xs">
-                    <span>Total users:</span>
-                    <span>{info.total}</span>
-                  </div>
-
-                  <div className="inset-shadow-surface border-brand-light bg-brand-light/60 flex items-center gap-1 rounded-md border px-2 shadow-xs inset-shadow-xs">
-                    <span>Admin:</span>
-                    <span>{info.adminCount}</span>
-                  </div>
-
-                  <div className="inset-shadow-surface border-brand-light bg-brand-light/60 flex items-center gap-1 rounded-md border px-2 shadow-xs inset-shadow-xs">
-                    <span>Vendor:</span>
-                    <span>{info.vendorCount}</span>
-                  </div>
-
-                  <div className="inset-shadow-surface border-brand-light bg-brand-light/60 flex items-center gap-1 rounded-md border px-2 shadow-xs inset-shadow-xs">
-                    <span>User:</span>
-                    <span>{info.userCount}</span>
-                  </div>
+                  <InfoPill
+                    infoTitle="Total users"
+                    info={info.total}
+                  />
+                  <InfoPill
+                    infoTitle="Admin"
+                    info={info.adminCount}
+                  />
+                  <InfoPill
+                    infoTitle="Vendor"
+                    info={info.vendorCount}
+                  />
+                  <InfoPill
+                    infoTitle="User"
+                    info={info.userCount}
+                  />
                 </div>
 
                 <div className="mt-3 w-[clamp(14.75rem,-5.25rem+100vw,42.6875rem)] overflow-x-auto md:w-[clamp(34.625rem,-13.375rem+100vw,67.875rem)]">
