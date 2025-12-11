@@ -26,6 +26,7 @@ export default function AddTickets() {
   // Create ticket
   const { mutate: createTicket, isPending: isAddingTicket } = useMutation({
     mutationFn: async (data: TicketFormFieldType) => {
+      console.log(data);
       const ticketPhotoURL = await uploadImageToImgbb(data.image_files);
 
       const newTicketData = {
@@ -37,7 +38,7 @@ export default function AddTickets() {
         price: parseFloat(data.price),
         quantity: Math.floor(parseFloat(data.quantity)),
         departure_time: data.departure_time,
-        perks: data.perks,
+        perks: data.perks || [],
       };
 
       const response = await server.post(

@@ -1,0 +1,44 @@
+import CancelButton from '@/components/buttons/CancelButton';
+import Modal from './Modal';
+import WarningButton from '@/components/buttons/WarningButton';
+
+type QuickActionModalPropsType = {
+  closeFn: () => void;
+  title: string;
+  description: string;
+  closeBtnText: string;
+  actionBtnText: string;
+  actionBtnFn: () => void;
+  isProcessing: boolean;
+};
+
+export default function QuickActionModal({
+  closeFn,
+  title,
+  description,
+  closeBtnText,
+  actionBtnText,
+  actionBtnFn,
+  isProcessing,
+}: QuickActionModalPropsType) {
+  return (
+    <Modal
+      closeFn={closeFn}
+      className="bg-surface w-full max-w-[450px] rounded-2xl p-4 shadow-lg space-y-4"
+    >
+      <h4 className="text-xl font-semibold md:text-2xl">{title}</h4>
+      <p>{description}</p>
+      <div className="flex justify-end gap-2">
+        <CancelButton
+          content={closeBtnText}
+          closeFn={closeFn}
+        />
+        <WarningButton
+          isProcessing={isProcessing}
+          content={actionBtnText}
+          onClick={actionBtnFn}
+        />
+      </div>
+    </Modal>
+  );
+}

@@ -7,9 +7,10 @@ import { toast, Tooltip } from 'kitzo/react';
 import { AnimatePresence, motion } from 'motion/react';
 import { TbTool } from 'react-icons/tb';
 import useClosePopup from '@/hooks/useClosePopup';
-import Modal from '@/components/Modal';
+import Modal from '@/components/ticket_cards/modal/Modal';
 import { useAuthContext } from '@/hooks/useAuthContext';
 import InfoPill from '@/components/InfoPill';
+import LoadingDataLengthErrors from '@/components/loading_and_errors/LoadingDataLengthErrors';
 
 type ChangeRolePropsType = {
   _id: string;
@@ -60,7 +61,7 @@ export default function ManageUsers() {
   // update role
   const { mutate: updateRole, isPending: updatingRole } = useMutation({
     mutationFn: async ({ id, role }: UpdateRolePayload) => {
-      const response = await server.post('/admin/update-role', {
+      const response = await server.patch('/admin/update-role', {
         id,
         role,
       });
@@ -80,7 +81,7 @@ export default function ManageUsers() {
   // toggle is fraud
   const { mutate: updateIsFraud, isPending: updatingIsFraud } = useMutation({
     mutationFn: async ({ id, isFraud }: UpdateIsFraudPayload) => {
-      const response = await server.post('/admin/update-is-fraud', {
+      const response = await server.patch('/admin/update-is-fraud', {
         id,
         isFraud,
       });
@@ -96,79 +97,78 @@ export default function ManageUsers() {
   });
 
   return (
-    <div className="px-3">
+    <div className="px-3 pb-16">
       <DashboardH1 text="Manage Users" />
 
-      <div className="mt-8">
-        {usersError ? (
-          <div>Error fetching user data.</div>
-        ) : (
-          <>
-            {isUsersLoading ? (
-              <div>Loading...</div>
-            ) : (
-              <div className="">
-                <div className="flex flex-wrap gap-1 max-md:text-sm">
-                  <InfoPill
-                    infoTitle="Total users"
-                    info={info.total}
-                  />
-                  <InfoPill
-                    infoTitle="Admin"
-                    info={info.adminCount}
-                  />
-                  <InfoPill
-                    infoTitle="Vendor"
-                    info={info.vendorCount}
-                  />
-                  <InfoPill
-                    infoTitle="User"
-                    info={info.userCount}
-                  />
-                </div>
+      <LoadingDataLengthErrors
+        isLoading={isUsersLoading}
+        error={usersError}
+        dataLength={users?.length}
+        emptyMessage="No users found."
+      />
 
-                <div className="mt-3 w-[clamp(14.75rem,-5.25rem+100vw,42.6875rem)] overflow-x-auto md:w-[clamp(34.625rem,-13.375rem+100vw,67.875rem)]">
-                  <div className="border-brand-light bg-surface min-w-[850px] overflow-hidden rounded-xl border">
-                    <table
-                      border={1}
-                      className="w-full cursor-default"
-                    >
-                      <thead>
-                        <tr className="divide-x">
-                          <th className="border-brand-light bg-brand-light border-b px-4 py-2 text-start font-semibold">
-                            User
-                          </th>
-                          <th className="border-brand-light bg-brand-light border-b px-4 py-2 text-start font-semibold">
-                            Email
-                          </th>
-                          <th className="border-brand-light bg-brand-light border-b px-4 py-2 text-center font-semibold">
-                            Change roles
-                          </th>
-                          <th className="border-brand-light bg-brand-light border-b px-4 py-2 text-center font-semibold">
-                            Is fraud
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {users.map((u, i) => (
-                          <TableRow
-                            key={u._id}
-                            u={u}
-                            i={i}
-                            setChangeRole={setChangeRole}
-                            updateIsFraud={updateIsFraud}
-                            updatingIsFraud={updatingIsFraud}
-                          />
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
+      {!isUsersLoading && !usersError && users && users.length > 0 && (
+        <div className="mt-8">
+          <div className="">
+            <div className="flex flex-wrap gap-1 max-md:text-sm">
+              <InfoPill
+                infoTitle="Total users"
+                info={info.total}
+              />
+              <InfoPill
+                infoTitle="Admin"
+                info={info.adminCount}
+              />
+              <InfoPill
+                infoTitle="Vendor"
+                info={info.vendorCount}
+              />
+              <InfoPill
+                infoTitle="User"
+                info={info.userCount}
+              />
+            </div>
+
+            <div className="mt-4 w-[clamp(14.75rem,-5.25rem+100vw,42.6875rem)] overflow-x-auto md:w-[clamp(34.625rem,-13.375rem+100vw,67.875rem)]">
+              <div className="border-brand-light bg-surface min-w-[850px] overflow-hidden rounded-xl border">
+                <table
+                  border={1}
+                  className="w-full cursor-default"
+                >
+                  <thead>
+                    <tr className="divide-x">
+                      <th className="border-brand-light bg-brand-light border-b px-4 py-2 text-start font-semibold">
+                        User
+                      </th>
+                      <th className="border-brand-light bg-brand-light border-b px-4 py-2 text-start font-semibold">
+                        Email
+                      </th>
+                      <th className="border-brand-light bg-brand-light border-b px-4 py-2 text-center font-semibold">
+                        Change roles
+                      </th>
+                      <th className="border-brand-light bg-brand-light border-b px-4 py-2 text-center font-semibold">
+                        Is fraud
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {users.map((u, i) => (
+                      <TableRow
+                        key={u._id}
+                        u={u}
+                        i={i}
+                        setChangeRole={setChangeRole}
+                        updateIsFraud={updateIsFraud}
+                        updatingIsFraud={updatingIsFraud}
+                      />
+                    ))}
+                  </tbody>
+                </table>
               </div>
-            )}
-          </>
-        )}
-      </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <AnimatePresence>
         {changeRole && (
@@ -293,7 +293,7 @@ function TableRow({
   return (
     <tr
       key={_id}
-      className={`group hover:bg-brand-light/50 divide-x divide-red-400 ${user?._id === _id ? 'bg-brand-light/30' : ''}`}
+      className={`group hover:bg-brand-light/50 divide-x ${user?._id === _id ? 'bg-brand-light/30' : ''}`}
     >
       <td className="border-brand-light relative overflow-hidden border-t py-2">
         <div className="flex items-center gap-3 px-4">

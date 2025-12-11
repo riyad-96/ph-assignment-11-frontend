@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import type { Ticket, TicketFormFieldType } from "../../types";
 import { formatForDatetimeLocal } from "@/helpers/helper";
-import Modal from "@/components/Modal";
+import Modal from "@/components/ticket_cards/modal/Modal";
 import InputField from "@/components/form/InputField";
 import SelectField from "@/components/form/SelectField";
 import Checkbox from "@/components/form/Checkbox";

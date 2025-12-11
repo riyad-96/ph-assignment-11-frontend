@@ -14,6 +14,7 @@ import type {
 import uploadImageToImgbb from '@/helpers/imageUpload';
 import TicketUpdateModal from './TicketUpdateModal';
 import TicketDeleteModal from './TicketDeleteModal';
+import LoadingDataLengthErrors from '@/components/loading_and_errors/LoadingDataLengthErrors';
 
 const server = serverAPI(true);
 
@@ -99,17 +100,13 @@ export default function MyTickets() {
     <div className="px-3 pb-16">
       <DashboardH1 text="My Tickets" />
 
-      {isTicketsLoading && (
-        <div className="text-content-light mt-8 text-center text-lg font-medium">
-          <span className="loading loading-spinner loading-lg"></span>
-        </div>
-      )}
-      {ticketError && <div>Error fetching tickets</div>}
-      {tickets && tickets?.length === 0 && (
-        <div className="text-content-light mt-8 text-center text-lg font-medium">
-          You have not added any tickets yet.
-        </div>
-      )}
+      <LoadingDataLengthErrors
+        isLoading={isTicketsLoading}
+        error={ticketError}
+        dataLength={tickets?.length}
+        emptyMessage="You have not created any tickets yet."
+      />
+
       {tickets && tickets?.length > 0 && (
         <div className="mt-8">
           <div className="mb-4 flex gap-2">

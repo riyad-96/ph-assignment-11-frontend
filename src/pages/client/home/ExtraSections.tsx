@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 export default function ExtraSections() {
   return (
     <>
-      <section className="container mx-auto py-12">
+      <section className="mx-auto py-12">
         <header className="mb-10">
           <h2 className="text-brand mb-2 text-xl font-bold md:text-2xl">
             Our Most Popular Routes:
@@ -14,8 +14,8 @@ export default function ExtraSections() {
           </p>
         </header>
 
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-          <div className="bg-surface grid rounded-xl p-4 shadow-md">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="bg-surface grid rounded-xl p-4 shadow">
             <h3 className="text-content mb-2 text-2xl font-bold">
               Dhaka ➡️ Chittagong
             </h3>
@@ -25,13 +25,13 @@ export default function ExtraSections() {
             </p>
             <Link
               to="/all-tickets"
-              className="text-sm bg-brand-light text-content inline-block w-full rounded-lg py-3 text-center font-semibold"
+              className="bg-brand-light text-content inline-block w-full rounded-lg py-3 text-center text-sm font-semibold"
             >
               BOOK NOW
             </Link>
           </div>
 
-          <div className="bg-surface grid rounded-xl p-4 shadow-md">
+          <div className="bg-surface grid rounded-xl p-4 shadow">
             <h3 className="text-content mb-2 text-2xl font-bold">
               Dhaka ➡️ Cox's Bazar
             </h3>
@@ -41,13 +41,13 @@ export default function ExtraSections() {
             </p>
             <Link
               to="/all-tickets"
-              className="text-sm bg-brand-light text-content inline-block w-full rounded-lg py-3 text-center font-semibold"
+              className="bg-brand-light text-content inline-block w-full rounded-lg py-3 text-center text-sm font-semibold"
             >
               FIND TICKETS
             </Link>
           </div>
 
-          <div className="bg-surface grid rounded-xl p-4 shadow-md">
+          <div className="bg-surface grid rounded-xl p-4 shadow">
             <h3 className="text-content mb-2 text-2xl font-bold">
               Dhaka ➡️ Sylhet
             </h3>
@@ -56,13 +56,13 @@ export default function ExtraSections() {
             </p>
             <Link
               to="/all-tickets"
-              className="text-sm bg-brand-light text-content inline-block w-full rounded-lg py-3 text-center font-semibold"
+              className="bg-brand-light text-content inline-block w-full rounded-lg py-3 text-center text-sm font-semibold"
             >
               CHECK SCHEDULE
             </Link>
           </div>
 
-          <div className="bg-surface grid rounded-xl p-4 shadow-md">
+          <div className="bg-surface grid rounded-xl p-4 shadow">
             <h3 className="text-content mb-2 text-2xl font-bold">
               Dhaka ➡️ Rajshahi
             </h3>
@@ -72,7 +72,7 @@ export default function ExtraSections() {
             </p>
             <Link
               to="/all-tickets"
-              className="text-sm bg-brand-light text-content inline-block w-full rounded-lg py-3 text-center font-semibold"
+              className="bg-brand-light text-content inline-block w-full rounded-lg py-3 text-center text-sm font-semibold"
             >
               VIEW BUSES
             </Link>
@@ -80,7 +80,7 @@ export default function ExtraSections() {
         </div>
       </section>
 
-      <section className="container mx-auto py-12">
+      <section className="mx-auto py-12">
         <header className="mb-10">
           <h2 className="text-brand mb-2 text-xl font-bold md:text-2xl">
             The TicketBari Difference: Your Journey, Simplified
@@ -92,7 +92,7 @@ export default function ExtraSections() {
         </header>
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <div className="bg-surface flex items-start space-x-4 rounded-lg p-6 shadow-md">
+          <div className="bg-surface flex items-start space-x-4 rounded-lg p-6 shadow">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="text-brand mt-1 h-8 w-8 shrink-0"
@@ -117,7 +117,7 @@ export default function ExtraSections() {
             </div>
           </div>
 
-          <div className="bg-surface flex items-start space-x-4 rounded-lg p-6 shadow-md">
+          <div className="bg-surface flex items-start space-x-4 rounded-lg p-6 shadow">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="text-brand mt-1 h-8 w-8 shrink-0"
@@ -141,7 +141,7 @@ export default function ExtraSections() {
             </div>
           </div>
 
-          <div className="bg-surface flex items-start space-x-4 rounded-lg p-6 shadow-md">
+          <div className="bg-surface flex items-start space-x-4 rounded-lg p-6 shadow">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="text-brand mt-1 h-8 w-8 shrink-0"
@@ -175,7 +175,7 @@ export default function ExtraSections() {
             </div>
           </div>
 
-          <div className="bg-surface flex items-start space-x-4 rounded-lg p-6 shadow-md">
+          <div className="bg-surface flex items-start space-x-4 rounded-lg p-6 shadow">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="text-brand mt-1 h-8 w-8 shrink-0"
