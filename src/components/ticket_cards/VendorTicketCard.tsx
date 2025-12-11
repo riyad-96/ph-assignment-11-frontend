@@ -1,5 +1,5 @@
 import type { Ticket } from '@/pages/vendor/types';
-import { Tooltip } from 'kitzo/react';
+import { toast, Tooltip } from 'kitzo/react';
 import TooltipContent from '../TooltipContent';
 import { perks as localPerks } from '@/constants/perksData';
 
@@ -132,16 +132,28 @@ export default function VendorTicketCard({
 
         <div className="flex gap-2">
           <button
-            onClick={() => actionUpdate(ticket)}
-            className="hover:bg-brand-light bg-brand-light/50 h-10 flex-1 rounded-full text-sm font-medium tracking-wide"
+            onClick={() => {
+              if (ticket.status === 'rejected')
+                return toast.error(
+                  'Ticket was rejected and cannot be updated.',
+                  { duration: 4000 },
+                );
+              actionUpdate(ticket);
+            }}
+            className={`bg-brand-light/50 h-10 flex-1 rounded-full text-sm font-medium tracking-wide ${ticket.status === 'rejected' ? 'disabled cursor-not-allowed opacity-50' : 'hover:bg-brand-light'}`}
           >
             Update
           </button>
           <button
-            onClick={() =>
-              actionDelete({ ticketTitle: title, ticketId: ticket._id })
-            }
-            className="bg-brand-light/50 h-10 flex-1 rounded-full text-sm font-medium tracking-wide hover:bg-red-500/30"
+            onClick={() => {
+              if (ticket.status === 'rejected')
+                return toast.error(
+                  'Ticket was rejected and cannot be deleted.',
+                  { duration: 4000 },
+                );
+              actionDelete({ ticketTitle: title, ticketId: ticket._id });
+            }}
+            className={`bg-brand-light/50 h-10 flex-1 rounded-full text-sm font-medium tracking-wide ${ticket.status === 'rejected' ? 'disabled cursor-not-allowed opacity-50' : 'hover:bg-red-500/30'}`}
           >
             Delete
           </button>

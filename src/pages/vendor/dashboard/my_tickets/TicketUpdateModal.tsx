@@ -1,12 +1,13 @@
-import { useForm } from "react-hook-form";
-import type { Ticket, TicketFormFieldType } from "../../types";
-import { formatForDatetimeLocal } from "@/helpers/helper";
-import Modal from "@/components/ticket_cards/modal/Modal";
-import InputField from "@/components/form/InputField";
-import SelectField from "@/components/form/SelectField";
-import Checkbox from "@/components/form/Checkbox";
-import SubmitButton from "@/components/form/SubmitButton";
-import { perks } from "@/constants/perksData";
+import { useForm } from 'react-hook-form';
+import type { Ticket, TicketFormFieldType } from '../../types';
+import { formatForDatetimeLocal } from '@/helpers/helper';
+import Modal from '@/components/modal/Modal';
+import InputField from '@/components/form/InputField';
+import SelectField from '@/components/form/SelectField';
+import Checkbox from '@/components/form/Checkbox';
+import SubmitButton from '@/components/form/SubmitButton';
+import { perks } from '@/constants/perksData';
+import CancelButton from '@/components/buttons/CancelButton';
 
 type TicketUpdateModalPropsType = {
   ticket: Ticket;
@@ -111,7 +112,7 @@ export default function TicketUpdateModal({
             options={[
               { label: 'Bus', value: 'bus' },
               { label: 'Train', value: 'train' },
-              { label: 'Lonch', value: 'lonch' },
+              { label: 'Ship', value: 'ship' },
               { label: 'Plane', value: 'plane' },
             ]}
           />
@@ -174,7 +175,12 @@ export default function TicketUpdateModal({
           {...register('perks')}
         />
 
-        <div className="mt-4 flex justify-end">
+        <div className="mt-4 gap-2 flex justify-end">
+          <CancelButton
+            content="Cancel"
+            closeFn={closeFn}
+            type="button"
+          />
           <SubmitButton
             isSubmitting={isUpdatingTicket}
             content="Update Ticket"

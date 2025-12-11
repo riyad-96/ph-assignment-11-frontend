@@ -1,4 +1,4 @@
-import Modal from '@/components/ticket_cards/modal/Modal';
+import Modal from '@/components/modal/Modal';
 import type { TicketDeletePayloadType } from '../../types';
 import WarningButton from '@/components/buttons/WarningButton';
 import CancelButton from '@/components/buttons/CancelButton';

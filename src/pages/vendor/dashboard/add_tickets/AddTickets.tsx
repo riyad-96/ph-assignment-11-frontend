@@ -139,7 +139,7 @@ export default function AddTickets() {
                 options={[
                   { label: 'Bus', value: 'bus' },
                   { label: 'Train', value: 'train' },
-                  { label: 'Lonch', value: 'lonch' },
+                  { label: 'Ship', value: 'ship' },
                   { label: 'Plane', value: 'plane' },
                 ]}
               />

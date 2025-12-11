@@ -7,11 +7,14 @@ import InfoPill from '@/components/InfoPill';
 import { CheckIcon, CloseIcon } from '@/assets/Svgs';
 import { toast, Tooltip } from 'kitzo/react';
 import TooltipContent from '@/components/TooltipContent';
-import QuickActionModal from '@/components/ticket_cards/modal/QuickActionModal';
+import QuickActionModal from '@/components/modal/QuickActionModal';
 import { AnimatePresence } from 'motion/react';
 import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns';
+import Table from '@/components/Table';
+import TransportIcon from '@/components/TransportIcon';
+import { formatPrice } from '@/helpers/helper';
 
 type TicketStatusUpdatePayload = {
   ticket_title: string;
@@ -97,144 +100,143 @@ export default function ManageTickets() {
             />
           </div>
 
-          <div className="mt-4 w-[clamp(14.75rem,-5.25rem+100vw,42.6875rem)] overflow-x-auto md:w-[clamp(34.625rem,-13.375rem+100vw,67.875rem)]">
-            <div className="border-brand-light bg-surface min-w-[850px] overflow-hidden rounded-xl border">
-              <table
-                border={1}
-                className="w-full cursor-default"
-              >
-                <thead>
-                  <tr className="divide-x">
-                    <th className="border-brand-light bg-brand-light border-b px-4 py-2 text-start font-semibold">
-                      Ticket title
-                    </th>
-                    <th className="border-brand-light bg-brand-light border-b px-4 py-2 text-start font-semibold">
-                      Vendor
-                    </th>
-                    <th className="border-brand-light bg-brand-light border-b px-4 py-2 text-center font-semibold">
-                      Status
-                    </th>
-                    <th className="border-brand-light bg-brand-light border-b px-4 py-2 text-center font-semibold">
-                      Actions
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {tickets.map((ticket) => (
-                    <tr
-                      key={ticket._id}
-                      className="group hover:bg-brand-light/50 divide-x"
-                    >
-                      <td className="border-brand-light relative border-t py-2">
-                        <div className="grid px-4">
-                          <span className="line-clamp-1 font-semibold text-sm">
-                            {ticket.title}
-                          </span>
-                          <span className="text-xs">
-                            <span className="bg-brand-light px-1 rounded-md">{ticket.from}</span> to <span className="bg-brand-light px-1 rounded-md">{ticket.to}</span>
-                          </span>
-                        </div>
-                      </td>
+          <Table>
+            <Table.head>
+              <Table.tr>
+                <Table.th>Ticket title</Table.th>
+                <Table.th>Transport</Table.th>
+                <Table.th>Price</Table.th>
+                <Table.th>Vendor</Table.th>
+                <Table.th>Status</Table.th>
+                <Table.th>Actions</Table.th>
+              </Table.tr>
+            </Table.head>
+            <Table.body>
+              {tickets.map((t) => (
+                <Table.tr key={t._id}>
+                  <Table.td>
+                    <div className="grid">
+                      <h5 className="line-clamp-1 text-sm font-semibold">
+                        {t.title}
+                      </h5>
+                      <span className="text-xs">
+                        <span className="bg-brand-light rounded-md px-1">
+                          {t.from}
+                        </span>{' '}
+                        to{' '}
+                        <span className="bg-brand-light rounded-md px-1">
+                          {t.to}
+                        </span>
+                      </span>
+                    </div>
+                  </Table.td>
 
-                      <td className="border-brand-light relative border-t py-2">
-                        <div className="px-4">
-                          <h4 className="block text-sm leading-4 font-semibold">
-                            {ticket.vendor_name}
-                          </h4>
-                          <span className="block text-sm leading-4">
-                            {ticket.vendor_email}
-                          </span>
-                        </div>
-                      </td>
+                  <Table.td>
+                    <div className="flex items-center gap-1 text-sm font-medium tracking-wide capitalize">
+                      <span>
+                        <TransportIcon transport={t.transport} />
+                      </span>
+                      <span>{t.transport}</span>
+                    </div>
+                  </Table.td>
 
-                      <td className="border-brand-light relative border-t py-2">
-                        <div className="px-4 text-center capitalize">
-                          <Tooltip
-                            tooltipOptions={{ hideOnTouch: false }}
+                  <Table.td>৳ {formatPrice(t.price)}</Table.td>
+
+                  <Table.td>
+                    <div className="">
+                      <h4 className="block text-sm leading-4 font-semibold">
+                        {t.vendor_name}
+                      </h4>
+                      <span className="block text-sm leading-4">
+                        {t.vendor_email}
+                      </span>
+                    </div>
+                  </Table.td>
+
+                  <Table.td>
+                    <div className="text-center capitalize">
+                      <Tooltip
+                        tooltipOptions={{ hideOnTouch: false }}
+                        content={
+                          <TooltipContent
+                            content={`Updated on: ${format(t.updated_at, 'hh:mm a, dd MMM yyyy')}`}
+                          />
+                        }
+                      >
+                        <span
+                          className={`text-surface block w-fit rounded-full px-3 py-1 text-xs font-light tracking-wide shadow ${t.status === 'pending' ? 'bg-amber-500' : t.status === 'approved' ? 'bg-emerald-500' : 'bg-red-500'}`}
+                        >
+                          {t.status}
+                        </span>
+                      </Tooltip>
+                    </div>
+                  </Table.td>
+
+                  <Table.td>
+                    <div className="flex items-center justify-center gap-4 py-1">
+                      <Tooltip
+                        content={
+                          <TooltipContent
                             content={
-                              <TooltipContent
-                                content={`Updated on: ${format(ticket.updated_at, 'MMM dd, yyyy hh:mm a')}`}
-                              />
+                              t.status === 'approved' ? 'Approved' : 'Approve ticket'
                             }
-                          >
-                            <span
-                              className={`text-surface block w-fit rounded-full px-3 py-1 text-xs font-light tracking-wide shadow ${ticket.status === 'pending' ? 'bg-amber-500' : ticket.status === 'approved' ? 'bg-emerald-500' : 'bg-red-500'}`}
-                            >
-                              {ticket.status}
-                            </span>
-                          </Tooltip>
-                        </div>
-                      </td>
+                          />
+                        }
+                        tooltipOptions={{
+                          smartHover: false,
+                        }}
+                      >
+                        <button
+                          onClick={() => {
+                            if (t.status === 'approved') return;
+                            setUpdateTicketStatusPayload({
+                              ticket_id: t._id,
+                              new_status: 'approved',
+                              ticket_title: t.title,
+                            });
+                          }}
+                          className={`relative grid place-items-center ${t.status !== 'approved' ? 'text-emerald-500' : 'text-content-light'}`}
+                        >
+                          <span className="absolute -inset-1"></span>
+                          <CheckIcon size="24" />
+                        </button>
+                      </Tooltip>
 
-                      <td className="border-brand-light relative border-t py-2">
-                        <div className="flex items-center justify-center gap-4 px-4 py-1">
-                          <Tooltip
+                      <Tooltip
+                        content={
+                          <TooltipContent
                             content={
-                              <TooltipContent
-                                content={
-                                  ticket.status === 'approved'
-                                    ? 'Approved'
-                                    : 'Approve ticket'
-                                }
-                              />
+                              t.status === 'rejected'
+                                ? 'Rejected'
+                                : 'Reject ticket'
                             }
-                            tooltipOptions={{
-                              smartHover: false,
-                            }}
-                          >
-                            <button
-                              onClick={() => {
-                                if (ticket.status === 'approved') return;
-                                setUpdateTicketStatusPayload({
-                                  ticket_id: ticket._id,
-                                  new_status: 'approved',
-                                  ticket_title: ticket.title,
-                                });
-                              }}
-                              className={`relative grid place-items-center ${ticket.status !== 'approved' ? 'text-emerald-500' : 'text-content-light'}`}
-                            >
-                              <span className="absolute -inset-1"></span>
-                              <CheckIcon size="24" />
-                            </button>
-                          </Tooltip>
-
-                          <Tooltip
-                            content={
-                              <TooltipContent
-                                content={
-                                  ticket.status === 'rejected'
-                                    ? 'Rejected'
-                                    : 'Reject ticket'
-                                }
-                              />
-                            }
-                            tooltipOptions={{
-                              smartHover: false,
-                            }}
-                          >
-                            <button
-                              onClick={() => {
-                                if (ticket.status === 'rejected') return;
-                                setUpdateTicketStatusPayload({
-                                  ticket_id: ticket._id,
-                                  new_status: 'rejected',
-                                  ticket_title: ticket.title,
-                                });
-                              }}
-                              className={`relative grid place-items-center ${ticket.status !== 'rejected' ? 'text-red-500' : 'text-content-light'}`}
-                            >
-                              <span className="absolute -inset-1"></span>
-                              <CloseIcon size="24" />
-                            </button>
-                          </Tooltip>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
+                          />
+                        }
+                        tooltipOptions={{
+                          smartHover: false,
+                        }}
+                      >
+                        <button
+                          onClick={() => {
+                            if (t.status === 'rejected') return;
+                            setUpdateTicketStatusPayload({
+                              ticket_id: t._id,
+                              new_status: 'rejected',
+                              ticket_title: t.title,
+                            });
+                          }}
+                          className={`relative grid place-items-center ${t.status !== 'rejected' ? 'text-red-500' : 'text-content-light'}`}
+                        >
+                          <span className="absolute -inset-1"></span>
+                          <CloseIcon size="24" />
+                        </button>
+                      </Tooltip>
+                    </div>
+                  </Table.td>
+                </Table.tr>
+              ))}
+            </Table.body>
+          </Table>
         </div>
       )}
 
@@ -243,7 +245,7 @@ export default function ManageTickets() {
           updateTicketStatusPayload.new_status === 'approved' && (
             <QuickActionModal
               title="Approve Ticket!"
-              description="Are you sure you want to approve this ticket? This action cannot be undone."
+              description="Are you sure you want to approve this ticket? This ticket will be marked as approved."
               closeBtnText="Cancel"
               actionBtnText="Approve"
               closeFn={() => setUpdateTicketStatusPayload(null)}
@@ -258,7 +260,7 @@ export default function ManageTickets() {
           updateTicketStatusPayload.new_status === 'rejected' && (
             <QuickActionModal
               title="Reject Ticket!"
-              description="Are you sure you want to reject this ticket? This action cannot be undone."
+              description="Are you sure you want to reject this ticket? This ticket will be marked as rejected."
               closeBtnText="Cancel"
               actionBtnText="Reject"
               closeFn={() => setUpdateTicketStatusPayload(null)}

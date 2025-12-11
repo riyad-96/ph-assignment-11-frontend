@@ -16,3 +16,9 @@ export function formatForDatetimeLocal(isoString: string) {
 
   return `${year}-${month}-${day}T${hours}:${minutes}`;
 }
+
+export function formatPrice(value: number | string): string {
+  return Number(value).toLocaleString('en-US', {
+    currency: 'BDT',
+  });
+}

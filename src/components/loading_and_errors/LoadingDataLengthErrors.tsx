@@ -13,21 +13,21 @@ export default function LoadingDataLengthErrors({
 }: LoadingDataLengthErrorsProps) {
   if (isLoading) {
     return (
-      <div className="text-content-light mt-8 text-center text-lg font-medium">
+      <div className="text-content-light mt-30 text-center font-medium lg:text-lg">
         <span className="loading loading-spinner loading-lg"></span>
       </div>
     );
   }
   if (error) {
     return (
-      <div className="text-content-light mt-8 text-center text-lg font-medium">
+      <div className="text-content-light mt-30 text-center font-medium lg:text-lg">
         Error loading data. Please try again.
       </div>
     );
   }
   if (dataLength === 0) {
     return (
-      <div className="text-content-light mt-8 text-center text-lg font-medium">
+      <div className="text-content-light mt-30 text-center font-medium lg:text-lg">
         {emptyMessage}
       </div>
     );

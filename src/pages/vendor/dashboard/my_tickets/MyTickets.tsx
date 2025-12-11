@@ -40,7 +40,10 @@ export default function MyTickets() {
 
   const { mutate: updateTicket, isPending: isUpdatingTicket } = useMutation({
     mutationFn: async (data: TicketFormFieldType) => {
-      const updatedTicketDetails: Ticket = {
+      const updatedTicketDetails: Omit<
+        Ticket,
+        'isOnAd' | 'status' | 'created_at' | 'updated_at'
+      > = {
         _id: updateTicketDetails?._id as string,
         from: data.from,
         to: data.to,
@@ -48,7 +51,6 @@ export default function MyTickets() {
         quantity: Math.floor(parseFloat(data.quantity)),
         departure_time: data.departure_time,
         perks: data.perks,
-        status: 'pending',
         thumbnail:
           data.image_files.length > 0
             ? await uploadImageToImgbb(data.image_files)
@@ -113,6 +115,24 @@ export default function MyTickets() {
             <InfoPill
               infoTitle="Total tickets"
               info={tickets.length}
+            />
+            <InfoPill
+              infoTitle="Pending tickets"
+              info={
+                tickets.filter((ticket) => ticket.status === 'pending').length
+              }
+            />
+            <InfoPill
+              infoTitle="Resolved tickets"
+              info={
+                tickets.filter((ticket) => ticket.status === 'approved').length
+              }
+            />
+            <InfoPill
+              infoTitle="Rejected tickets"
+              info={
+                tickets.filter((ticket) => ticket.status === 'rejected').length
+              }
             />
           </div>
 

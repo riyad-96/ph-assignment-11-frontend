@@ -7,7 +7,7 @@ import { toast, Tooltip } from 'kitzo/react';
 import { AnimatePresence, motion } from 'motion/react';
 import { TbTool } from 'react-icons/tb';
 import useClosePopup from '@/hooks/useClosePopup';
-import Modal from '@/components/ticket_cards/modal/Modal';
+import Modal from '@/components/modal/Modal';
 import { useAuthContext } from '@/hooks/useAuthContext';
 import InfoPill from '@/components/InfoPill';
 import LoadingDataLengthErrors from '@/components/loading_and_errors/LoadingDataLengthErrors';
@@ -320,6 +320,7 @@ function TableRow({
           </div>
         </div>
       </td>
+
       <td className="border-brand-light border-t">
         <div className="px-4">
           <Tooltip
@@ -339,9 +340,10 @@ function TableRow({
           </Tooltip>
         </div>
       </td>
-      <td className="border-brand-light border-t pl-4">
+
+      <td className="border-brand-light border-t">
         {user?.email !== email && (
-          <div className="relative">
+          <div className="relative mx-auto w-fit">
             <Tooltip
               tooltipOptions={{
                 smartHover: false,
@@ -366,7 +368,7 @@ function TableRow({
               {isMenuOpen && (
                 <motion.div
                   ref={menuRef}
-                  className="bg-surface divide-brand-light absolute bottom-0 left-0 grid max-w-fit origin-bottom-left divide-y overflow-hidden rounded-md text-sm shadow-md"
+                  className="bg-surface text-nowrap divide-brand-light absolute bottom-0 left-0 grid max-w-fit origin-bottom-left divide-y overflow-hidden rounded-md text-sm shadow-md"
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.8 }}
@@ -473,6 +475,7 @@ function TableRow({
           </div>
         )}
       </td>
+
       <td className="border-brand-light border-t">
         <div className="grid size-full place-items-center">
           {role === 'vendor' && (

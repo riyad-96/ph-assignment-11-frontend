@@ -24,12 +24,13 @@ export default function QuickActionModal({
   return (
     <Modal
       closeFn={closeFn}
-      className="bg-surface w-full max-w-[450px] rounded-2xl p-4 shadow-lg space-y-4"
+      className="bg-surface w-full max-w-[450px] space-y-4 rounded-2xl p-4 shadow-lg"
     >
       <h4 className="text-xl font-semibold md:text-2xl">{title}</h4>
       <p>{description}</p>
       <div className="flex justify-end gap-2">
         <CancelButton
+          type="button"
           content={closeBtnText}
           closeFn={closeFn}
         />

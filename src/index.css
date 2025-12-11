@@ -77,6 +77,11 @@ body {
   }
 }
 
+button.disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
 /* Utils */
 .screen-height {
   height: 100vh;
