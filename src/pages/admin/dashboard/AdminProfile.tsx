@@ -83,7 +83,7 @@ export default function AdminProfile() {
             <div className="mt-4">
               <button
                 type="submit"
-                className="bg-brand text-surface h-10 w-[100px] rounded-full"
+                className="bg-brand text-white h-10 w-[100px] rounded-full"
               >
                 {isSubmitting ? (
                   <span className="loading loading-spinner loading-xs"></span>

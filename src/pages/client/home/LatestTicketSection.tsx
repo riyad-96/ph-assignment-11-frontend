@@ -1,3 +1,5 @@
+import LoadingErrorSection from '@/components/loading_and_errors/LoadingErrorSection';
+import TicketSectionLoadingScreen from '@/components/loading_and_errors/TicketSectionLoadingScreen';
 import PublicTicketCard from '@/components/ticket_cards/PublicTicketCard';
 import type { Ticket } from '@/pages/vendor/types';
 import type { AxiosError } from 'axios';
@@ -13,7 +15,6 @@ export default function LatestTicketSection({
   isLoading,
   error,
 }: LatestTicketSectionPropsType) {
-  console.log(regularTickets);
   return (
     <div className="py-12">
       <div className="space-y-2">
@@ -26,14 +27,11 @@ export default function LatestTicketSection({
       </div>
 
       <div className="mt-10">
-        {isLoading && <p>Loading latest tickets...</p>}
-        {error && <p>Error loading latest tickets.</p>}
-        {!isLoading && !error && regularTickets?.length === 0 && (
-          <p>No latest tickets available.</p>
-        )}
+        {isLoading && <TicketSectionLoadingScreen cardCount={9} />}
+        {error && <LoadingErrorSection />}
 
-        {regularTickets && regularTickets.length > 0 && (
-          <div className="grid gap-4 lg:gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {!error && regularTickets && regularTickets.length > 0 && (
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
             {regularTickets.map((ticket) => (
               <PublicTicketCard
                 key={ticket._id}

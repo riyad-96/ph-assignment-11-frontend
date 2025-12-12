@@ -1,3 +1,5 @@
+import errorMessages from '../constants/randomErrorMessages.ts';
+
 export function getIsPointerFine() {
   return window.matchMedia('(pointer: fine)').matches;
 }
@@ -21,4 +23,9 @@ export function formatPrice(value: number | string): string {
   return Number(value).toLocaleString('en-US', {
     currency: 'BDT',
   });
+}
+
+export function getRandomErrorMessage(): string {
+  const randomIndex = Math.floor(Math.random() * errorMessages.length);
+  return errorMessages[randomIndex];
 }

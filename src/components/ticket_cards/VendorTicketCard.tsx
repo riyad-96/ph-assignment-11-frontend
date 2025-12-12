@@ -92,7 +92,7 @@ export default function VendorTicketCard({
             Departure
           </p>
           <p className="font-medium">
-            {format(departure_time, 'MMM dd, hh:mm a')}
+            {format(departure_time, 'dd MMM y, hh:mm a')}
           </p>
         </div>
 

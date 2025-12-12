@@ -162,7 +162,7 @@ export default function AdvertiseTickets() {
 
                 <Table.td>
                   <div className="text-sm">
-                    {format(t.departure_time, 'hh:mm aa, MMM d, yyyy')}
+                    {format(t.departure_time, 'dd MMM y, hh:mm a')}
                   </div>
                 </Table.td>
 

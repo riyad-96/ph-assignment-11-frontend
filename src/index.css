@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
 @import 'tailwindcss';
 @plugin 'daisyui';
+@custom-variant dark (&:where(.dark, .dark *));
 
 /* Light Theme (Default) */
 :root {
@@ -80,6 +81,10 @@ body {
 button.disabled {
   cursor: not-allowed;
   opacity: 0.5;
+}
+
+img {
+  user-select: none;
 }
 
 /* Utils */

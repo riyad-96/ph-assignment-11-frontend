@@ -9,6 +9,7 @@ import ClientDashboard from '@/pages/client/dashboard/ClientDashboard';
 import ClientProfile from '@/pages/client/dashboard/ClientProfile';
 import BookedTickets from '@/pages/client/dashboard/booked_tickets/BookedTickets';
 import TransactionHistory from '@/pages/client/dashboard/transaction_history/TransactionHistory';
+import TicketDetails from '@/pages/client/all_tickets/ticket_details/TicketDetails';
 
 const clientRoutes: RouteObject = {
   path: '',
@@ -21,6 +22,10 @@ const clientRoutes: RouteObject = {
     {
       path: 'all-tickets',
       element: <ProtectedRouteWrapper children={<AllTickets />} />,
+    },
+    {
+      path: 'all-tickets/:id',
+      element: <ProtectedRouteWrapper children={<TicketDetails />} />,
     },
     {
       path: 'dashboard',

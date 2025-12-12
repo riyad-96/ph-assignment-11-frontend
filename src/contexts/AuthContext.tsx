@@ -50,7 +50,7 @@ function AuthContext({ children }: { children: ReactNode }) {
       let user = null;
       if (firebaseUser) {
         try {
-          const response = await server.get('/user/get');
+          const response = await server.get('/auth/get');
           user = response.data;
         } catch (err) {
           console.log(err);
@@ -69,14 +69,14 @@ function AuthContext({ children }: { children: ReactNode }) {
     try {
       const photoURL = await uploadImageToImgbb(data.photoFiles);
 
-      const createResponse = await server.post('/user/create', {
+      const createResponse = await server.post('/auth/create', {
         email: data.email,
         password: data.password,
         name: data.name,
         photoURL,
       });
       await signInWithCustomToken(auth, createResponse.data.customToken);
-      const getResponse = await server.get('/user/get');
+      const getResponse = await server.get('/auth/get');
       setUser(getResponse.data);
       setIsRegistering(false);
     } catch (err) {
@@ -104,7 +104,7 @@ function AuthContext({ children }: { children: ReactNode }) {
 
       await cred.user.getIdToken(true);
 
-      const response = await server.get('/user/get');
+      const response = await server.get('/auth/get');
       setUser(response.data);
     } catch (err) {
       console.error(err);
@@ -125,7 +125,7 @@ function AuthContext({ children }: { children: ReactNode }) {
 
       await user.getIdToken(true);
 
-      const googlePostResponse = await server.post('/user/sociallogin', {
+      const googlePostResponse = await server.post('/auth/sociallogin', {
         name: user.displayName,
         photoURL: user.photoURL,
       });
@@ -151,7 +151,7 @@ function AuthContext({ children }: { children: ReactNode }) {
           ? await uploadImageToImgbb(photoFiles)
           : user?.photoURL;
 
-      const updatedData = await server.post('/user/update', {
+      const updatedData = await server.post('/auth/update', {
         name,
         photoURL,
       });

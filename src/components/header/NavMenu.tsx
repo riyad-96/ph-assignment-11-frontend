@@ -53,7 +53,7 @@ export default function NavMenu() {
       <div className="flex items-center gap-0.5 max-sm:hidden">
         <NavLink
           className={({ isActive }) =>
-            `rounded-full px-4 py-2 text-sm tracking-wider ${isActive ? 'bg-brand text-surface' : 'hover:bg-brand-light'}`
+            `rounded-full px-4 py-2 text-sm tracking-wider ${isActive ? 'bg-brand text-white' : 'hover:bg-brand-light'}`
           }
           to="/"
         >
@@ -68,7 +68,7 @@ export default function NavMenu() {
 
         <NavLink
           className={({ isActive }) =>
-            `rounded-full px-4 py-2 text-sm tracking-wider ${isActive ? 'bg-brand text-surface' : 'hover:bg-brand-light'}`
+            `rounded-full px-4 py-2 text-sm tracking-wider ${isActive ? 'bg-brand text-white' : 'hover:bg-brand-light'}`
           }
           to="/all-tickets"
         >
@@ -83,7 +83,7 @@ export default function NavMenu() {
 
         <NavLink
           className={({ isActive }) =>
-            `rounded-full px-4 py-2 text-sm tracking-wider ${isActive ? 'bg-brand text-surface' : 'hover:bg-brand-light'}`
+            `rounded-full px-4 py-2 text-sm tracking-wider ${isActive ? 'bg-brand text-white' : 'hover:bg-brand-light'}`
           }
           end
           to={getRoute('/dashboard')}
@@ -147,7 +147,7 @@ export default function NavMenu() {
                         )
                       }
                       className={({ isActive }) =>
-                        `px-6 py-2 text-sm tracking-wide ${isActive ? 'bg-brand text-surface' : 'hover:bg-brand-light'}`
+                        `px-6 py-2 text-sm tracking-wide ${isActive ? 'bg-brand text-white' : 'hover:bg-brand-light'}`
                       }
                       to={getRoute('/dashboard/profile')}
                     >
@@ -229,7 +229,7 @@ export default function NavMenu() {
                         setTimeout(() => setIsMenuShowing((prev) => !prev), 50)
                       }
                       className={({ isActive }) =>
-                        `px-4 py-2 text-sm tracking-wider ${isActive ? 'bg-brand text-surface' : 'hover:bg-brand-light'}`
+                        `px-4 py-2 text-sm tracking-wider ${isActive ? 'bg-brand text-white' : 'hover:bg-brand-light'}`
                       }
                       to={getRoute('/dashboard/profile')}
                     >
@@ -248,7 +248,7 @@ export default function NavMenu() {
                       setTimeout(() => setIsMenuShowing((prev) => !prev), 50)
                     }
                     className={({ isActive }) =>
-                      `px-4 py-2 text-sm tracking-wider ${isActive ? 'bg-brand text-surface' : 'hover:bg-brand-light'}`
+                      `px-4 py-2 text-sm tracking-wider ${isActive ? 'bg-brand text-white' : 'hover:bg-brand-light'}`
                     }
                     to="/"
                   >
@@ -266,7 +266,7 @@ export default function NavMenu() {
                       setTimeout(() => setIsMenuShowing((prev) => !prev), 50)
                     }
                     className={({ isActive }) =>
-                      `px-4 py-2 text-sm tracking-wider ${isActive ? 'bg-brand text-surface' : 'hover:bg-brand-light'}`
+                      `px-4 py-2 text-sm tracking-wider ${isActive ? 'bg-brand text-white' : 'hover:bg-brand-light'}`
                     }
                     to="/all-tickets"
                   >
@@ -284,7 +284,7 @@ export default function NavMenu() {
                       setTimeout(() => setIsMenuShowing((prev) => !prev), 50)
                     }
                     className={({ isActive }) =>
-                      `px-4 py-2 text-sm tracking-wider ${isActive ? 'bg-brand text-surface' : 'hover:bg-brand-light'}`
+                      `px-4 py-2 text-sm tracking-wider ${isActive ? 'bg-brand text-white' : 'hover:bg-brand-light'}`
                     }
                     end
                     to={getRoute('/dashboard')}

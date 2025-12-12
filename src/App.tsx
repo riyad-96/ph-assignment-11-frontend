@@ -7,7 +7,7 @@ export default function App() {
   const { isUserLoading } = useAuthContext();
 
   return (
-    <div className="text-content bg-canvas">
+    <div className="dark text-content bg-canvas">
       {isUserLoading ? <AppLoadingScreen /> : <Outlet />}
       <ToastContainer position="top-right" />
     </div>

@@ -3,6 +3,8 @@ import { Tooltip } from 'kitzo/react';
 import TooltipContent from '../TooltipContent';
 import { perks as localPerks } from '@/constants/perksData';
 import { format } from 'date-fns';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 type PublicTicketCardPropsType = {
   ticket: Ticket;
@@ -11,7 +13,10 @@ type PublicTicketCardPropsType = {
 export default function PublicTicketCard({
   ticket,
 }: PublicTicketCardPropsType) {
+  const navigate = useNavigate();
+
   const {
+    _id,
     thumbnail,
     title,
     departure_time,
@@ -23,13 +28,20 @@ export default function PublicTicketCard({
     transport,
   } = ticket;
 
+  const [isImgLoaded, setIsImgLoaded] = useState(false);
+
   return (
     <div className="bg-surface rounded-xl shadow">
-      <div className="relative">
+      <div className="relative aspect-video overflow-hidden rounded-t-xl">
+        {!isImgLoaded && (
+          <div className="absolute inset-0 z-2 animate-pulse bg-zinc-500/30" />
+        )}
         <img
+          onLoad={() => setIsImgLoaded(true)}
+          onError={() => setIsImgLoaded(true)}
           src={thumbnail}
           alt={title}
-          className="aspect-video w-full rounded-t-xl object-cover object-center"
+          className={`z-1 size-full object-cover object-center ${isImgLoaded ? 'opacity-100' : 'opacity-0'} transition-opacity duration-400`}
         />
       </div>
 
@@ -53,7 +65,7 @@ export default function PublicTicketCard({
               Route
             </p>
             <p className="text-lg font-semibold">
-              {from} <span style={{ color: 'var(--color-brand)' }}>→</span> {to}
+              {from} <span className="text-brand">→</span> {to}
             </p>
           </div>
         </div>
@@ -111,7 +123,8 @@ export default function PublicTicketCard({
 
         <div className="grid">
           <button
-            className={`bg-brand-light/50 h-10 flex-1 rounded-full text-sm font-medium tracking-wide`}
+            onClick={() => navigate(`/all-tickets/${_id}`)}
+            className={`pointer-fine:bg-brand-light/50 pointer-fine:hover:bg-brand-light h-10 flex-1 rounded-full text-sm font-medium tracking-wide`}
           >
             See details
           </button>
