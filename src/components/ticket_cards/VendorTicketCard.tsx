@@ -3,6 +3,7 @@ import { toast, Tooltip } from 'kitzo/react';
 import TooltipContent from '../TooltipContent';
 import { perks as localPerks } from '@/constants/perksData';
 import { format } from 'date-fns';
+import Tk from '../Tk';
 
 type VendorTicketCardPropsType = {
   ticket: Ticket;
@@ -54,10 +55,10 @@ export default function VendorTicketCard({
         >
           <h3 className="line-clamp-1 text-lg font-semibold">{title}</h3>
           <p
-            className="text-xl font-extrabold whitespace-nowrap"
+            className="text-xl font-bold whitespace-nowrap"
             style={{ color: 'var(--color-action)' }}
           >
-            ৳{price}
+            <Tk />{price}
           </p>
         </div>
 

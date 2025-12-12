@@ -30,6 +30,8 @@ export type AuthContextType = {
   handleLogin: (data: LoginFormFieldTypes) => Promise<void>;
   handleGoogleLogin: () => Promise<void>;
   updateProfileInfo: (name: string, photoFiles: File[]) => Promise<void>;
+  theme: 'light' | 'dark';
+  setTheme: Dispatch<SetStateAction<'light' | 'dark'>>;
 };
 
 //! context wrapper component
@@ -164,6 +166,8 @@ function AuthContext({ children }: { children: ReactNode }) {
     }
   }
 
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+
   return (
     <CreatedAuthContext.Provider
       value={{
@@ -174,6 +178,8 @@ function AuthContext({ children }: { children: ReactNode }) {
         handleLogin,
         handleGoogleLogin,
         updateProfileInfo,
+        theme,
+        setTheme,
       }}
     >
       {children}

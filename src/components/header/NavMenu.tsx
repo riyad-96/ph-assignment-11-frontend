@@ -48,6 +48,10 @@ export default function NavMenu() {
     return route;
   }
 
+  const [imgState, setImgState] = useState<'loading' | 'loaded' | 'failed'>(
+    'loading',
+  );
+
   return (
     <nav className="flex items-center gap-1">
       <div className="flex items-center gap-0.5 max-sm:hidden">
@@ -81,21 +85,23 @@ export default function NavMenu() {
           )}
         </NavLink>
 
-        <NavLink
-          className={({ isActive }) =>
-            `rounded-full px-4 py-2 text-sm tracking-wider ${isActive ? 'bg-brand text-white' : 'hover:bg-brand-light'}`
-          }
-          end
-          to={getRoute('/dashboard')}
-        >
-          {({ isActive }) => (
-            <span
-              className={`${isActive ? 'drop-shadow-xs drop-shadow-black/80' : ''}`}
-            >
-              Dashboard
-            </span>
-          )}
-        </NavLink>
+        {user && (
+          <NavLink
+            className={({ isActive }) =>
+              `rounded-full px-4 py-2 text-sm tracking-wider ${isActive ? 'bg-brand text-white' : 'hover:bg-brand-light'}`
+            }
+            end
+            to={getRoute('/dashboard')}
+          >
+            {({ isActive }) => (
+              <span
+                className={`${isActive ? 'drop-shadow-xs drop-shadow-black/80' : ''}`}
+              >
+                Dashboard
+              </span>
+            )}
+          </NavLink>
+        )}
         {!user && (
           <>
             <Link
@@ -117,11 +123,20 @@ export default function NavMenu() {
           <div className="relative">
             <button
               onClick={() => setIsDropdownShowing((prev) => !prev)}
-              className="dropdown-open-btn absolute inset-0 rounded-full"
+              className="dropdown-open-btn absolute z-2 inset-0 rounded-full"
             ></button>
-            <div className="shadow-xs size-10 overflow-hidden rounded-full">
+            <div className="relative size-10 overflow-hidden rounded-full shadow-xs">
+              {imgState === 'loading' && (
+                <div className="absolute inset-0 z-1 animate-pulse bg-zinc-500/30"></div>
+              )}
+              {imgState === 'failed' && (
+                <div className="absolute inset-0 z-1 bg-zinc-500/20"></div>
+              )}
+
               <img
-                className="size-full object-cover object-center"
+                onLoad={() => setImgState('loaded')}
+                onError={() => setImgState('failed')}
+                className={`size-full object-cover object-center ${imgState === 'loaded' ? 'opacity-100' : 'opacity-0'}`}
                 src={user?.photoURL}
                 alt={`${user?.name} profile image`}
               />
@@ -279,24 +294,26 @@ export default function NavMenu() {
                     )}
                   </NavLink>
 
-                  <NavLink
-                    onClick={() =>
-                      setTimeout(() => setIsMenuShowing((prev) => !prev), 50)
-                    }
-                    className={({ isActive }) =>
-                      `px-4 py-2 text-sm tracking-wider ${isActive ? 'bg-brand text-white' : 'hover:bg-brand-light'}`
-                    }
-                    end
-                    to={getRoute('/dashboard')}
-                  >
-                    {({ isActive }) => (
-                      <span
-                        className={`${isActive ? 'drop-shadow-xs drop-shadow-black/80' : ''}`}
-                      >
-                        Dashboard
-                      </span>
-                    )}
-                  </NavLink>
+                  {user && (
+                    <NavLink
+                      onClick={() =>
+                        setTimeout(() => setIsMenuShowing((prev) => !prev), 50)
+                      }
+                      className={({ isActive }) =>
+                        `px-4 py-2 text-sm tracking-wider ${isActive ? 'bg-brand text-white' : 'hover:bg-brand-light'}`
+                      }
+                      end
+                      to={getRoute('/dashboard')}
+                    >
+                      {({ isActive }) => (
+                        <span
+                          className={`${isActive ? 'drop-shadow-xs drop-shadow-black/80' : ''}`}
+                        >
+                          Dashboard
+                        </span>
+                      )}
+                    </NavLink>
+                  )}
                   {user ? (
                     <>
                       <button

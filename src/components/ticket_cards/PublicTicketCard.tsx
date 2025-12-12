@@ -5,6 +5,7 @@ import { perks as localPerks } from '@/constants/perksData';
 import { format } from 'date-fns';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Tk from '../Tk';
 
 type PublicTicketCardPropsType = {
   ticket: Ticket;
@@ -52,10 +53,11 @@ export default function PublicTicketCard({
         >
           <h3 className="line-clamp-1 text-lg font-semibold">{title}</h3>
           <p
-            className="text-xl font-extrabold whitespace-nowrap"
+            className="text-xl font-bold whitespace-nowrap"
             style={{ color: 'var(--color-action)' }}
           >
-            ৳{price}
+            <Tk />
+            {price}
           </p>
         </div>
 

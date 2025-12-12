@@ -3,48 +3,44 @@
 @plugin 'daisyui';
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Light Theme (Default) */
+/* Light Theme */
 :root {
   /* BACKGROUNDS & SURFACES */
-  --color-canvas: #f8fafc; /* Main page background */
-  --color-surface: #ffffff; /* Card/Modal/Container background */
+  --color-canvas: #f8fafc;
+  --color-surface: #ffffff;
 
   /* SEMANTIC BRAND COLORS */
-  --color-brand: #2563eb; /* Royal Blue (Primary Brand) */
-  --color-brand-light: #e0f2fe; /* Sky Blue (Secondary Accent) */
-  --color-action: #f59e0b; /* Amber (CTA/Pay Now) */
+  --color-brand: #2563eb;
+  --color-brand-light: #e0f2fe;
+  --color-action: #f59e0b;
 
   /* TEXT & NEUTRALS */
-  --color-content: #1e293b; /* Dark Slate (Body text) */
-  --color-content-light: #64748b; /* A lighter slate for muted text/dividers */
+  --color-content: #1e293b;
+  --color-content-light: #64748b;
 }
 
-/* 🌙 Dark Mode Overrides (Scoping the variables to the .dark class) */
+/* 🌙 Dark Mode Overrides */
 .dark {
-  --color-canvas: #0f172a; /* Very Dark Blue/Slate */
-  --color-surface: #1e293b; /* Dark Slate (Cards) */
+  --color-canvas: #0f172a;
+  --color-surface: #1e293b;
 
-  --color-brand: #5b8ff9; /* Softer Royal Blue */
-  --color-brand-light: #2b3a55; /* Dark Slate (used as a dark accent) */
-  --color-action: #fbbf24; /* Lighter Amber/Yellow */
+  --color-brand: #5b8ff9;
+  --color-brand-light: #2b3a55;
+  --color-action: #fbbf24;
 
-  --color-content: #f8fafc; /* White/Light Gray text */
-  --color-content-light: #94a3b8; /* Muted light text */
+  --color-content: #f8fafc;
+  --color-content-light: #94a3b8;
 }
 
 @theme {
-  /* Primary Utility Groupings */
-  --color-brand: var(--color-brand); /* Creates bg-primary, text-primary */
-  --color-brand-light: var(
-    --color-brand-light
-  ); /* Creates bg-secondary, text-secondary */
-  --color-action: var(--color-action); /* Creates bg-accent, text-accent */
+  --color-brand: var(--color-brand);
+  --color-brand-light: var(--color-brand-light);
+  --color-action: var(--color-action);
 
-  /* Semantic Utility Groupings */
-  --color-canvas: var(--color-canvas); /* Creates bg-canvas */
-  --color-surface: var(--color-surface); /* Creates bg-surface */
-  --color-content: var(--color-content); /* Creates text-content */
-  --color-content-light: var(--color-content-light); /* Creates text-content */
+  --color-canvas: var(--color-canvas);
+  --color-surface: var(--color-surface);
+  --color-content: var(--color-content);
+  --color-content-light: var(--color-content-light);
 }
 
 /* Resets */

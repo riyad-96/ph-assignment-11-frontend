@@ -15,6 +15,7 @@ import { format } from 'date-fns';
 import Table from '@/components/Table';
 import TransportIcon from '@/components/TransportIcon';
 import { formatPrice } from '@/helpers/helper';
+import Tk from '@/components/Tk';
 
 type TicketStatusUpdatePayload = {
   ticket_title: string;
@@ -140,7 +141,7 @@ export default function ManageTickets() {
                     </div>
                   </Table.td>
 
-                  <Table.td>৳ {formatPrice(t.price)}</Table.td>
+                  <Table.td><Tk /> {formatPrice(t.price)}</Table.td>
 
                   <Table.td>
                     <div className="">

@@ -2,6 +2,7 @@ import CancelButton from '@/components/buttons/CancelButton';
 import InputField from '@/components/form/InputField';
 import TicketDetailsPageLoadingScreen from '@/components/loading_and_errors/TicketDetailsPageLoadingScreen';
 import Modal from '@/components/modal/Modal';
+import Tk from '@/components/Tk';
 import TransportIcon from '@/components/TransportIcon';
 import { serverAPI } from '@/helpers/server';
 import type { Ticket } from '@/pages/vendor/types';
@@ -153,7 +154,7 @@ export default function TicketDetails() {
                       </p>
                       <div className="flex items-baseline gap-1">
                         <span className="text-content text-4xl font-bold">
-                          <strong>৳</strong>
+                          <Tk />
                           {t.price}
                         </span>
                         <span className="text-content-light tracking-wide">
