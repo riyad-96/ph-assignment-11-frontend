@@ -1,23 +1,16 @@
 import type { Ticket } from '@/pages/vendor/types';
-import { toast, Tooltip } from 'kitzo/react';
+import { Tooltip } from 'kitzo/react';
 import TooltipContent from '../TooltipContent';
 import { perks as localPerks } from '@/constants/perksData';
 import { format } from 'date-fns';
 
-type VendorTicketCardPropsType = {
+type PublicTicketCardPropsType = {
   ticket: Ticket;
-  actionUpdate: (ticketDetails: Ticket) => void;
-  actionDelete: (ticketDetails: {
-    ticketTitle: string;
-    ticketId: string;
-  }) => void;
 };
 
-export default function VendorTicketCard({
+export default function PublicTicketCard({
   ticket,
-  actionUpdate,
-  actionDelete,
-}: VendorTicketCardPropsType) {
+}: PublicTicketCardPropsType) {
   const {
     thumbnail,
     title,
@@ -27,7 +20,6 @@ export default function VendorTicketCard({
     perks,
     price,
     quantity,
-    status,
     transport,
   } = ticket;
 
@@ -39,12 +31,6 @@ export default function VendorTicketCard({
           alt={title}
           className="aspect-video w-full rounded-t-xl object-cover object-center"
         />
-
-        <span
-          className={`absolute top-3 right-3 rounded-full px-3 py-1 text-xs font-semibold shadow-md ${status === 'pending' ? 'bg-amber-400' : status === 'approved' ? 'bg-emerald-400' : 'bg-red-500'}`}
-        >
-          {status.toUpperCase()}
-        </span>
       </div>
 
       <div className="space-y-4 p-4">
@@ -98,7 +84,7 @@ export default function VendorTicketCard({
 
         <div className="">
           <p className="mb-2 text-sm font-medium">Perks:</p>
-          <div className="flex flex-wrap items-start gap-2 md:min-h-14">
+          <div className="flex flex-wrap items-start gap-2 sm:min-h-14">
             {perks.map((perk) => (
               <Tooltip
                 key={perk}
@@ -123,32 +109,11 @@ export default function VendorTicketCard({
           </div>
         </div>
 
-        <div className="flex gap-2">
+        <div className="grid">
           <button
-            onClick={() => {
-              if (ticket.status === 'rejected')
-                return toast.error(
-                  'Ticket was rejected and cannot be updated.',
-                  { duration: 4000 },
-                );
-              actionUpdate(ticket);
-            }}
-            className={`bg-brand-light/50 h-10 flex-1 rounded-full text-sm font-medium tracking-wide ${ticket.status === 'rejected' ? 'disabled cursor-not-allowed opacity-50' : 'hover:bg-brand-light'}`}
+            className={`bg-brand-light/50 h-10 flex-1 rounded-full text-sm font-medium tracking-wide`}
           >
-            Update
-          </button>
-          <button
-            onClick={() => {
-              if (ticket.status === 'rejected')
-                return toast.error(
-                  'Ticket was rejected and cannot be deleted.',
-                  { duration: 4000 },
-                );
-              actionDelete({ ticketTitle: title, ticketId: ticket._id });
-            }}
-            className={`bg-brand-light/50 h-10 flex-1 rounded-full text-sm font-medium tracking-wide ${ticket.status === 'rejected' ? 'disabled cursor-not-allowed opacity-50' : 'hover:bg-red-500/30'}`}
-          >
-            Delete
+            See details
           </button>
         </div>
       </div>
