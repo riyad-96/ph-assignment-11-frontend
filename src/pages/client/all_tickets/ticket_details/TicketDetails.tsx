@@ -5,16 +5,25 @@ import Modal from '@/components/modal/Modal';
 import Tk from '@/components/Tk';
 import TransportIcon from '@/components/TransportIcon';
 import { serverAPI } from '@/helpers/server';
+import { useAuthContext } from '@/hooks/useAuthContext';
 import type { Ticket } from '@/pages/vendor/types';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { format, intervalToDuration, isBefore, type Duration } from 'date-fns';
+import { toast } from 'kitzo/react';
 import { AnimatePresence } from 'motion/react';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
+type TicketBookingType = {
+  id: string | undefined;
+  quantity: string | number | undefined;
+};
+
 export default function TicketDetails() {
+  const { user } = useAuthContext();
   const server = serverAPI(true);
   const { id } = useParams();
+  const queryClient = useQueryClient();
 
   const {
     data: t,
@@ -24,7 +33,6 @@ export default function TicketDetails() {
     queryKey: ['ticket', id],
     queryFn: async () => {
       const response = await server.get(`/user/ticket/${id}`);
-      await new Promise((res) => setTimeout(res, 2000));
       return response.data;
     },
   });
@@ -57,7 +65,31 @@ export default function TicketDetails() {
 
   // submit booking
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
-  const [ticketQuantity, setTicketQuantity] = useState<number | undefined>(1);
+  const [ticketQuantity, setTicketQuantity] = useState<
+    number | string | undefined
+  >(1);
+
+  const { mutate: bookTicket, isPending: isTicketBooking } = useMutation({
+    mutationFn: async (data: TicketBookingType) => {
+      const response = await server.post('/user/book-ticket', {
+        quantity: data.quantity,
+        ticket_id: data.id,
+      });
+
+      return response.data;
+    },
+    onSuccess: () => {
+      toast.success('Ticket added to your booking list');
+      queryClient.invalidateQueries({
+        queryKey: ['ticket', id],
+      });
+      setTicketQuantity(1);
+      setIsBookingModalOpen(false);
+    },
+    onError: () => {
+      toast.error('Error while booking, please try again');
+    },
+  });
 
   return (
     <div className="px-2 md:px-3">
@@ -208,12 +240,34 @@ export default function TicketDetails() {
                       {/* Main Action Button */}
                       <button
                         onClick={() => {
-                          if (isExpired) return;
+                          if (
+                            user?.role === 'admin' ||
+                            user?.role === 'vendor'
+                          ) {
+                            toast.error(
+                              `User with '${user?.role}' role cannot buy tickets`,
+                            );
+                            return;
+                          }
+                          if (Number(t.quantity) < 1) {
+                            toast.error('This ticket is currently sold out');
+                            return;
+                          }
+                          if (isExpired) {
+                            toast.error('Departure time expired');
+                            return;
+                          }
+                          if (isTicketBooking) return;
+
                           setIsBookingModalOpen(true);
                         }}
-                        className={`bg-brand w-full rounded-full py-4 font-medium tracking-wider text-white shadow text-shadow-xs ${isExpired ? 'opacity-0' : 'opacity-100'}`}
+                        className={`bg-brand w-full rounded-full py-4 font-medium tracking-wider text-white shadow text-shadow-xs ${isExpired || Number(t.quantity) < 1 ? 'disabled' : 'opacity-100'}`}
                       >
-                        Book Now
+                        {isTicketBooking ? (
+                          <span className="loading loading-spinner loading-xs"></span>
+                        ) : (
+                          <span className="text-shadow-xs">Book now</span>
+                        )}
                       </button>
                       <p className="text-content-light text-center text-xs tracking-wide">
                         No extra taxes or hidden fees
@@ -229,10 +283,10 @@ export default function TicketDetails() {
                   V
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-content-light">
+                  <p className="text-content-light text-sm font-medium">
                     Provided by
                   </p>
-                  <p className="font-medium tracking-wide text-content">
+                  <p className="text-content font-medium tracking-wide">
                     {/* vendor_name */} Green Line Travels
                   </p>
                 </div>
@@ -269,8 +323,9 @@ export default function TicketDetails() {
                       setTicketQuantity((prev) => {
                         const value = Number(e.target.value);
                         const maxQuantity = Number(t.quantity);
+                        if (!e.target.value) return '';
+                        if (value < 0) return '';
                         if (value > maxQuantity) return prev;
-                        if (value < 1) return 1;
                         return value;
                       })
                     }
@@ -287,8 +342,26 @@ export default function TicketDetails() {
                     closeFn={() => setIsBookingModalOpen(false)}
                     className="font-semibold tracking-wide"
                   />
-                  <button className="bg-brand rounded-full py-3 font-medium tracking-wide text-white shadow">
-                    <span className="text-shadow-xs">Confirm</span>
+                  <button
+                    onClick={() => {
+                      const quantity = Math.ceil(
+                        parseFloat(ticketQuantity as string),
+                      );
+                      if (quantity < 1 || !ticketQuantity)
+                        return toast.error('Please book at least 1 ticket');
+                      if (isTicketBooking) return;
+                      bookTicket({
+                        id: id,
+                        quantity: ticketQuantity,
+                      });
+                    }}
+                    className="bg-brand rounded-full py-3 font-medium tracking-wide text-white shadow"
+                  >
+                    {isTicketBooking ? (
+                      <span className="loading loading-spinner loading-xs"></span>
+                    ) : (
+                      <span className="text-shadow-xs">Confirm</span>
+                    )}
                   </button>
                 </div>
               </div>

@@ -116,7 +116,7 @@ export default function AdvertiseTickets() {
                     <input
                       id={t._id}
                       type="checkbox"
-                      className={`checkbox checkbox-sm accent-brand ${ticketsOnAd.length >= 6 && !ticketsOnAd.includes(t._id) ? 'cursor-not-allowed opacity-20' : 'opacity-100'}`}
+                      className={`checkbox checkbox-sm dark:checkbox-info accent-brand ${ticketsOnAd.length >= 6 && !ticketsOnAd.includes(t._id) ? 'cursor-not-allowed opacity-20' : 'opacity-100'}`}
                       onChange={() => {
                         if (
                           ticketsOnAd.length >= 6 &&
