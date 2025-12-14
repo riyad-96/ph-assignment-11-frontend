@@ -35,17 +35,25 @@ export default function PaymentSuccess() {
 
   return (
     <div className="px-3 py-12 pt-3">
-      {paymentLoading && <div>Loading...</div>}
+      {paymentLoading && (
+        <div className="loading loading-spinner loading-xl py-28"></div>
+      )}
       {paymentError && <LoadingErrorSection />}
       {paymentResponse &&
         (paymentResponse.code === 'TRANSACTION_EXISTS' ||
           paymentResponse.code === 'TICKET_PAID') && (
-          <div>
+          <div className="space-y-2" >
             <h2 className="text-xl font-medium">Already Paid</h2>
             <p>
               You have already paid for this booking (
               <strong>{paymentResponse.data?.ticket_title}</strong>)
             </p>
+            <button
+              className="bg-brand w-fit rounded-full px-6 py-2 text-white"
+              onClick={() => navigate('/dashboard/transactions')}
+            >
+              Transaction history
+            </button>
           </div>
         )}
       {!paymentLoading &&
@@ -66,10 +74,12 @@ export default function PaymentSuccess() {
                 Ticket Title
               </p>
               <h2 className="text-content text-lg font-semibold">
-                {paymentResponse.data?.ticket_title} ({paymentResponse.data?.quantity}{' '}
-                Tickets)
+                {paymentResponse.data?.ticket_title} (
+                {paymentResponse.data?.quantity} Tickets)
               </h2>
-              <p className="font-medium text-sm">Total: {paymentResponse.data?.total_price}</p>
+              <p className="text-sm font-medium">
+                Total: {paymentResponse.data?.total_price}
+              </p>
             </div>
 
             <div className="mt-8 grid gap-2">
