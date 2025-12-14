@@ -163,7 +163,7 @@ export default function TicketDetails() {
                   {/* Perks Section */}
                   <div className="border-content-light/10 bg-surface rounded-2xl border p-6 shadow-sm">
                     <h3 className="mb-4 text-lg font-medium">Included Perks</h3>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex min-h-[38px] flex-wrap gap-2">
                       {/* perks.map */}
                       {t.perks.map((p) => (
                         <span

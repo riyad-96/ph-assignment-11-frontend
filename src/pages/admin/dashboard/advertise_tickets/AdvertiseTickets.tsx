@@ -74,7 +74,7 @@ export default function AdvertiseTickets() {
         emptyMessage="No tickets found."
       />
 
-      {tickets && tickets.length > 0 && (
+      {!isTicketsLoading && tickets && tickets.length > 0 && (
         <Table>
           <Table.head>
             <Table.tr>

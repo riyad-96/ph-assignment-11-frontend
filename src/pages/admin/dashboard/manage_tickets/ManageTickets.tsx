@@ -74,7 +74,7 @@ export default function ManageTickets() {
         emptyMessage="No tickets found."
       />
 
-      {tickets && tickets.length > 0 && (
+      {!isTicketsLoading && tickets && tickets.length > 0 && (
         <div className="mt-8">
           <div className="mb-4 flex flex-wrap gap-2">
             <InfoPill

@@ -10,6 +10,8 @@ import ClientProfile from '@/pages/client/dashboard/ClientProfile';
 import BookedTickets from '@/pages/client/dashboard/booked_tickets/BookedTickets';
 import TransactionHistory from '@/pages/client/dashboard/transaction_history/TransactionHistory';
 import TicketDetails from '@/pages/client/all_tickets/ticket_details/TicketDetails';
+import PaymentSuccess from '@/pages/client/dashboard/PaymentSuccess';
+import PaymentCancelled from '@/pages/client/dashboard/PaymentCancelled';
 
 const clientRoutes: RouteObject = {
   path: '',
@@ -55,6 +57,14 @@ const clientRoutes: RouteObject = {
         {
           path: 'transactions',
           element: <TransactionHistory />,
+        },
+        {
+          path: 'payment-success',
+          element: <PaymentSuccess />,
+        },
+        {
+          path: 'payment-cancelled',
+          element: <PaymentCancelled />,
         },
       ],
     },

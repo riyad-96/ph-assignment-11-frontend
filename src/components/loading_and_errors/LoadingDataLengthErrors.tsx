@@ -1,3 +1,5 @@
+import LoadingErrorSection from './LoadingErrorSection';
+
 type LoadingDataLengthErrorsProps = {
   isLoading: boolean;
   error: unknown;
@@ -20,8 +22,8 @@ export default function LoadingDataLengthErrors({
   }
   if (error) {
     return (
-      <div className="text-content-light mt-30 text-center font-medium lg:text-lg">
-        Error loading data. Please try again.
+      <div className="mt-8">
+        <LoadingErrorSection />
       </div>
     );
   }

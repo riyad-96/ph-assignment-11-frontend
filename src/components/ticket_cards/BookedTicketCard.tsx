@@ -1,6 +1,6 @@
 import type { BookedTicket } from '@/pages/client/dashboard/types';
 import Tk from '../Tk';
-import { format, intervalToDuration, isBefore, type Duration } from 'date-fns';
+import { format, intervalToDuration, isPast, type Duration } from 'date-fns';
 import { formatPrice } from '@/helpers/helper';
 import BookingStatus from '../BookingStatus';
 import { useEffect, useState } from 'react';
@@ -28,7 +28,7 @@ export default function BookedTicketCard({ b }: BookedTicketCard) {
   const server = serverAPI(true);
 
   const [timeLeft, setTimeLeft] = useState<Duration | null>(null);
-  const [isExpired, setIsExpired] = useState(false);
+  const [isExpired, setIsExpired] = useState(() => isPast(departure_time));
 
   useEffect(() => {
     if (!b) return;
@@ -36,7 +36,7 @@ export default function BookedTicketCard({ b }: BookedTicketCard) {
     const timer = setInterval(() => {
       const now = new Date();
 
-      if (isBefore(b.departure_time, now)) {
+      if (isPast(b.departure_time)) {
         setIsExpired(true);
         clearInterval(timer);
         return;
@@ -55,14 +55,14 @@ export default function BookedTicketCard({ b }: BookedTicketCard) {
 
   // pay ticket price
   const { mutate: payTicketPrice, isPending: isCreating } = useMutation({
-    mutationFn: async () => {
-      const response = await server.post('/user/create-checkout-link', {
-        ticket_id: _id,
+    mutationFn: async (booking_id: string) => {
+      const response = await server.post('/user/create-checkout-session', {
+        booking_id,
       });
       return response.data;
     },
     onSuccess: (data) => {
-      console.log(data);
+      window.location.href = data.url;
     },
     onError: (err) => {
       console.error(err);
@@ -166,9 +166,9 @@ export default function BookedTicketCard({ b }: BookedTicketCard) {
 
         <div className="flex h-10 items-center justify-between">
           {isExpired ? (
-            <p className="text-content-light font-medium">Expired</p>
+            <p className="text-content-light text-sm font-medium">Expired</p>
           ) : (
-            <p className="text-sm text-content flex gap-1 font-medium ">
+            <p className="text-content flex gap-1 text-sm font-medium">
               <span>{timeLeft?.days ?? 0}d :</span>
               <span>{timeLeft?.hours ?? 0}h :</span>
               <span>{timeLeft?.minutes ?? 0}m :</span>
@@ -176,10 +176,10 @@ export default function BookedTicketCard({ b }: BookedTicketCard) {
             </p>
           )}
 
-          {status === 'accepted' && (
+          {status === 'accepted' && !isExpired && (
             <button
-              onClick={() => payTicketPrice}
-              className="bg-brand h-10 rounded-full px-4 text-sm font-medium tracking-wide text-nowrap text-white"
+              onClick={() => payTicketPrice(_id)}
+              className="bg-brand h-9 w-[85px] rounded-full text-sm font-medium tracking-wide text-nowrap text-white"
             >
               {isCreating ? (
                 <span className="loading loading-spinner loading-xs"></span>
@@ -187,6 +187,11 @@ export default function BookedTicketCard({ b }: BookedTicketCard) {
                 <span className="text-shadow-xs">Pay Now</span>
               )}
             </button>
+          )}
+          {status === 'paid' && (
+            <div className="bg-content-light text-surface rounded-full px-3 py-1 text-sm tracking-wider">
+              PAID
+            </div>
           )}
         </div>
       </div>

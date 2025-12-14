@@ -16,6 +16,8 @@ import { CheckIcon, CloseIcon } from '@/assets/Svgs';
 import { useState } from 'react';
 import { AnimatePresence } from 'motion/react';
 import QuickActionModal from '@/components/modal/QuickActionModal';
+import { isPast } from 'date-fns';
+import LoadingDataLengthErrors from '@/components/loading_and_errors/LoadingDataLengthErrors';
 
 export default function Bookings() {
   const server = serverAPI(true);
@@ -67,16 +69,13 @@ export default function Bookings() {
       <DashboardH1 text="Requested Bookings" />
 
       <div className="mt-12">
-        {isBookedTicketsLoading && <div>Loading...</div>}
-        {bookedTicketsError && <LoadingErrorSection />}
-        {!bookedTicketsError &&
-          !isBookedTicketsLoading &&
-          bookedTickets &&
-          bookedTickets.length === 0 && (
-            <div className="text-content-light text-center font-medium">
-              No requested tickets were found
-            </div>
-          )}
+        <LoadingDataLengthErrors
+          emptyMessage="No requested bookings were found"
+          dataLength={bookedTickets?.length}
+          isLoading={isBookedTicketsLoading}
+          error={bookedTicketsError}
+        />
+
         {!bookedTicketsError &&
           !isBookedTicketsLoading &&
           bookedTickets &&
@@ -134,79 +133,94 @@ export default function Bookings() {
                           </p>
                         </div>
                       </Table.td>
+
                       <Table.td>{b.title}</Table.td>
+
                       <Table.td className="text-center!">{b.quantity}</Table.td>
+
                       <Table.td className="text-center!">
                         <Tk />
                         {formatPrice(b.total_price)}
                       </Table.td>
-                      <Table.td className="text-center!">
-                        {b.status === 'paid' ? (
-                          <span className="text-xs font-medium tracking-wider text-green-900 bg-green-200 dark:bg-green-800 dark:text-green-200 px-3 py-1 rounded-full" >Paid</span>
-                        ) : (
-                          <div className="flex items-center justify-center gap-4 py-1">
-                            <Tooltip
-                              content={
-                                <TooltipContent
-                                  content={
-                                    b.status === 'accepted'
-                                      ? 'Accepted'
-                                      : 'Accept ticket'
-                                  }
-                                />
-                              }
-                              tooltipOptions={{
-                                smartHover: false,
-                              }}
-                            >
-                              <button
-                                onClick={() => {
-                                  if (isUpdatingBookedTicketStatus) return;
-                                  if (b.status === 'accepted') return;
-                                  setUpdateBookedTicketStatusPayload({
-                                    booked_ticket_id: b._id,
-                                    new_status: 'accepted',
-                                    ticket_title: b.title,
-                                  });
-                                }}
-                                className={`relative grid place-items-center ${b.status !== 'accepted' ? 'text-emerald-500' : 'text-content-light'}`}
-                              >
-                                <span className="absolute -inset-1"></span>
-                                <CheckIcon size="24" />
-                              </button>
-                            </Tooltip>
 
-                            <Tooltip
-                              content={
-                                <TooltipContent
+                      <Table.td className="text-center!">
+                        {isPast(b.departure_time) && (
+                          <span className="bg-content-light text-surface mr-1 rounded-full px-3 py-1 text-xs tracking-wider">
+                            Expired
+                          </span>
+                        )}
+                        {b.status === 'paid' ? (
+                          <span className="rounded-full bg-green-200 px-3 py-1 text-xs font-medium tracking-wider text-green-900 dark:bg-green-800 dark:text-green-200">
+                            Paid
+                          </span>
+                        ) : (
+                          <>
+                            {!isPast(b.departure_time) && (
+                              <div className="flex items-center justify-center gap-4 py-1">
+                                <Tooltip
                                   content={
-                                    b.status === 'rejected'
-                                      ? 'Rejected'
-                                      : 'Reject ticket'
+                                    <TooltipContent
+                                      content={
+                                        b.status === 'accepted'
+                                          ? 'Accepted'
+                                          : 'Accept ticket'
+                                      }
+                                    />
                                   }
-                                />
-                              }
-                              tooltipOptions={{
-                                smartHover: false,
-                              }}
-                            >
-                              <button
-                                onClick={() => {
-                                  if (isUpdatingBookedTicketStatus) return;
-                                  if (b.status === 'rejected') return;
-                                  setUpdateBookedTicketStatusPayload({
-                                    booked_ticket_id: b._id,
-                                    new_status: 'rejected',
-                                    ticket_title: b.title,
-                                  });
-                                }}
-                                className={`relative grid place-items-center ${b.status !== 'rejected' ? 'text-red-500' : 'text-content-light'}`}
-                              >
-                                <span className="absolute -inset-1"></span>
-                                <CloseIcon size="24" />
-                              </button>
-                            </Tooltip>
-                          </div>
+                                  tooltipOptions={{
+                                    smartHover: false,
+                                  }}
+                                >
+                                  <button
+                                    onClick={() => {
+                                      if (isUpdatingBookedTicketStatus) return;
+                                      if (b.status === 'accepted') return;
+                                      setUpdateBookedTicketStatusPayload({
+                                        booked_ticket_id: b._id,
+                                        new_status: 'accepted',
+                                        ticket_title: b.title,
+                                      });
+                                    }}
+                                    className={`relative grid place-items-center ${b.status !== 'accepted' ? 'text-emerald-500' : 'text-content-light'}`}
+                                  >
+                                    <span className="absolute -inset-1"></span>
+                                    <CheckIcon size="24" />
+                                  </button>
+                                </Tooltip>
+
+                                <Tooltip
+                                  content={
+                                    <TooltipContent
+                                      content={
+                                        b.status === 'rejected'
+                                          ? 'Rejected'
+                                          : 'Reject ticket'
+                                      }
+                                    />
+                                  }
+                                  tooltipOptions={{
+                                    smartHover: false,
+                                  }}
+                                >
+                                  <button
+                                    onClick={() => {
+                                      if (isUpdatingBookedTicketStatus) return;
+                                      if (b.status === 'rejected') return;
+                                      setUpdateBookedTicketStatusPayload({
+                                        booked_ticket_id: b._id,
+                                        new_status: 'rejected',
+                                        ticket_title: b.title,
+                                      });
+                                    }}
+                                    className={`relative grid place-items-center ${b.status !== 'rejected' ? 'text-red-500' : 'text-content-light'}`}
+                                  >
+                                    <span className="absolute -inset-1"></span>
+                                    <CloseIcon size="24" />
+                                  </button>
+                                </Tooltip>
+                              </div>
+                            )}
+                          </>
                         )}
                       </Table.td>
                     </Table.tr>
