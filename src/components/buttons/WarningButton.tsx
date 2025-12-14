@@ -15,7 +15,7 @@ export default function WarningButton({
         if (isProcessing) return;
         onClick();
       }}
-      className="bg-surface h-10 w-[100px] rounded-full border border-red-500 text-red-500 shadow"
+      className="bg-surface h-10 w-[100px] rounded-full border border-amber-500 text-amber-500 shadow"
     >
       {isProcessing ? (
         <span className="loading loading-spinner loading-xs"></span>

@@ -26,7 +26,6 @@ export default function AddTickets() {
   // Create ticket
   const { mutate: createTicket, isPending: isAddingTicket } = useMutation({
     mutationFn: async (data: TicketFormFieldType) => {
-      console.log(data);
       const ticketPhotoURL = await uploadImageToImgbb(data.image_files);
 
       const newTicketData = {

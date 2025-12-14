@@ -1,11 +1,12 @@
 import CancelButton from '@/components/buttons/CancelButton';
 import Modal from './Modal';
 import WarningButton from '@/components/buttons/WarningButton';
+import type { ReactNode } from 'react';
 
 type QuickActionModalPropsType = {
   closeFn: () => void;
-  title: string;
-  description: string;
+  title: ReactNode;
+  description: ReactNode;
   closeBtnText: string;
   actionBtnText: string;
   actionBtnFn: () => void;

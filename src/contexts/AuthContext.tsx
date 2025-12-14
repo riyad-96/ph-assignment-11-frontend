@@ -55,7 +55,7 @@ function AuthContext({ children }: { children: ReactNode }) {
           const response = await server.get('/auth/get');
           user = response.data;
         } catch (err) {
-          console.log(err);
+          console.error(err);
         }
       }
 

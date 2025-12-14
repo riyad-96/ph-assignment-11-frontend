@@ -6,6 +6,7 @@ import { format } from 'date-fns';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Tk from '../Tk';
+import { formatPrice } from '@/helpers/helper';
 
 type PublicTicketCardPropsType = {
   ticket: Ticket;
@@ -42,7 +43,7 @@ export default function PublicTicketCard({
           onError={() => setIsImgLoaded(true)}
           src={thumbnail}
           alt={title}
-          className={`z-1 size-full object-cover object-center ${isImgLoaded ? 'opacity-100' : 'opacity-0'} transition-opacity duration-400`}
+          className={`z-1 size-full object-cover object-center`}
         />
       </div>
 
@@ -57,7 +58,7 @@ export default function PublicTicketCard({
             style={{ color: 'var(--color-action)' }}
           >
             <Tk />
-            {price}
+            {formatPrice(price)}
           </p>
         </div>
 
@@ -92,7 +93,7 @@ export default function PublicTicketCard({
             Departure
           </p>
           <p className="font-medium">
-            {format(departure_time, 'MMM dd, hh:mm a')}
+            {format(departure_time, 'dd MMM y, hh:mm a')}
           </p>
         </div>
 

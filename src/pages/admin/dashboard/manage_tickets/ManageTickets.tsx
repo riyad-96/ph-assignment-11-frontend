@@ -141,7 +141,9 @@ export default function ManageTickets() {
                     </div>
                   </Table.td>
 
-                  <Table.td><Tk /> {formatPrice(t.price)}</Table.td>
+                  <Table.td>
+                    <Tk /> {formatPrice(t.price)}
+                  </Table.td>
 
                   <Table.td>
                     <div className="">
@@ -160,7 +162,7 @@ export default function ManageTickets() {
                         tooltipOptions={{ hideOnTouch: false }}
                         content={
                           <TooltipContent
-                            content={`Updated on: ${format(t.updated_at, 'hh:mm a, dd MMM yyyy')}`}
+                            content={`Updated on: ${format(t.updated_at, 'dd MMM y, hh:mm a')}`}
                           />
                         }
                       >
@@ -179,7 +181,9 @@ export default function ManageTickets() {
                         content={
                           <TooltipContent
                             content={
-                              t.status === 'approved' ? 'Approved' : 'Approve ticket'
+                              t.status === 'approved'
+                                ? 'Approved'
+                                : 'Approve ticket'
                             }
                           />
                         }

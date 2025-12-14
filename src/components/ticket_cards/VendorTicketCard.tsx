@@ -4,6 +4,7 @@ import TooltipContent from '../TooltipContent';
 import { perks as localPerks } from '@/constants/perksData';
 import { format } from 'date-fns';
 import Tk from '../Tk';
+import { formatPrice } from '@/helpers/helper';
 
 type VendorTicketCardPropsType = {
   ticket: Ticket;
@@ -58,7 +59,7 @@ export default function VendorTicketCard({
             className="text-xl font-bold whitespace-nowrap"
             style={{ color: 'var(--color-action)' }}
           >
-            <Tk />{price}
+            <Tk />{formatPrice(price)}
           </p>
         </div>
 
