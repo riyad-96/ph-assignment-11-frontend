@@ -1,6 +1,5 @@
 import DashboardH1 from '@/components/DashboardH1';
 import LoadingDataLengthErrors from '@/components/loading_and_errors/LoadingDataLengthErrors';
-import LoadingErrorSection from '@/components/loading_and_errors/LoadingErrorSection';
 import Table from '@/components/Table';
 import Tk from '@/components/Tk';
 import TooltipContent from '@/components/TooltipContent';
@@ -30,7 +29,6 @@ export default function TransactionHistory() {
     queryKey: ['transaction-history'],
     queryFn: async () => {
       const response = await server.get('/user/transaction-history');
-      console.log(response.data);
       return response.data;
     },
   });

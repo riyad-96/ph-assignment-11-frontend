@@ -43,7 +43,7 @@ export default function PublicTicketCard({
           onError={() => setIsImgLoaded(true)}
           src={thumbnail}
           alt={title}
-          className={`z-1 size-full object-cover object-center`}
+          className={`z-1 size-full object-cover object-center ${isImgLoaded ? 'opacity-100' : 'opacity-0'}`}
         />
       </div>
 

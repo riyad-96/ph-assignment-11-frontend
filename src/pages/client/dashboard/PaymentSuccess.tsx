@@ -29,7 +29,6 @@ export default function PaymentSuccess() {
       const response = await server.post('/user/payment-success', {
         session_id,
       });
-      console.log(response.data);
       return response.data;
     },
   });
