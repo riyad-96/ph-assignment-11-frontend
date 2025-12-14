@@ -36,13 +36,16 @@ export default function PaymentSuccess() {
   return (
     <div className="px-3 py-12 pt-3">
       {paymentLoading && (
-        <div className="loading loading-spinner loading-xl py-28"></div>
+        <div className="text-center">
+          <div className="loading loading-spinner loading-xl py-28"></div>
+        </div>
       )}
       {paymentError && <LoadingErrorSection />}
+
       {paymentResponse &&
         (paymentResponse.code === 'TRANSACTION_EXISTS' ||
           paymentResponse.code === 'TICKET_PAID') && (
-          <div className="space-y-2" >
+          <div className="space-y-2">
             <h2 className="text-xl font-medium">Already Paid</h2>
             <p>
               You have already paid for this booking (
