@@ -11,6 +11,7 @@ import Modal from '@/components/modal/Modal';
 import { useAuthContext } from '@/hooks/useAuthContext';
 import InfoPill from '@/components/InfoPill';
 import LoadingDataLengthErrors from '@/components/loading_and_errors/LoadingDataLengthErrors';
+import { ProfilePlaceholderSvg } from '@/assets/Svgs';
 
 type ChangeRolePropsType = {
   _id: string;
@@ -290,6 +291,10 @@ function TableRow({
     ignoredSelectors: [`.role-change-menu-open-btn-${i}`],
   });
 
+  const [imgLoadingState, setImgLoadingState] = useState<
+    'loading' | 'loaded' | 'failed'
+  >('loading');
+
   return (
     <tr
       key={_id}
@@ -297,10 +302,20 @@ function TableRow({
     >
       <td className="border-brand-light relative overflow-hidden border-t py-2">
         <div className="flex items-center gap-3 px-4">
-          <span>{i + 1}.</span>
-          <div className="size-8 overflow-hidden rounded-full shadow-xs">
+          <span className="min-w-5">{i + 1}.</span>
+          <div className="relative size-8 overflow-hidden rounded-full shadow-xs">
+            {imgLoadingState === 'loading' && (
+              <div className="bg-content/20 absolute inset-0 animate-pulse"></div>
+            )}
+            {imgLoadingState === 'failed' && (
+              <div className="text-content absolute inset-0 opacity-90">
+                <ProfilePlaceholderSvg className="size-full object-cover object-center" />
+              </div>
+            )}
             <img
-              className="size-full object-cover object-center"
+              onLoad={() => setImgLoadingState('loaded')}
+              onError={() => setImgLoadingState('failed')}
+              className={`size-full object-cover object-center ${imgLoadingState === 'failed' || imgLoadingState === 'loading' ? 'hidden' : ''}`}
               src={photoURL}
               alt={`${name} profile image`}
             />
@@ -368,7 +383,7 @@ function TableRow({
               {isMenuOpen && (
                 <motion.div
                   ref={menuRef}
-                  className="bg-surface text-nowrap divide-brand-light absolute bottom-0 left-0 grid max-w-fit origin-bottom-left divide-y overflow-hidden rounded-md text-sm shadow-md"
+                  className="bg-surface divide-brand-light absolute bottom-0 left-0 grid max-w-fit origin-bottom-left divide-y overflow-hidden rounded-md text-sm text-nowrap shadow-md"
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.8 }}
@@ -479,17 +494,23 @@ function TableRow({
       <td className="border-brand-light border-t">
         <div className="grid size-full place-items-center">
           {role === 'vendor' && (
-            <button
-              onClick={() => {
-                if (updatingIsFraud) return;
-                updateIsFraud({ id: _id, isFraud: !isFraud });
-              }}
-              className={`group relative h-5 w-10 rounded-full outline-2 transition-colors ${isFraud ? 'bg-red-500 outline-red-500' : 'bg-brand-light outline-brand-light'}`}
-            >
-              <span
-                className={`absolute top-0 left-0 z-1 h-full w-1/2 rounded-full bg-white transition-transform group-active:scale-90 ${isFraud ? 'translate-x-1/1' : 'translate-x-0'}`}
-              ></span>
-            </button>
+            <>
+              {updatingIsFraud ? (
+                <span className="loading loading-spinner loading-sm opacity-70"></span>
+              ) : (
+                <button
+                  onClick={() => {
+                    if (updatingIsFraud) return;
+                    updateIsFraud({ id: _id, isFraud: !isFraud });
+                  }}
+                  className={`group relative h-5 w-10 rounded-full outline-2 transition-colors ${isFraud ? 'bg-red-500 outline-red-500' : 'bg-brand-light outline-brand-light'}`}
+                >
+                  <span
+                    className={`absolute top-0 left-0 z-1 h-full w-1/2 rounded-full bg-white transition-transform group-active:scale-90 ${isFraud ? 'translate-x-1/1' : 'translate-x-0'}`}
+                  ></span>
+                </button>
+              )}
+            </>
           )}
         </div>
       </td>

@@ -276,21 +276,6 @@ export default function TicketDetails() {
                   </div>
                 </aside>
               </div>
-
-              {/* Vendor Info */}
-              <div className="bg-content-light/10 border-content-light/10 mt-12 flex items-center gap-4 rounded-2xl border p-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-600 font-bold text-white">
-                  V
-                </div>
-                <div>
-                  <p className="text-content-light text-sm font-medium">
-                    Provided by
-                  </p>
-                  <p className="text-content font-medium tracking-wide">
-                    {/* vendor_name */} Green Line Travels
-                  </p>
-                </div>
-              </div>
             </div>
           </>
         )}
