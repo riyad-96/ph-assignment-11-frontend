@@ -99,7 +99,7 @@ export default function PublicTicketCard({
 
         <div className="">
           <p className="mb-2 text-sm font-medium">Perks:</p>
-          <div className="flex flex-wrap items-start gap-2 sm:min-h-14">
+          <div className="flex flex-wrap items-start max-lg:max-w-[340px] gap-2 sm:min-h-14">
             {perks.map((perk) => (
               <Tooltip
                 key={perk}

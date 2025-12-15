@@ -5,9 +5,12 @@ import StraightAnglePieChart from './charts/PieChart';
 import KPIDisplay from './KPIDisplay';
 import type { ServerRevenueDataType } from '../../types';
 import LoadingErrorSection from '@/components/loading_and_errors/LoadingErrorSection';
+import { useAuthContext } from '@/hooks/useAuthContext';
+import AccountRestrictedErrorBox from '@/components/AccountRestrictedErrorBox';
 
 export default function RevenueOverview() {
   const server = serverAPI(true);
+  const { user } = useAuthContext();
 
   const {
     data: revenue,
@@ -20,58 +23,69 @@ export default function RevenueOverview() {
 
       return response.data;
     },
+    enabled: !user?.isFraud,
   });
 
   return (
     <div className="px-3">
       <DashboardH1 text="Revenue Overview" />
 
-      {isRevenueLoading && (
-        <div className="text-content-light mt-30 text-center">
-          <span className="loading loading-spinner loading-lg"></span>
-        </div>
-      )}
-      {revenueError && <LoadingErrorSection />}
-      {!isRevenueLoading &&
-        !revenueError &&
-        revenue &&
-        revenue.kpi_data_raw.total_tickets === 0 && (
-          <div className="text-content-light mt-30 text-center font-medium lg:text-lg">
-            You have not added any tickets yet.
-          </div>
-        )}
+      {user?.isFraud ? (
+        <AccountRestrictedErrorBox />
+      ) : (
+        <>
+          {isRevenueLoading && (
+            <div className="text-content-light mt-30 text-center">
+              <span className="loading loading-spinner loading-lg"></span>
+            </div>
+          )}
+          {revenueError && (
+            <div className="mt-8">
+              <LoadingErrorSection />
+            </div>
+          )}
+          {!isRevenueLoading &&
+            !revenueError &&
+            revenue &&
+            revenue.kpi_data_raw.total_tickets === 0 && (
+              <div className="text-content-light mt-30 text-center font-medium lg:text-lg">
+                You have not added any tickets yet.
+              </div>
+            )}
 
-      {!isRevenueLoading &&
-        !revenueError &&
-        revenue &&
-        revenue.kpi_data_raw.total_tickets > 0 && (
-          <div className="mt-8">
-            <KPIDisplay data={revenue?.kpi_data} />
+          {!isRevenueLoading &&
+            !revenueError &&
+            revenue &&
+            revenue.kpi_data_raw.total_tickets > 0 && (
+              <div className="mt-8">
+                <KPIDisplay data={revenue?.kpi_data} />
 
-            <div className="">
-              <div className="bg-surface rounded-xl p-4 shadow">
-                <h3 className="text-content mb-4 text-xl font-semibold">
-                  Total Sales vs. Inventory
-                </h3>
+                <div className="">
+                  <div className="bg-surface rounded-xl p-4 shadow">
+                    <h3 className="text-content mb-4 text-xl font-semibold">
+                      Total Sales vs. Inventory
+                    </h3>
 
-                <div className="text-content-light flex h-80 w-full items-center justify-center rounded-lg border border-dashed">
-                  <StraightAnglePieChart
-                    data={[
-                      {
-                        name: 'Total Tickets',
-                        value: revenue.kpi_data_raw.total_tickets,
-                      },
-                      {
-                        name: 'Sold Tickets',
-                        value: revenue.kpi_data_raw.total_sold_tickets,
-                      },
-                    ]}
-                  />
+                    <div className="text-content-light flex h-80 w-full items-center justify-center rounded-lg border border-dashed">
+                      <StraightAnglePieChart
+                        data={[
+                          {
+                            name: 'Total Tickets',
+                            value: revenue.kpi_data_raw.total_tickets,
+                          },
+                          {
+                            name: 'Sold Tickets',
+                            value: revenue.kpi_data_raw.total_sold_tickets,
+                          },
+                        ]}
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
-        )}
+            )}
+        </>
+      )}
     </div>
   );
 }

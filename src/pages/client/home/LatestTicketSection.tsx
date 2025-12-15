@@ -3,6 +3,7 @@ import TicketSectionLoadingScreen from '@/components/loading_and_errors/TicketSe
 import PublicTicketCard from '@/components/ticket_cards/PublicTicketCard';
 import type { Ticket } from '@/pages/vendor/types';
 import type { AxiosError } from 'axios';
+import NoOffersPlaceholder from './NoOffersPlaceholder';
 
 type LatestTicketSectionPropsType = {
   regularTickets: Ticket[] | undefined;
@@ -29,6 +30,10 @@ export default function LatestTicketSection({
       <div className="mt-10">
         {isLoading && <TicketSectionLoadingScreen cardCount={3} />}
         {error && <LoadingErrorSection />}
+
+        {!error && regularTickets && regularTickets.length === 0 && (
+          <NoOffersPlaceholder />
+        )}
 
         {!error && regularTickets && regularTickets.length > 0 && (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">

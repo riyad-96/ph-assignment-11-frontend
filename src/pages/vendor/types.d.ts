@@ -29,6 +29,12 @@ export type Ticket = {
   isOnAd: boolean;
 };
 
+export type FilteredTicketsResponse = {
+  data: Ticket[];
+  totalTickets: number;
+  currentPage: number
+}
+
 export type TicketDeletePayloadType = {
   ticketTitle: string;
   ticketId: string;

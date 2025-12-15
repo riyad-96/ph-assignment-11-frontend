@@ -6,7 +6,7 @@ type UseDropdownClosePropsType = {
   ignoredSelectors: string[];
 };
 
-export default function useCloseModal({
+export default function useClosePopup({
   isOpen,
   onClose,
   ignoredSelectors = [],
