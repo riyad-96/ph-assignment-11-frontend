@@ -30,8 +30,8 @@ export type AuthContextType = {
   handleLogin: (data: LoginFormFieldTypes) => Promise<void>;
   handleGoogleLogin: () => Promise<void>;
   updateProfileInfo: (name: string, photoFiles: File[]) => Promise<void>;
-  theme: 'light' | 'dark';
-  setTheme: Dispatch<SetStateAction<'light' | 'dark'>>;
+  theme: string;
+  setTheme: Dispatch<SetStateAction<string>>;
 };
 
 //! context wrapper component
@@ -166,7 +166,28 @@ function AuthContext({ children }: { children: ReactNode }) {
     }
   }
 
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const [theme, setTheme] = useState(() => {
+    const savedTheme = localStorage.getItem('theme');
+    const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    return savedTheme || (isDark ? 'dark' : 'light');
+  });
+
+  useEffect(() => {
+    function updateTheme() {
+      if (localStorage.getItem('theme')) return;
+      const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      setTheme(isDark ? 'dark' : 'light');
+    }
+
+    window
+      .matchMedia('(prefers-color-scheme: dark)')
+      .addEventListener('change', updateTheme);
+    return () => {
+      window
+        .matchMedia('(prefers-color-scheme: dark)')
+        .removeEventListener('change', updateTheme);
+    };
+  }, []);
 
   return (
     <CreatedAuthContext.Provider

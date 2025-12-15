@@ -27,7 +27,7 @@ export default function LatestTicketSection({
       </div>
 
       <div className="mt-10">
-        {isLoading && <TicketSectionLoadingScreen cardCount={9} />}
+        {isLoading && <TicketSectionLoadingScreen cardCount={3} />}
         {error && <LoadingErrorSection />}
 
         {!error && regularTickets && regularTickets.length > 0 && (

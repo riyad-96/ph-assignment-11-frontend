@@ -162,7 +162,7 @@ export default function BookedTicketCard({ b }: BookedTicketCard) {
           </div>
         </div>
 
-        <hr className="my-5 border-gray-100" />
+        <hr className="my-5 border-gray-100 dark:border-content-light/20" />
 
         <div className="flex h-10 items-center justify-between">
           {isExpired ? (

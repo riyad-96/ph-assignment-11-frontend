@@ -1,25 +1,24 @@
 import { useAuthContext } from '@/hooks/useAuthContext';
 import { motion, AnimatePresence } from 'motion/react';
-// import { useState } from 'react';
 import { FiMoon } from 'react-icons/fi';
 import { LuSun } from 'react-icons/lu';
 
-// type ThemeTogglerPropsType = {
-//   isDark?: boolean;
-//   onClick?: () => void;
-// };
-
 export default function ThemeToggler() {
   const { theme, setTheme } = useAuthContext();
+
+  function changeTheme() {
+    localStorage.setItem('theme', theme === 'light' ? 'dark' : 'light');
+    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
+  }
 
   return (
     <button
       type="button"
       className="bg-brand-light border-brand/10 h-[25px] w-[45px] rounded-full border p-0.5 dark:border-slate-600 dark:text-blue-500"
-      onClick={() => setTheme((prev) => (prev === 'light' ? 'dark' : 'light'))}
+      onClick={changeTheme}
     >
       <div
-        className={`text-content relative grid h-full w-1/2 place-items-center overflow-hidden rounded-full bg-surface transition-transform duration-300 ${theme === 'dark' ? 'translate-x-1/1' : 'translate-x-0'}`}
+        className={`text-content bg-surface relative grid h-full w-1/2 place-items-center overflow-hidden rounded-full transition-transform duration-300 ${theme === 'dark' ? 'translate-x-1/1' : 'translate-x-0'}`}
       >
         <AnimatePresence>
           {theme === 'light' && (
