@@ -51,3 +51,24 @@ export type BookedTicket = {
   created_at: string | number | Date;
   status: 'pending' | 'accepted' | 'rejected' | 'paid';
 };
+
+export type PieChartDataType = {
+  name: string;
+  value: number;
+};
+
+export type KPIData = { label: string; value: number };
+
+export type KPIDataRaw = {
+  total_sell: number;
+  total_tickets: number;
+  total_sold_tickets: number;
+  unsold_tickets: number;
+  sales_percentage: number;
+  average_ticket_price: number;
+};
+
+export type ServerRevenueDataType = {
+  kpi_data_raw: KPIDataRaw;
+  kpi_data: KPIData[];
+}

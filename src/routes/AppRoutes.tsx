@@ -6,6 +6,7 @@ import adminRoutes from './AdminRoutes';
 import clientRoutes from './ClientRoutes';
 import vendorRoutes from './VendorRoutes';
 import authRoutes from './AuthRoutes';
+import PageNotFound from '@/pages/PageNotFound';
 
 const router = createBrowserRouter([
   {
@@ -16,6 +17,7 @@ const router = createBrowserRouter([
       </AuthContext>
     ),
     children: [clientRoutes, vendorRoutes, adminRoutes, authRoutes],
+    errorElement: <PageNotFound />
   },
 ]);
 

@@ -15,11 +15,14 @@ import uploadImageToImgbb from '@/helpers/imageUpload';
 import TicketUpdateModal from './TicketUpdateModal';
 import TicketDeleteModal from './TicketDeleteModal';
 import LoadingDataLengthErrors from '@/components/loading_and_errors/LoadingDataLengthErrors';
+import AccountRestrictedErrorBox from '@/components/AccountRestrictedErrorBox';
+import { useAuthContext } from '@/hooks/useAuthContext';
 
 const server = serverAPI(true);
 
 export default function MyTickets() {
   const queryClient = useQueryClient();
+  const { user } = useAuthContext();
 
   const {
     data: tickets,
@@ -31,6 +34,7 @@ export default function MyTickets() {
       const response = await server.get('/vendor/tickets');
       return response.data;
     },
+    enabled: !user?.isFraud,
   });
 
   // update ticket info
@@ -102,55 +106,64 @@ export default function MyTickets() {
     <div className="px-3 pb-16">
       <DashboardH1 text="My Tickets" />
 
-      <LoadingDataLengthErrors
-        isLoading={isTicketsLoading}
-        error={ticketError}
-        dataLength={tickets?.length}
-        emptyMessage="You have not created any tickets yet."
-      />
+      {user?.isFraud ? (
+        <AccountRestrictedErrorBox />
+      ) : (
+        <>
+          <LoadingDataLengthErrors
+            isLoading={isTicketsLoading}
+            error={ticketError}
+            dataLength={tickets?.length}
+            emptyMessage="You have not created any tickets yet."
+          />
 
-      {tickets && tickets.length > 0 && (
-        <div className="mt-8">
-          <div className="mb-4 flex gap-2">
-            <InfoPill
-              infoTitle="Total tickets"
-              info={tickets.length}
-            />
-            <InfoPill
-              infoTitle="Pending tickets"
-              info={
-                tickets.filter((ticket) => ticket.status === 'pending').length
-              }
-            />
-            <InfoPill
-              infoTitle="Resolved tickets"
-              info={
-                tickets.filter((ticket) => ticket.status === 'approved').length
-              }
-            />
-            <InfoPill
-              infoTitle="Rejected tickets"
-              info={
-                tickets.filter((ticket) => ticket.status === 'rejected').length
-              }
-            />
-          </div>
+          {tickets && tickets.length > 0 && (
+            <div className="mt-8">
+              <div className="mb-4 flex flex-wrap gap-2">
+                <InfoPill
+                  infoTitle="Total tickets"
+                  info={tickets.length}
+                />
+                <InfoPill
+                  infoTitle="Pending tickets"
+                  info={
+                    tickets.filter((ticket) => ticket.status === 'pending')
+                      .length
+                  }
+                />
+                <InfoPill
+                  infoTitle="Resolved tickets"
+                  info={
+                    tickets.filter((ticket) => ticket.status === 'approved')
+                      .length
+                  }
+                />
+                <InfoPill
+                  infoTitle="Rejected tickets"
+                  info={
+                    tickets.filter((ticket) => ticket.status === 'rejected')
+                      .length
+                  }
+                />
+              </div>
 
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {tickets.map((t) => (
-              <VendorTicketCard
-                key={t._id}
-                ticket={t}
-                actionUpdate={(ticketDetails) =>
-                  setUpdateTicketDetails(ticketDetails)
-                }
-                actionDelete={(ticketDetails) =>
-                  setDeleteTicketDetails(ticketDetails)
-                }
-              />
-            ))}
-          </div>
-        </div>
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {tickets.map((t) => (
+                  <VendorTicketCard
+                    key={t._id}
+                    ticket={t}
+                    actionUpdate={(ticketDetails) =>
+                      setUpdateTicketDetails(ticketDetails)
+                    }
+                    actionDelete={(ticketDetails) =>
+                      setDeleteTicketDetails(ticketDetails)
+                    }
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+        </>
       )}
 
       <AnimatePresence>

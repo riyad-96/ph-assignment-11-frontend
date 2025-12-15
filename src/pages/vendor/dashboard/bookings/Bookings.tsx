@@ -17,10 +17,13 @@ import { AnimatePresence } from 'motion/react';
 import QuickActionModal from '@/components/modal/QuickActionModal';
 import { isPast } from 'date-fns';
 import LoadingDataLengthErrors from '@/components/loading_and_errors/LoadingDataLengthErrors';
+import { useAuthContext } from '@/hooks/useAuthContext';
+import AccountRestrictedErrorBox from '@/components/AccountRestrictedErrorBox';
 
 export default function Bookings() {
   const server = serverAPI(true);
   const queryClient = useQueryClient();
+  const { user } = useAuthContext();
 
   const {
     data: bookedTickets,
@@ -32,6 +35,7 @@ export default function Bookings() {
       const response = await server.get('vendor/booked-tickets');
       return response.data;
     },
+    enabled: !user?.isFraud,
   });
 
   // update booked ticket status
@@ -67,168 +71,180 @@ export default function Bookings() {
     <div className="px-3 pb-16">
       <DashboardH1 text="Requested Bookings" />
 
-      <div className="mt-12">
-        <LoadingDataLengthErrors
-          emptyMessage="No requested bookings were found"
-          dataLength={bookedTickets?.length}
-          isLoading={isBookedTicketsLoading}
-          error={bookedTicketsError}
-        />
+      {user?.isFraud ? (
+        <AccountRestrictedErrorBox />
+      ) : (
+        <div className="mt-12">
+          <LoadingDataLengthErrors
+            emptyMessage="No requested bookings were found"
+            dataLength={bookedTickets?.length}
+            isLoading={isBookedTicketsLoading}
+            error={bookedTicketsError}
+          />
 
-        {!bookedTicketsError &&
-          !isBookedTicketsLoading &&
-          bookedTickets &&
-          bookedTickets.length > 0 && (
-            <>
-              <div className="flex flex-wrap items-center gap-1">
-                <InfoPill
-                  infoTitle="Total Bookings"
-                  info={bookedTickets.length}
-                />
-                <InfoPill
-                  infoTitle="Pending"
-                  info={
-                    bookedTickets.filter((b) => b.status === 'pending').length
-                  }
-                />
-                <InfoPill
-                  infoTitle="Accepted"
-                  info={
-                    bookedTickets.filter((b) => b.status === 'accepted').length
-                  }
-                />
-                <InfoPill
-                  infoTitle="Rejected"
-                  info={
-                    bookedTickets.filter((b) => b.status === 'rejected').length
-                  }
-                />
-                <InfoPill
-                  infoTitle="Paid"
-                  info={bookedTickets.filter((b) => b.status === 'paid').length}
-                />
-              </div>
+          {!bookedTicketsError &&
+            !isBookedTicketsLoading &&
+            bookedTickets &&
+            bookedTickets.length > 0 && (
+              <>
+                <div className="flex flex-wrap items-center gap-1">
+                  <InfoPill
+                    infoTitle="Total Bookings"
+                    info={bookedTickets.length}
+                  />
+                  <InfoPill
+                    infoTitle="Pending"
+                    info={
+                      bookedTickets.filter((b) => b.status === 'pending').length
+                    }
+                  />
+                  <InfoPill
+                    infoTitle="Accepted"
+                    info={
+                      bookedTickets.filter((b) => b.status === 'accepted')
+                        .length
+                    }
+                  />
+                  <InfoPill
+                    infoTitle="Rejected"
+                    info={
+                      bookedTickets.filter((b) => b.status === 'rejected')
+                        .length
+                    }
+                  />
+                  <InfoPill
+                    infoTitle="Paid"
+                    info={
+                      bookedTickets.filter((b) => b.status === 'paid').length
+                    }
+                  />
+                </div>
 
-              <Table>
-                <Table.head>
-                  <Table.tr>
-                    <Table.th>Consumer</Table.th>
-                    <Table.th>Ticket title</Table.th>
-                    <Table.th className="text-center!">Quantity</Table.th>
-                    <Table.th className="text-center!">Total price</Table.th>
-                    <Table.th className="text-center!">Action</Table.th>
-                  </Table.tr>
-                </Table.head>
-                <Table.body>
-                  {bookedTickets.map((b) => (
-                    <Table.tr key={b._id}>
-                      <Table.td>
-                        <div className="">
-                          <h5 className="text-sm leading-4 font-medium">
-                            {b.user_name}
-                          </h5>
-                          <p className="text-content-light text-sm leading-4">
-                            {b.user_email}
-                          </p>
-                        </div>
-                      </Table.td>
-
-                      <Table.td>{b.title}</Table.td>
-
-                      <Table.td className="text-center!">{b.quantity}</Table.td>
-
-                      <Table.td className="text-center!">
-                        <Tk />
-                        {formatPrice(b.total_price)}
-                      </Table.td>
-
-                      <Table.td className="text-center!">
-                        {isPast(b.departure_time) && (
-                          <span className="bg-content-light text-surface mr-1 rounded-full px-3 py-1 text-xs tracking-wider">
-                            Expired
-                          </span>
-                        )}
-                        {b.status === 'paid' ? (
-                          <span className="rounded-full bg-green-200 px-3 py-1 text-xs font-medium tracking-wider text-green-900 dark:bg-green-800 dark:text-green-200">
-                            Paid
-                          </span>
-                        ) : (
-                          <>
-                            {!isPast(b.departure_time) && (
-                              <div className="flex items-center justify-center gap-4 py-1">
-                                <Tooltip
-                                  content={
-                                    <TooltipContent
-                                      content={
-                                        b.status === 'accepted'
-                                          ? 'Accepted'
-                                          : 'Accept ticket'
-                                      }
-                                    />
-                                  }
-                                  tooltipOptions={{
-                                    smartHover: false,
-                                  }}
-                                >
-                                  <button
-                                    onClick={() => {
-                                      if (isUpdatingBookedTicketStatus) return;
-                                      if (b.status === 'accepted') return;
-                                      setUpdateBookedTicketStatusPayload({
-                                        booked_ticket_id: b._id,
-                                        new_status: 'accepted',
-                                        ticket_title: b.title,
-                                      });
-                                    }}
-                                    className={`relative grid place-items-center ${b.status !== 'accepted' ? 'text-emerald-500' : 'text-content-light'}`}
-                                  >
-                                    <span className="absolute -inset-1"></span>
-                                    <CheckIcon size="24" />
-                                  </button>
-                                </Tooltip>
-
-                                <Tooltip
-                                  content={
-                                    <TooltipContent
-                                      content={
-                                        b.status === 'rejected'
-                                          ? 'Rejected'
-                                          : 'Reject ticket'
-                                      }
-                                    />
-                                  }
-                                  tooltipOptions={{
-                                    smartHover: false,
-                                  }}
-                                >
-                                  <button
-                                    onClick={() => {
-                                      if (isUpdatingBookedTicketStatus) return;
-                                      if (b.status === 'rejected') return;
-                                      setUpdateBookedTicketStatusPayload({
-                                        booked_ticket_id: b._id,
-                                        new_status: 'rejected',
-                                        ticket_title: b.title,
-                                      });
-                                    }}
-                                    className={`relative grid place-items-center ${b.status !== 'rejected' ? 'text-red-500' : 'text-content-light'}`}
-                                  >
-                                    <span className="absolute -inset-1"></span>
-                                    <CloseIcon size="24" />
-                                  </button>
-                                </Tooltip>
-                              </div>
-                            )}
-                          </>
-                        )}
-                      </Table.td>
+                <Table>
+                  <Table.head>
+                    <Table.tr>
+                      <Table.th>Consumer</Table.th>
+                      <Table.th>Ticket title</Table.th>
+                      <Table.th className="text-center!">Quantity</Table.th>
+                      <Table.th className="text-center!">Total price</Table.th>
+                      <Table.th className="text-center!">Action</Table.th>
                     </Table.tr>
-                  ))}
-                </Table.body>
-              </Table>
-            </>
-          )}
-      </div>
+                  </Table.head>
+                  <Table.body>
+                    {bookedTickets.map((b) => (
+                      <Table.tr key={b._id}>
+                        <Table.td>
+                          <div className="">
+                            <h5 className="text-sm leading-4 font-medium">
+                              {b.user_name}
+                            </h5>
+                            <p className="text-content-light text-sm leading-4">
+                              {b.user_email}
+                            </p>
+                          </div>
+                        </Table.td>
+
+                        <Table.td>{b.title}</Table.td>
+
+                        <Table.td className="text-center!">
+                          {b.quantity}
+                        </Table.td>
+
+                        <Table.td className="text-center!">
+                          <Tk />
+                          {formatPrice(b.total_price)}
+                        </Table.td>
+
+                        <Table.td className="text-center!">
+                          {isPast(b.departure_time) && (
+                            <span className="bg-content-light text-surface mr-1 rounded-full px-3 py-1 text-xs tracking-wider">
+                              Expired
+                            </span>
+                          )}
+                          {b.status === 'paid' ? (
+                            <span className="rounded-full bg-green-200 px-3 py-1 text-xs font-medium tracking-wider text-green-900 dark:bg-green-800 dark:text-green-200">
+                              Paid
+                            </span>
+                          ) : (
+                            <>
+                              {!isPast(b.departure_time) && (
+                                <div className="flex items-center justify-center gap-4 py-1">
+                                  <Tooltip
+                                    content={
+                                      <TooltipContent
+                                        content={
+                                          b.status === 'accepted'
+                                            ? 'Accepted'
+                                            : 'Accept ticket'
+                                        }
+                                      />
+                                    }
+                                    tooltipOptions={{
+                                      smartHover: false,
+                                    }}
+                                  >
+                                    <button
+                                      onClick={() => {
+                                        if (isUpdatingBookedTicketStatus)
+                                          return;
+                                        if (b.status === 'accepted') return;
+                                        setUpdateBookedTicketStatusPayload({
+                                          booked_ticket_id: b._id,
+                                          new_status: 'accepted',
+                                          ticket_title: b.title,
+                                        });
+                                      }}
+                                      className={`relative grid place-items-center ${b.status !== 'accepted' ? 'text-emerald-500' : 'text-content-light'}`}
+                                    >
+                                      <span className="absolute -inset-1"></span>
+                                      <CheckIcon size="24" />
+                                    </button>
+                                  </Tooltip>
+
+                                  <Tooltip
+                                    content={
+                                      <TooltipContent
+                                        content={
+                                          b.status === 'rejected'
+                                            ? 'Rejected'
+                                            : 'Reject ticket'
+                                        }
+                                      />
+                                    }
+                                    tooltipOptions={{
+                                      smartHover: false,
+                                    }}
+                                  >
+                                    <button
+                                      onClick={() => {
+                                        if (isUpdatingBookedTicketStatus)
+                                          return;
+                                        if (b.status === 'rejected') return;
+                                        setUpdateBookedTicketStatusPayload({
+                                          booked_ticket_id: b._id,
+                                          new_status: 'rejected',
+                                          ticket_title: b.title,
+                                        });
+                                      }}
+                                      className={`relative grid place-items-center ${b.status !== 'rejected' ? 'text-red-500' : 'text-content-light'}`}
+                                    >
+                                      <span className="absolute -inset-1"></span>
+                                      <CloseIcon size="24" />
+                                    </button>
+                                  </Tooltip>
+                                </div>
+                              )}
+                            </>
+                          )}
+                        </Table.td>
+                      </Table.tr>
+                    ))}
+                  </Table.body>
+                </Table>
+              </>
+            )}
+        </div>
+      )}
 
       <AnimatePresence>
         {updateBookedTicketStatusPayload && (

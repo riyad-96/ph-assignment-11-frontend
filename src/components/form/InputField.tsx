@@ -51,7 +51,7 @@ export default function InputField({
               setIsPasswordVisible((prev) => !prev);
             }}
             type="button"
-            className="pointer-coarse:bg-brand-light pointer-fine:hover:bg-brand-light absolute top-1/2 right-1 grid h-[calc(100%-8px)] w-[50px] -translate-y-1/2 place-items-center rounded-full"
+            className="pointer-coarse:bg-brand-light pointer-fine:hover:bg-brand-light focus:bg-brand-light absolute top-1/2 right-1 grid h-[calc(100%-8px)] w-[50px] -translate-y-1/2 place-items-center rounded-full"
           >
             {isPasswordVisible ? (
               <span className="grid">

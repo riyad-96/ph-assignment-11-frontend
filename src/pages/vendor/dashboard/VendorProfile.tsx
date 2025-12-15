@@ -3,6 +3,7 @@ import { useAuthContext } from '@/hooks/useAuthContext';
 import InputField from '@/components/form/InputField';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import FraudFlag from '@/components/FraudFlag';
 
 type ProfileUpdateTypes = {
   name: string;
@@ -36,12 +37,17 @@ export default function VendorProfile() {
 
       <div className="mt-8 max-w-[800px] md:flex">
         <div className="md:flex-1">
-          <div className="mx-auto size-[170px] overflow-hidden rounded-full shadow md:size-[230px]">
+          <div className="relative mx-auto size-[170px] overflow-hidden rounded-full shadow md:size-[230px]">
             <img
               className="size-full object-cover object-center"
               src={user?.photoURL}
               alt={`${user?.name} profile image`}
             />
+            {user?.isFraud && (
+              <div className="absolute inset-0 grid place-items-center bg-red-400/50">
+                <FraudFlag />
+              </div>
+            )}
           </div>
         </div>
 
@@ -83,7 +89,7 @@ export default function VendorProfile() {
             <div className="mt-4">
               <button
                 type="submit"
-                className="bg-brand text-white h-10 w-[100px] rounded-full"
+                className="bg-brand h-10 w-[100px] rounded-full text-white"
               >
                 {isSubmitting ? (
                   <span className="loading loading-spinner loading-xs"></span>
