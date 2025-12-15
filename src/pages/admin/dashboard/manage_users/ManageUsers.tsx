@@ -79,24 +79,6 @@ export default function ManageUsers() {
     },
   });
 
-  // toggle is fraud
-  const { mutate: updateIsFraud, isPending: updatingIsFraud } = useMutation({
-    mutationFn: async ({ id, isFraud }: UpdateIsFraudPayload) => {
-      const response = await server.patch('/admin/update-is-fraud', {
-        id,
-        isFraud,
-      });
-      return response.data;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['admin-manage_users'] });
-      toast.success('Fraud status successfully updated');
-    },
-    onError: () => {
-      toast.error("Couldn't update fraud status");
-    },
-  });
-
   return (
     <div className="px-3 pb-16">
       <DashboardH1 text="Manage Users" />
@@ -159,8 +141,6 @@ export default function ManageUsers() {
                         u={u}
                         i={i}
                         setChangeRole={setChangeRole}
-                        updateIsFraud={updateIsFraud}
-                        updatingIsFraud={updatingIsFraud}
                       />
                     ))}
                   </tbody>
@@ -268,19 +248,17 @@ type TablePropsType = {
   setChangeRole: React.Dispatch<
     React.SetStateAction<ChangeRolePropsType | null>
   >;
-  updateIsFraud: ({ id, isFraud }: { id: string; isFraud: boolean }) => void;
-  updatingIsFraud: boolean;
 };
 
 function TableRow({
   u,
   i,
   setChangeRole,
-  updateIsFraud,
-  updatingIsFraud,
 }: TablePropsType) {
   const { _id, email, isFraud, name, photoURL, role } = u;
   const { user } = useAuthContext();
+  const server = serverAPI(true);
+  const queryClient = useQueryClient();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useClosePopup({
@@ -289,6 +267,24 @@ function TableRow({
       setIsMenuOpen(false);
     },
     ignoredSelectors: [`.role-change-menu-open-btn-${i}`],
+  });
+
+  // toggle is fraud
+  const { mutate: updateIsFraud, isPending: updatingIsFraud } = useMutation({
+    mutationFn: async ({ id, isFraud }: UpdateIsFraudPayload) => {
+      const response = await server.patch('/admin/update-is-fraud', {
+        id,
+        isFraud,
+      });
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin-manage_users'] });
+      toast.success('Fraud status successfully updated');
+    },
+    onError: () => {
+      toast.error("Couldn't update fraud status");
+    },
   });
 
   const [imgLoadingState, setImgLoadingState] = useState<
