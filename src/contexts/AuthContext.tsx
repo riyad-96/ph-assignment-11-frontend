@@ -32,6 +32,8 @@ export type AuthContextType = {
   updateProfileInfo: (name: string, photoFiles: File[]) => Promise<void>;
   theme: string;
   setTheme: Dispatch<SetStateAction<string>>;
+  isLoggingOut: boolean;
+  setIsLoggingOut: Dispatch<SetStateAction<boolean>>;
 };
 
 //! context wrapper component
@@ -189,6 +191,8 @@ function AuthContext({ children }: { children: ReactNode }) {
     };
   }, []);
 
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+
   return (
     <CreatedAuthContext.Provider
       value={{
@@ -201,6 +205,8 @@ function AuthContext({ children }: { children: ReactNode }) {
         updateProfileInfo,
         theme,
         setTheme,
+        isLoggingOut,
+        setIsLoggingOut,
       }}
     >
       {children}
