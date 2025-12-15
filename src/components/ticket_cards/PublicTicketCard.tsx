@@ -127,7 +127,7 @@ export default function PublicTicketCard({
         <div className="grid">
           <button
             onClick={() => navigate(`/all-tickets/${_id}`)}
-            className={`pointer-fine:bg-brand-light/50 pointer-fine:hover:bg-brand-light h-10 flex-1 rounded-full text-sm font-medium tracking-wide`}
+            className={`pointer-fine:bg-brand-light/50 bg-brand-light pointer-fine:hover:bg-brand-light h-10 flex-1 rounded-full text-sm font-medium tracking-wide`}
           >
             See details
           </button>

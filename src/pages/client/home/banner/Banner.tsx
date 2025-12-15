@@ -15,7 +15,7 @@ export default function Banner() {
       </div>
 
       <div className="absolute inset-0 z-2 flex items-end px-2 text-white md:px-3">
-        <div className="mx-auto w-full max-w-[1300px] space-y-2 pb-4 md:pb-8">
+        <div className="mx-auto w-full max-w-[1300px] md:space-y-2 pb-4 max-md:text-center md:pb-8">
           <h1 className="text-2xl tracking-wider drop-shadow-sm drop-shadow-black/50 sm:text-3xl md:text-4xl xl:text-5xl">
             Welcome to <span className="font-semibold">TicketBari!</span>
           </h1>
@@ -24,7 +24,7 @@ export default function Banner() {
           </p>
           <Link
             to="/all-tickets"
-            className="bg-brand text-white rounded-full px-4 py-2 text-sm flex w-fit mt-4 tracking-wider shadow"
+            className="bg-brand mt-4 flex max-md:mx-auto w-fit rounded-full px-4 py-2 text-sm tracking-wider text-white shadow"
           >
             <span className="drop-shadow-xs drop-shadow-black/30">
               Find Tickets
