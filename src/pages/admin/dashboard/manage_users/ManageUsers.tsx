@@ -337,7 +337,7 @@ function TableRow({ u, i, setChangeRole }: TablePropsType) {
               )}
             </span>
             <span
-              className={`bg-ac w-fit rounded-md px-1 text-xs leading-4 ${role === 'user' ? 'bg-brand-light' : role === 'admin' ? 'bg-action' : 'bg-emerald-400'}`}
+              className={`bg-ac w-fit rounded-md px-1 text-xs leading-4 ${role === 'user' ? 'bg-brand-light' : role === 'admin' ? 'bg-amber-400 dark:bg-amber-600' : 'bg-emerald-400 dark:bg-emerald-600'}`}
             >
               {role}
             </span>
