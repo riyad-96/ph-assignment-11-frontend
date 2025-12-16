@@ -12,7 +12,7 @@ export default function VendorSidebar() {
   const { screenWidth } = useWindowSize({ delay: 80 });
 
   return (
-    <div className="bg-surface border-brand-light h-full w-[50px] border-x px-1 transition-[width] md:w-[180px] lg:h-full">
+    <div className="bg-surface border-brand-light z-1 h-full w-[50px] border-x px-1 transition-[width] md:w-[180px] lg:h-full">
       <div className="sticky top-[57px] pt-4">
         <div className="grid">
           <Tooltip
