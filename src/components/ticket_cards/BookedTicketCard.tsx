@@ -6,6 +6,7 @@ import BookingStatus from '../BookingStatus';
 import { useEffect, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { serverAPI } from '@/helpers/server';
+import customToast from '@/helpers/triggerToast';
 
 type BookedTicketCard = {
   b: BookedTicket;
@@ -64,8 +65,12 @@ export default function BookedTicketCard({ b }: BookedTicketCard) {
     onSuccess: (data) => {
       window.location.href = data.url;
     },
-    onError: (err) => {
-      console.error(err);
+    onError: () => {
+      customToast({
+        type: 'error',
+        message: 'Error while creating checkout session',
+        options: { duration: 3500 },
+      });
     },
   });
 
@@ -162,7 +167,7 @@ export default function BookedTicketCard({ b }: BookedTicketCard) {
           </div>
         </div>
 
-        <hr className="my-5 border-gray-100 dark:border-content-light/20" />
+        <hr className="dark:border-content-light/20 my-5 border-gray-100" />
 
         <div className="flex h-10 items-center justify-between">
           {isExpired ? (

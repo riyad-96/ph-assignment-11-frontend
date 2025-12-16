@@ -56,8 +56,12 @@ function AuthContext({ children }: { children: ReactNode }) {
         try {
           const response = await server.get('/auth/get');
           user = response.data;
-        } catch (err) {
-          console.error(err);
+        } catch {
+          customToast({
+            type: 'error',
+            message: 'User data loading failed, please try again',
+            options: { duration: 4000 },
+          });
         }
       }
 
@@ -118,8 +122,12 @@ function AuthContext({ children }: { children: ReactNode }) {
 
       const response = await server.get('/auth/get');
       setUser(response.data);
+      customToast({
+        type: 'success',
+        message: 'Login successful',
+        options: { duration: 4000 },
+      });
     } catch (err) {
-      console.error(err);
       const error = err as FirebaseError;
       if (error.code && error.code === 'auth/invalid-credential') {
         return customToast({
@@ -150,10 +158,13 @@ function AuthContext({ children }: { children: ReactNode }) {
         photoURL: user.photoURL,
       });
       setUser(googlePostResponse.data);
+      customToast({
+        type: 'success',
+        message: 'Google login successful',
+        options: { duration: 4000 },
+      });
     } catch (err) {
       const error = err as FirebaseError;
-
-      console.error(error);
       if (error.code === 'auth/popup-closed-by-user') {
         return customToast({
           type: 'error',
@@ -190,8 +201,7 @@ function AuthContext({ children }: { children: ReactNode }) {
         message: 'Profile was updated',
         options: { duration: 4000 },
       });
-    } catch (err) {
-      console.error(err);
+    } catch {
       customToast({
         type: 'error',
         message: "Couldn't update profile",
