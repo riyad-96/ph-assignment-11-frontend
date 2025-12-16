@@ -5,7 +5,7 @@ export default function AdminDashboard() {
     <div className="px-3">
       <DashboardH1 text="Dashboard" />
 
-      <div className="mx-auto mt-8 max-w-xl p-10 text-center">
+      <div className="mx-auto mt-8 max-w-xl text-center">
         <div className="mb-6 flex justify-center">
           <svg
             className="text-brand h-16 w-16"

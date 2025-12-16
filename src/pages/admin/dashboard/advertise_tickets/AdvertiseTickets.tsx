@@ -3,10 +3,10 @@ import LoadingDataLengthErrors from '@/components/loading_and_errors/LoadingData
 import Table from '@/components/Table';
 import { formatPrice } from '@/helpers/helper';
 import { serverAPI } from '@/helpers/server';
+import customToast from '@/helpers/triggerToast';
 import type { Ticket } from '@/pages/vendor/types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns';
-import { toast } from 'kitzo/react';
 import { useEffect, useState } from 'react';
 
 export default function AdvertiseTickets() {
@@ -54,11 +54,17 @@ export default function AdvertiseTickets() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['approved-tickets'] });
-      toast.success('Advertised tickets updated successfully.');
+      customToast({
+        type: 'success',
+        message: 'Advertised tickets updated successfully.',
+        options: { duration: 3500 },
+      });
     },
     onError: () => {
-      toast.error('Failed to update advertised tickets. Please try again.', {
-        duration: 4000,
+      customToast({
+        type: 'error',
+        message: 'Failed to update advertised tickets. Please try again.',
+        options: { duration: 4500 },
       });
     },
   });
@@ -122,10 +128,12 @@ export default function AdvertiseTickets() {
                           ticketsOnAd.length >= 6 &&
                           !ticketsOnAd.includes(t._id)
                         ) {
-                          toast.error(
-                            'You can advertise a maximum of 6 tickets at a time.',
-                            { duration: 4000 },
-                          );
+                          customToast({
+                            type: 'error',
+                            message:
+                              'Maximum of 6 tickets can be advertised at a time',
+                            options: { duration: 4000 },
+                          });
                           return;
                         }
                         setTicketsOnAd((prev) => {

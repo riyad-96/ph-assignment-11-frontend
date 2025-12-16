@@ -1,10 +1,11 @@
 import type { Ticket } from '@/pages/vendor/types';
-import { toast, Tooltip } from 'kitzo/react';
+import { Tooltip } from 'kitzo/react';
 import TooltipContent from '../TooltipContent';
 import { perks as localPerks } from '@/constants/perksData';
 import { format } from 'date-fns';
 import Tk from '../Tk';
 import { formatPrice } from '@/helpers/helper';
+import customToast from '@/helpers/triggerToast';
 
 type VendorTicketCardPropsType = {
   ticket: Ticket;
@@ -59,7 +60,8 @@ export default function VendorTicketCard({
             className="text-xl font-bold whitespace-nowrap"
             style={{ color: 'var(--color-action)' }}
           >
-            <Tk />{formatPrice(price)}
+            <Tk />
+            {formatPrice(price)}
           </p>
         </div>
 
@@ -129,10 +131,10 @@ export default function VendorTicketCard({
           <button
             onClick={() => {
               if (ticket.status === 'rejected')
-                return toast.error(
-                  'Ticket was rejected and cannot be updated.',
-                  { duration: 4000 },
-                );
+                return customToast({
+                  type: 'error',
+                  message: 'Ticket was rejected and cannot be updated.',
+                });
               actionUpdate(ticket);
             }}
             className={`bg-brand-light/50 h-10 flex-1 rounded-full text-sm font-medium tracking-wide ${ticket.status === 'rejected' ? 'disabled cursor-not-allowed opacity-50' : 'hover:bg-brand-light'}`}
@@ -142,10 +144,10 @@ export default function VendorTicketCard({
           <button
             onClick={() => {
               if (ticket.status === 'rejected')
-                return toast.error(
-                  'Ticket was rejected and cannot be deleted.',
-                  { duration: 4000 },
-                );
+                return customToast({
+                  type: 'error',
+                  message: 'Ticket was rejected and cannot be deleted.',
+                });
               actionDelete({ ticketTitle: title, ticketId: ticket._id });
             }}
             className={`bg-brand-light/50 h-10 flex-1 rounded-full text-sm font-medium tracking-wide ${ticket.status === 'rejected' ? 'disabled cursor-not-allowed opacity-50' : 'hover:bg-red-500/30'}`}

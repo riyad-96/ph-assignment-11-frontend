@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { serverAPI } from '@/helpers/server';
 import InfoPill from '@/components/InfoPill';
 import { CheckIcon, CloseIcon } from '@/assets/Svgs';
-import { toast, Tooltip } from 'kitzo/react';
+import { Tooltip } from 'kitzo/react';
 import TooltipContent from '@/components/TooltipContent';
 import QuickActionModal from '@/components/modal/QuickActionModal';
 import { AnimatePresence } from 'motion/react';
@@ -16,6 +16,7 @@ import Table from '@/components/Table';
 import TransportIcon from '@/components/TransportIcon';
 import { formatPrice } from '@/helpers/helper';
 import Tk from '@/components/Tk';
+import customToast from '@/helpers/triggerToast';
 
 type TicketStatusUpdatePayload = {
   ticket_title: string;
@@ -56,10 +57,18 @@ export default function ManageTickets() {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['admin-tickets'] });
         setUpdateTicketStatusPayload(null);
-        toast.success('Ticket status updated successfully.');
+        customToast({
+          type: 'success',
+          message: 'Ticket status updated',
+          options: { duration: 4000 },
+        });
       },
       onError: () => {
-        toast.error('Failed to update ticket status. Please try again.');
+        customToast({
+          type: 'error',
+          message: 'Failed to update ticket status. Please try again.',
+          options: { duration: 4500 },
+        });
       },
     });
 

@@ -25,7 +25,6 @@ export default function Home() {
     queryFn: async () => {
       const response =
         await server.get<PublicTicketsQueryType>('/public/tickets');
-      // await new Promise((resolve) => setTimeout(resolve, 5000));
       return response.data;
     },
   });

@@ -2,7 +2,6 @@ import DashboardH1 from '@/components/DashboardH1';
 import { serverAPI } from '@/helpers/server';
 import InputField from '@/components/form/InputField';
 import { useMutation } from '@tanstack/react-query';
-import { toast } from 'kitzo/react';
 import { useForm } from 'react-hook-form';
 import SelectField from '@/components/form/SelectField';
 import { useAuthContext } from '@/hooks/useAuthContext';
@@ -12,6 +11,7 @@ import Checkbox from '@/components/form/Checkbox';
 import { perks } from '@/constants/perksData';
 import type { TicketFormFieldType } from '../../types';
 import AccountRestrictedErrorBox from '@/components/AccountRestrictedErrorBox';
+import customToast from '@/helpers/triggerToast';
 
 export default function AddTickets() {
   const { user } = useAuthContext();
@@ -48,16 +48,28 @@ export default function AddTickets() {
       return response.data;
     },
     onSuccess: () => {
-      toast.success('Ticket added, wait for approval', { duration: 3500 });
+      customToast({
+        type: 'success',
+        message: 'Ticket added, wait for approval',
+        options: { duration: 4000 },
+      });
       reset();
     },
     onError: () => {
-      toast.error('Error while adding ticket, please try again');
+      customToast({
+        type: 'error',
+        message: 'Error while adding ticket, please try again',
+        options: { duration: 4000 },
+      });
     },
   });
 
   function requestAddTicket(data: TicketFormFieldType) {
-    if (user?.isFraud) return toast.error('Your account is restricted.');
+    if (user?.isFraud)
+      return customToast({
+        type: 'error',
+        message: 'Your account is restricted',
+      });
     if (isAddingTicket) return;
     createTicket(data);
   }

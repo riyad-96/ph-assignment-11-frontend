@@ -5,10 +5,11 @@ import Tk from '@/components/Tk';
 import TooltipContent from '@/components/TooltipContent';
 import { formatPrice } from '@/helpers/helper';
 import { serverAPI } from '@/helpers/server';
+import customToast from '@/helpers/triggerToast';
 import { useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import kitzo from 'kitzo';
-import { toast, Tooltip } from 'kitzo/react';
+import { Tooltip } from 'kitzo/react';
 import { IoCopyOutline } from 'react-icons/io5';
 
 type Transaction = {
@@ -77,7 +78,10 @@ export default function TransactionHistory() {
                           <button
                             onClick={() => {
                               kitzo.copy(t.transaction_id);
-                              toast.success('Copied to clipboard');
+                              customToast({
+                                type: 'success',
+                                message: 'Copied to clipboard!',
+                              });
                             }}
                             className="group-hover:bg-surface bg-brand-light grid size-[30px] place-items-center rounded-full"
                           >

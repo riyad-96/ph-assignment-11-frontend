@@ -3,7 +3,7 @@ import { serverAPI } from '@/helpers/server';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { User } from '@/contexts/authContext.type';
 import { useMemo, useState } from 'react';
-import { toast, Tooltip } from 'kitzo/react';
+import { Tooltip } from 'kitzo/react';
 import { AnimatePresence, motion } from 'motion/react';
 import { TbTool } from 'react-icons/tb';
 import useClosePopup from '@/hooks/useClosePopup';
@@ -12,6 +12,7 @@ import { useAuthContext } from '@/hooks/useAuthContext';
 import InfoPill from '@/components/InfoPill';
 import LoadingDataLengthErrors from '@/components/loading_and_errors/LoadingDataLengthErrors';
 import { ProfilePlaceholderSvg } from '@/assets/Svgs';
+import customToast from '@/helpers/triggerToast';
 
 type ChangeRolePropsType = {
   _id: string;
@@ -70,12 +71,20 @@ export default function ManageUsers() {
     },
     onSuccess: (value) => {
       queryClient.invalidateQueries({ queryKey: ['admin-manage_users'] });
-      toast.success('Role successfully updated');
+      customToast({
+        type: 'success',
+        message: 'Role successfully updated',
+        options: { duration: 3000 },
+      });
       setChangeRole(null);
       setUser(value);
     },
     onError: () => {
-      toast.error("Couldn't update role");
+      customToast({
+        type: 'error',
+        message: "Couldn't update role. Please try again.",
+        options: { duration: 4500 },
+      });
     },
   });
 
@@ -250,11 +259,7 @@ type TablePropsType = {
   >;
 };
 
-function TableRow({
-  u,
-  i,
-  setChangeRole,
-}: TablePropsType) {
+function TableRow({ u, i, setChangeRole }: TablePropsType) {
   const { _id, email, isFraud, name, photoURL, role } = u;
   const { user } = useAuthContext();
   const server = serverAPI(true);
@@ -280,10 +285,18 @@ function TableRow({
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-manage_users'] });
-      toast.success('Fraud status successfully updated');
+      customToast({
+        type: 'success',
+        message: 'Fraud status successfully updated',
+        options: { duration: 3500 },
+      });
     },
     onError: () => {
-      toast.error("Couldn't update fraud status");
+      customToast({
+        type: 'error',
+        message: "Couldn't update fraud status",
+        options: { duration: 4500 },
+      });
     },
   });
 

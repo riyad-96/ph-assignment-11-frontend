@@ -8,7 +8,6 @@ import {
 import { useEffect, useState } from 'react';
 import { CreatedAuthContext } from '@/contexts/contexts';
 import { serverAPI } from '@/helpers/server';
-import { toast } from 'kitzo/react';
 
 import type {
   RegisterFormFieldTypes,
@@ -20,6 +19,7 @@ import type { AxiosError } from 'axios';
 import type { User } from '@/contexts/authContext.type';
 import type { FirebaseError } from 'firebase/app';
 import uploadImageToImgbb from '@/helpers/imageUpload';
+import customToast from '@/helpers/triggerToast';
 
 //! type for context
 export type AuthContextType = {
@@ -90,10 +90,18 @@ function AuthContext({ children }: { children: ReactNode }) {
         message: string;
       };
       if (errorData?.code && errorData.code === 'EMAIL_ALREADY_EXISTS') {
-        toast.error('Email already exists');
+        customToast({
+          type: 'error',
+          message: 'Email already exists',
+          options: { duration: 4000 },
+        });
         return;
       }
-      toast.error('Registration failed');
+      customToast({
+        type: 'error',
+        message: 'Registration failed',
+        options: { duration: 4000 },
+      });
     }
   }
 
@@ -114,9 +122,17 @@ function AuthContext({ children }: { children: ReactNode }) {
       console.error(err);
       const error = err as FirebaseError;
       if (error.code && error.code === 'auth/invalid-credential') {
-        return toast.error('Invalid email or password');
+        return customToast({
+          type: 'error',
+          message: 'Invalid email or password',
+          options: { duration: 4000 },
+        });
       }
-      toast.error('Login failed');
+      customToast({
+        type: 'error',
+        message: 'Login failed',
+        options: { duration: 4000 },
+      });
     }
   }
 
@@ -139,9 +155,17 @@ function AuthContext({ children }: { children: ReactNode }) {
 
       console.error(error);
       if (error.code === 'auth/popup-closed-by-user') {
-        return toast.error('Google login cancelled');
+        return customToast({
+          type: 'error',
+          message: 'Google login failed',
+          options: { duration: 4000 },
+        });
       }
-      toast.error('Loading failed');
+      customToast({
+        type: 'error',
+        message: 'Loading failed',
+        options: { duration: 4000 },
+      });
     } finally {
       setIsGoogleLoging(false);
     }
@@ -161,10 +185,18 @@ function AuthContext({ children }: { children: ReactNode }) {
       });
 
       setUser(updatedData.data);
-      toast.success('Profile was updated');
+      customToast({
+        type: 'success',
+        message: 'Profile was updated',
+        options: { duration: 4000 },
+      });
     } catch (err) {
       console.error(err);
-      toast.error("Couldn't update profile");
+      customToast({
+        type: 'error',
+        message: "Couldn't update profile",
+        options: { duration: 4000 },
+      });
     }
   }
 

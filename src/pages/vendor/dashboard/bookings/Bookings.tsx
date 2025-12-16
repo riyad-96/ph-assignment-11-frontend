@@ -9,7 +9,7 @@ import InfoPill from '@/components/InfoPill';
 import Table from '@/components/Table';
 import { formatPrice } from '@/helpers/helper';
 import Tk from '@/components/Tk';
-import { toast, Tooltip } from 'kitzo/react';
+import { Tooltip } from 'kitzo/react';
 import TooltipContent from '@/components/TooltipContent';
 import { CheckIcon, CloseIcon } from '@/assets/Svgs';
 import { useState } from 'react';
@@ -19,6 +19,7 @@ import { isPast } from 'date-fns';
 import LoadingDataLengthErrors from '@/components/loading_and_errors/LoadingDataLengthErrors';
 import { useAuthContext } from '@/hooks/useAuthContext';
 import AccountRestrictedErrorBox from '@/components/AccountRestrictedErrorBox';
+import customToast from '@/helpers/triggerToast';
 
 export default function Bookings() {
   const server = serverAPI(true);
@@ -59,11 +60,19 @@ export default function Bookings() {
       queryClient.invalidateQueries({
         queryKey: ['vendor-booked-tickets'],
       });
-      toast.success('Booked ticket status was updated');
+      customToast({
+        type: 'success',
+        message: 'Booked ticket status was updated',
+        options: { duration: 4000 },
+      });
       setUpdateBookedTicketStatusPayload(null);
     },
     onError: () => {
-      toast.error('Failed to update ticket status');
+      customToast({
+        type: 'error',
+        message: 'Failed to update ticket status, try again.',
+        options: { duration: 4000 },
+      });
     },
   });
 

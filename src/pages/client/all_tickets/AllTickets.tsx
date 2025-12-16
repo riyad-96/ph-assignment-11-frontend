@@ -35,7 +35,11 @@ export default function AllTickets() {
   const debouncedSearchQuery = useDebounce(searchInput, 500);
   useEffect(() => {
     (() => {
-      setParams((prev) => ({ ...prev, searchQuery: debouncedSearchQuery }));
+      setParams((prev) => ({
+        ...prev,
+        page: 1,
+        searchQuery: debouncedSearchQuery,
+      }));
     })();
   }, [debouncedSearchQuery]);
 

@@ -5,11 +5,11 @@ import Modal from '@/components/modal/Modal';
 import Tk from '@/components/Tk';
 import TransportIcon from '@/components/TransportIcon';
 import { serverAPI } from '@/helpers/server';
+import customToast from '@/helpers/triggerToast';
 import { useAuthContext } from '@/hooks/useAuthContext';
 import type { Ticket } from '@/pages/vendor/types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { format, intervalToDuration, isBefore, type Duration } from 'date-fns';
-import { toast } from 'kitzo/react';
 import { AnimatePresence } from 'motion/react';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -79,7 +79,11 @@ export default function TicketDetails() {
       return response.data;
     },
     onSuccess: () => {
-      toast.success('Ticket added to your booking list');
+      customToast({
+        type: 'success',
+        message: 'Ticket added to your booking list',
+        options: { duration: 4000 },
+      });
       queryClient.invalidateQueries({
         queryKey: ['ticket', id],
       });
@@ -87,7 +91,11 @@ export default function TicketDetails() {
       setIsBookingModalOpen(false);
     },
     onError: () => {
-      toast.error('Error while booking, please try again');
+      customToast({
+        type: 'error',
+        message: 'Error while booking, please try again',
+        options: { duration: 4500 },
+      });
     },
   });
 
@@ -244,17 +252,24 @@ export default function TicketDetails() {
                             user?.role === 'admin' ||
                             user?.role === 'vendor'
                           ) {
-                            toast.error(
-                              `User with '${user?.role}' role cannot buy tickets`,
-                            );
+                            customToast({
+                              type: 'info',
+                              message: `User with '${user?.role}' role cannot buy tickets`,
+                            });
                             return;
                           }
                           if (Number(t.quantity) < 1) {
-                            toast.error('This ticket is currently sold out');
+                            customToast({
+                              type: 'info',
+                              message: 'This ticket is currently sold out',
+                            });
                             return;
                           }
                           if (isExpired) {
-                            toast.error('Departure time expired');
+                            customToast({
+                              type: 'info',
+                              message: 'Departure time expired',
+                            });
                             return;
                           }
                           if (isTicketBooking) return;
@@ -333,7 +348,11 @@ export default function TicketDetails() {
                         parseFloat(ticketQuantity as string),
                       );
                       if (quantity < 1 || !ticketQuantity)
-                        return toast.error('Please book at least 1 ticket');
+                        return customToast({
+                          type: 'info',
+                          message: 'Please enter at least 1 quantity',
+                          options: { duration: 3500 },
+                        });
                       if (isTicketBooking) return;
                       bookTicket({
                         id: id,

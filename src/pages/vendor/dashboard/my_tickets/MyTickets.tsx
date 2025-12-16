@@ -5,7 +5,6 @@ import InfoPill from '@/components/InfoPill';
 import VendorTicketCard from '@/components/ticket_cards/VendorTicketCard';
 import { AnimatePresence } from 'motion/react';
 import { useState } from 'react';
-import { toast } from 'kitzo/react';
 import type {
   Ticket,
   TicketDeletePayloadType,
@@ -17,6 +16,7 @@ import TicketDeleteModal from './TicketDeleteModal';
 import LoadingDataLengthErrors from '@/components/loading_and_errors/LoadingDataLengthErrors';
 import AccountRestrictedErrorBox from '@/components/AccountRestrictedErrorBox';
 import { useAuthContext } from '@/hooks/useAuthContext';
+import customToast from '@/helpers/triggerToast';
 
 const server = serverAPI(true);
 
@@ -74,10 +74,18 @@ export default function MyTickets() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['vendor-tickets'] });
       setUpdateTicketDetails(null);
-      toast.success('Ticket details updated');
+      customToast({
+        type: 'success',
+        message: 'Ticket details updated successfully',
+        options: { duration: 3500 },
+      });
     },
     onError: () => {
-      toast.error('Error while updating ticket details', { duration: 3500 });
+      customToast({
+        type: 'error',
+        message: 'Error while updating ticket details',
+        options: { duration: 3500 },
+      });
     },
   });
 
@@ -94,11 +102,19 @@ export default function MyTickets() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['vendor-tickets'] });
-      toast.success('Ticket deleted successfully');
+      customToast({
+        type: 'success',
+        message: 'Ticket deleted successfully',
+        options: { duration: 3500 },
+      });
       setDeleteTicketDetails(null);
     },
     onError: () => {
-      toast.error('Error deleting ticket', { duration: 3500 });
+      customToast({
+        type: 'error',
+        message: 'Error while deleting ticket',
+        options: { duration: 3500 },
+      });
     },
   });
 
