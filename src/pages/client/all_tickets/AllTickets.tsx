@@ -113,6 +113,7 @@ export default function AllTickets() {
                 onChange={(transport) => {
                   setParams((prev) => ({
                     ...prev,
+                    page: 1,
                     transportType: transport,
                   }));
                 }}
@@ -133,6 +134,7 @@ export default function AllTickets() {
                 onChange={(type) => {
                   setParams((prev) => ({
                     ...prev,
+                    page: 1,
                     priceSort: type as PriceSort,
                   }));
                 }}

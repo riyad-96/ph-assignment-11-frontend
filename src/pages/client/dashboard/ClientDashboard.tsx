@@ -1,42 +1,148 @@
 import DashboardH1 from '@/components/DashboardH1';
+import LoadingErrorSection from '@/components/loading_and_errors/LoadingErrorSection';
+import Tk from '@/components/Tk';
+import { formatPrice } from '@/helpers/helper';
+import { serverAPI } from '@/helpers/server';
+import useWindowSize from '@/hooks/useWindowSize';
+import { useQuery } from '@tanstack/react-query';
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  Legend,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts';
+
+type ClientDashboardStatsServerResponse = {
+  total_bookings: number;
+  booking_stat: { [key: string]: number };
+  total_transactions: number;
+  last_seven_days_expense: number;
+  expense_stat: { name: string; value: number }[];
+};
+
+const pieColors = [
+  { name: 'pending', color: '#ff9900' },
+  { name: 'accepted', color: '#34c759' },
+  { name: 'rejected', color: '#ff3737' },
+  { name: 'paid', color: '#8bc34a' },
+];
 
 export default function ClientDashboard() {
+  const server = serverAPI(true);
+
+  const {
+    data: dashboardStats,
+    isLoading: isDashboardStatsLoading,
+    error: dashboardStatsError,
+  } = useQuery<ClientDashboardStatsServerResponse>({
+    queryKey: ['client-dashboard-stats'],
+    queryFn: async () => {
+      const response = await server.get('/user/dashboard-stats');
+      console.log(response.data);
+      return response.data;
+    },
+  });
+
+  const { screenWidth } = useWindowSize({ delay: 50 });
+
   return (
-    <div className="px-3">
+    <div className="px-3 pb-16">
       <DashboardH1 text="Dashboard" />
 
-      <div className="mx-auto mt-8 max-w-xl text-center">
-        <div className="mb-6 flex justify-center">
-          <svg
-            className="text-brand h-16 w-16"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="1.5"
-              d="M12 8c1.657 0 3 .895 3 2s-1.343 2-3 2v2m0 0v2m-3-2h6M5 12h2m10 0h2M3 12a9 9 0 1118 0 9 9 0 01-18 0z"
-            ></path>
-          </svg>
+      {isDashboardStatsLoading && (
+        <div className="text-content-light mt-30 text-center font-medium lg:text-lg">
+          <span className="loading loading-spinner loading-lg"></span>
         </div>
+      )}
+      {dashboardStatsError && (
+        <div className="mt-8">
+          <LoadingErrorSection />
+        </div>
+      )}
 
-        <h3 className="text-content mb-3 text-2xl font-bold">
-          Welcome to TicketBari
-        </h3>
+      {!isDashboardStatsLoading && !dashboardStatsError && dashboardStats && (
+        <div className="mt-8 grid-cols-2 gap-4 max-xl:space-y-4 xl:grid">
+          {/* Pie chart */}
+          <div className="border-content/20 bg-surface space-y-4 rounded-xl border px-4 py-3">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-medium">Booking Stats</h3>
+              <span className="font-medium">
+                Total: {dashboardStats.total_bookings}
+              </span>
+            </div>
 
-        <p className="text-content-light mb-2 text-lg">
-          The simplest way to discover, book, and manage tickets for
-          unforgettable events and experiences worldwide.
-        </p>
+            {(() => {
+              const pieChartData = Object.keys(dashboardStats.booking_stat).map(
+                (k) => ({ name: k, value: dashboardStats.booking_stat[k] }),
+              );
+              console.log(pieChartData);
 
-        <p className="text-content-light mt-4 text-sm">
-          Sign in to access your profile, manage your inventory, or control
-          administrative tools.
-        </p>
-      </div>
+              return (
+                <ResponsiveContainer
+                  width={'100%'}
+                  height={screenWidth > 768 ? 400 : 300}
+                >
+                  <PieChart>
+                    <Pie
+                      data={pieChartData}
+                      dataKey={'value'}
+                      label
+                    >
+                      {pieChartData.map(({ name }, i) => (
+                        <Cell
+                          key={`pie-cell-${i}`}
+                          fill={pieColors.find((c) => c.name === name)?.color}
+                        />
+                      ))}
+                    </Pie>
+                    <Legend />
+                    <Tooltip />
+                  </PieChart>
+                </ResponsiveContainer>
+              );
+            })()}
+          </div>
+
+          <div className="border-content/20 bg-surface space-y-4 rounded-xl border px-4 py-3">
+            <div>
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-medium">Last 7 days expenses</h3>
+                <span className="font-semibold">
+                  Total: <Tk />
+                  {formatPrice(dashboardStats.last_seven_days_expense)}
+                </span>
+              </div>
+            </div>
+
+            {(() => {
+              return (
+                <ResponsiveContainer
+                  width={'100%'}
+                  height={screenWidth > 768 ? 400 : 300}
+                >
+                  <BarChart data={dashboardStats.expense_stat}>
+                    <Bar
+                      dataKey={'value'}
+                      fill={'#2563eb'}
+                    />
+                    <XAxis dataKey={'name'} />
+                    <YAxis />
+                    <Tooltip />
+                    <CartesianGrid strokeDasharray={'3 3'} />
+                  </BarChart>
+                </ResponsiveContainer>
+              );
+            })()}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
