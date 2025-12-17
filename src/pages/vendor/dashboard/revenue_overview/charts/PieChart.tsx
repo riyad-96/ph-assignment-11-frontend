@@ -1,41 +1,47 @@
-import { Pie, PieChart, Tooltip } from 'recharts';
+import { useAuthContext } from '@/hooks/useAuthContext';
+import useWindowSize from '@/hooks/useWindowSize';
+import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
 
 // #region Sample data
-
 
 type StraightAnglePieChartProps = {
   isAnimationActive?: boolean;
   data: { name: string; value: number }[];
 };
 
+const pieColors: { [key: string]: string } = {
+  'Total Tickets': '#ffb900',
+  'Sold Tickets': '#00d492',
+};
+
 // #endregion
 export default function StraightAnglePieChart({
-  isAnimationActive = true,
   data,
 }: StraightAnglePieChartProps) {
+  const { screenWidth } = useWindowSize();
+  const { theme } = useAuthContext();
+
   return (
-    <PieChart
-      style={{
-        width: '100%',
-        maxWidth: '500px',
-        maxHeight: '80vh',
-        aspectRatio: 2,
-      }}
-      responsive
+    <ResponsiveContainer
+      width={'100%'}
+      height={screenWidth > 768 ? 400 : 300}
     >
-      <Tooltip />
-      <Pie
-        dataKey="value"
-        startAngle={180}
-        endAngle={0}
-        data={data}
-        cx="50%"
-        cy="100%"
-        outerRadius="120%"
-        fill="#8884d8"
-        label
-        isAnimationActive={isAnimationActive}
-      />
-    </PieChart>
+      <PieChart dataKey="value">
+        <Pie
+          data={data}
+          dataKey={'value'}
+          label
+          stroke={theme === 'light' ? 'white' : 'black'}
+        >
+          {data.map(({ name }, i) => (
+            <Cell
+              key={`pie-cell-${i}`}
+              fill={pieColors[name]}
+            />
+          ))}
+        </Pie>
+        <Tooltip />
+      </PieChart>
+    </ResponsiveContainer>
   );
 }

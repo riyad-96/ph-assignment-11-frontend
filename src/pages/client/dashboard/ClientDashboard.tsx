@@ -3,6 +3,7 @@ import LoadingErrorSection from '@/components/loading_and_errors/LoadingErrorSec
 import Tk from '@/components/Tk';
 import { formatPrice } from '@/helpers/helper';
 import { serverAPI } from '@/helpers/server';
+import { useAuthContext } from '@/hooks/useAuthContext';
 import useWindowSize from '@/hooks/useWindowSize';
 import { useQuery } from '@tanstack/react-query';
 import {
@@ -21,10 +22,10 @@ import {
 
 type ClientDashboardStatsServerResponse = {
   total_bookings: number;
-  booking_stat: { [key: string]: number };
+  booking_stats: { [key: string]: number };
   total_transactions: number;
   last_seven_days_expense: number;
-  expense_stat: { name: string; value: number }[];
+  expense_stats: { name: string; value: number }[];
 };
 
 const pieColors = [
@@ -36,6 +37,7 @@ const pieColors = [
 
 export default function ClientDashboard() {
   const server = serverAPI(true);
+  const { theme } = useAuthContext();
 
   const {
     data: dashboardStats,
@@ -70,7 +72,7 @@ export default function ClientDashboard() {
       {!isDashboardStatsLoading && !dashboardStatsError && dashboardStats && (
         <div className="mt-8 grid-cols-2 gap-4 max-xl:space-y-4 xl:grid">
           {/* Pie chart */}
-          <div className="border-content/20 bg-surface space-y-4 rounded-xl border px-4 py-3">
+          <div className="border-brand-light bg-surface space-y-4 rounded-xl border px-4 py-3">
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-medium">Booking Stats</h3>
               <span className="font-medium">
@@ -79,8 +81,8 @@ export default function ClientDashboard() {
             </div>
 
             {(() => {
-              const pieChartData = Object.keys(dashboardStats.booking_stat).map(
-                (k) => ({ name: k, value: dashboardStats.booking_stat[k] }),
+              const pieChartData = Object.keys(dashboardStats.booking_stats).map(
+                (k) => ({ name: k, value: dashboardStats.booking_stats[k] }),
               );
               console.log(pieChartData);
 
@@ -110,36 +112,30 @@ export default function ClientDashboard() {
             })()}
           </div>
 
-          <div className="border-content/20 bg-surface space-y-4 rounded-xl border px-4 py-3">
-            <div>
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-medium">Last 7 days expenses</h3>
-                <span className="font-semibold">
-                  Total: <Tk />
-                  {formatPrice(dashboardStats.last_seven_days_expense)}
-                </span>
-              </div>
+          <div className="border-brand-light bg-surface space-y-4 rounded-xl border px-4 py-3">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-medium">Last 7 days expenses</h3>
+              <span className="font-semibold">
+                Total: <Tk />
+                {formatPrice(dashboardStats.last_seven_days_expense)}
+              </span>
             </div>
 
-            {(() => {
-              return (
-                <ResponsiveContainer
-                  width={'100%'}
-                  height={screenWidth > 768 ? 400 : 300}
-                >
-                  <BarChart data={dashboardStats.expense_stat}>
-                    <Bar
-                      dataKey={'value'}
-                      fill={'#2563eb'}
-                    />
-                    <XAxis dataKey={'name'} />
-                    <YAxis />
-                    <Tooltip />
-                    <CartesianGrid strokeDasharray={'3 3'} />
-                  </BarChart>
-                </ResponsiveContainer>
-              );
-            })()}
+            <ResponsiveContainer
+              width={'100%'}
+              height={screenWidth > 768 ? 400 : 300}
+            >
+              <BarChart data={dashboardStats.expense_stats}>
+                <Bar
+                  dataKey={'value'}
+                  fill={theme === 'light' ? '#2563eb' : '#5b8ff9'}
+                />
+                <XAxis dataKey={'name'} />
+                <YAxis />
+                <Tooltip />
+                <CartesianGrid strokeDasharray={'3 3'} />
+              </BarChart>
+            </ResponsiveContainer>
           </div>
         </div>
       )}

@@ -27,7 +27,7 @@ export default function RevenueOverview() {
   });
 
   return (
-    <div className="px-3">
+    <div className="px-3 pb-16">
       <DashboardH1 text="Revenue Overview" />
 
       {user?.isFraud ? (
@@ -60,26 +60,24 @@ export default function RevenueOverview() {
               <div className="mt-8">
                 <KPIDisplay data={revenue?.kpi_data} />
 
-                <div className="">
-                  <div className="bg-surface rounded-xl p-4 shadow">
-                    <h3 className="text-content mb-4 text-xl font-semibold">
-                      Total Sales vs. Inventory
-                    </h3>
+                <div className="border-brand-light bg-surface rounded-xl border p-4">
+                  <h3 className="text-content mb-4 text-xl font-semibold">
+                    Total Sales vs. Inventory
+                  </h3>
 
-                    <div className="text-content-light flex h-80 w-full items-center justify-center rounded-lg border border-dashed">
-                      <StraightAnglePieChart
-                        data={[
-                          {
-                            name: 'Total Tickets',
-                            value: revenue.kpi_data_raw.total_tickets,
-                          },
-                          {
-                            name: 'Sold Tickets',
-                            value: revenue.kpi_data_raw.total_sold_tickets,
-                          },
-                        ]}
-                      />
-                    </div>
+                  <div className="text-content-light flex w-full items-center justify-center rounded-lg">
+                    <StraightAnglePieChart
+                      data={[
+                        {
+                          name: 'Total Tickets',
+                          value: revenue.kpi_data_raw.total_tickets,
+                        },
+                        {
+                          name: 'Sold Tickets',
+                          value: revenue.kpi_data_raw.total_sold_tickets,
+                        },
+                      ]}
+                    />
                   </div>
                 </div>
               </div>
