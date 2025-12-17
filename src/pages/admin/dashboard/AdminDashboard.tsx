@@ -1,42 +1,147 @@
 import DashboardH1 from '@/components/DashboardH1';
+import LoadingErrorSection from '@/components/loading_and_errors/LoadingErrorSection';
+import { serverAPI } from '@/helpers/server';
+import { useAuthContext } from '@/hooks/useAuthContext';
+import useWindowSize from '@/hooks/useWindowSize';
+import { useQuery } from '@tanstack/react-query';
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  Legend,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts';
+
+type AdminDashboardStatsServerResponse = {
+  total_users: number;
+  user_stats: { name: string; value: number }[];
+  total_tickets: number;
+  ticket_stats: { name: string; value: number }[];
+};
+
+const pieColors = { user: '#94a3b8', admin: '#ff9900', vendor: '#5b8ff9' };
 
 export default function AdminDashboard() {
+  const server = serverAPI(true);
+  const { theme } = useAuthContext();
+
+  const {
+    data: dashboardStats,
+    isLoading: isDashboardStatsLoading,
+    error: dashboardStatsError,
+  } = useQuery<AdminDashboardStatsServerResponse>({
+    queryKey: ['admin-dashboard-stats'],
+    queryFn: async () => {
+      const response = await server.get('/admin/dashboard-stats');
+      console.log(response.data);
+      return response.data;
+    },
+  });
+
+  const { screenWidth } = useWindowSize({ delay: 50 });
+
   return (
-    <div className="px-3">
+    <div className="px-3 pb-16">
       <DashboardH1 text="Dashboard" />
 
-      <div className="mx-auto mt-8 max-w-xl text-center">
-        <div className="mb-6 flex justify-center">
-          <svg
-            className="text-brand h-16 w-16"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="1.5"
-              d="M12 8c1.657 0 3 .895 3 2s-1.343 2-3 2v2m0 0v2m-3-2h6M5 12h2m10 0h2M3 12a9 9 0 1118 0 9 9 0 01-18 0z"
-            ></path>
-          </svg>
+      {isDashboardStatsLoading && (
+        <div className="text-content-light mt-30 text-center font-medium lg:text-lg">
+          <span className="loading loading-spinner loading-lg"></span>
         </div>
+      )}
+      {dashboardStatsError && (
+        <div className="mt-8">
+          <LoadingErrorSection />
+        </div>
+      )}
 
-        <h3 className="text-content mb-3 text-2xl font-bold">
-          Welcome to TicketBari
-        </h3>
+      {!isDashboardStatsLoading && !dashboardStatsError && dashboardStats && (
+        <div className="mt-8 grid-cols-2 gap-4 max-xl:space-y-4 xl:grid">
+          {/* Pie chart */}
+          <div className="border-brand-light bg-surface space-y-4 rounded-xl border px-4 py-3">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-medium">User Stats</h3>
+              <span className="font-medium">
+                Total: {dashboardStats.total_users}
+              </span>
+            </div>
+            <ResponsiveContainer
+              width={'100%'}
+              height={screenWidth > 768 ? 400 : 300}
+            >
+              <PieChart>
+                <Pie
+                  data={dashboardStats.user_stats}
+                  dataKey={'value'}
+                  stroke={theme === 'light' ? 'white' : '#1e293b'}
+                  label
+                >
+                  {dashboardStats.user_stats.map(({ name }, i) => (
+                    <Cell
+                      key={`pie-cell-${i}`}
+                      fill={
+                        name === 'User'
+                          ? pieColors.user
+                          : name === 'Admin'
+                            ? pieColors.admin
+                            : name === 'Vendor'
+                              ? pieColors.vendor
+                              : '#ff0050'
+                      }
+                    />
+                  ))}
+                </Pie>
+                <Legend />
+                <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
 
-        <p className="text-content-light mb-2 text-lg">
-          The simplest way to discover, book, and manage tickets for
-          unforgettable events and experiences worldwide.
-        </p>
+          <div className="border-brand-light bg-surface space-y-4 rounded-xl border px-4 py-3">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-medium">Ticket Stats</h3>
+              <span className="font-semibold">
+                Total: {dashboardStats.total_tickets}
+              </span>
+            </div>
 
-        <p className="text-content-light mt-4 text-sm">
-          Sign in to access your profile, manage your inventory, or control
-          administrative tools.
-        </p>
-      </div>
+            <ResponsiveContainer
+              width={'100%'}
+              height={screenWidth > 768 ? 400 : 300}
+            >
+              <BarChart data={dashboardStats.ticket_stats}>
+                <Bar
+                  dataKey={'value'}
+                  radius={[10, 10, 0, 0]}
+                >
+                  {dashboardStats.ticket_stats.map(({ name }, i) => (
+                    <Cell
+                      key={`bar-cell-${i}`}
+                      fill={
+                        name === 'Pending'
+                          ? '#ff9900'
+                          : name === 'Approved'
+                            ? '#00d492'
+                            : '#ff0050'
+                      }
+                    />
+                  ))}
+                </Bar>
+                <XAxis dataKey={'name'} />
+                <YAxis width="auto" />
+                <Tooltip />
+                <CartesianGrid strokeDasharray={'3 3'} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

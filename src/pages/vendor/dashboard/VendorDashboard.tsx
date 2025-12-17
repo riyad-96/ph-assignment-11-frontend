@@ -98,6 +98,7 @@ export default function VendorDashboard() {
                     <Pie
                       data={pieChartData}
                       dataKey={'value'}
+                      stroke={theme === 'light' ? 'white' : '#1e293b'}
                       label
                     >
                       {pieChartData.map(({ name }, i) => (

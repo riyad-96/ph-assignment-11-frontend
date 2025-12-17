@@ -151,7 +151,9 @@ export default function ManageTickets() {
                   </Table.td>
 
                   <Table.td>
-                    <Tk /> {formatPrice(t.price)}
+                    <span className="text-sm font-semibold">
+                      <Tk /> {formatPrice(t.price)}
+                    </span>
                   </Table.td>
 
                   <Table.td>

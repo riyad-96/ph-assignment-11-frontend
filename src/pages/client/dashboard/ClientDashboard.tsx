@@ -81,9 +81,12 @@ export default function ClientDashboard() {
             </div>
 
             {(() => {
-              const pieChartData = Object.keys(dashboardStats.booking_stats).map(
-                (k) => ({ name: k, value: dashboardStats.booking_stats[k] }),
-              );
+              const pieChartData = Object.keys(
+                dashboardStats.booking_stats,
+              ).map((k) => ({
+                name: k,
+                value: dashboardStats.booking_stats[k],
+              }));
               console.log(pieChartData);
 
               return (
@@ -95,6 +98,7 @@ export default function ClientDashboard() {
                     <Pie
                       data={pieChartData}
                       dataKey={'value'}
+                      stroke={theme === 'light' ? 'white' : '#1e293b'}
                       label
                     >
                       {pieChartData.map(({ name }, i) => (
@@ -128,10 +132,11 @@ export default function ClientDashboard() {
               <BarChart data={dashboardStats.expense_stats}>
                 <Bar
                   dataKey={'value'}
+                  radius={[10, 10, 0, 0]}
                   fill={theme === 'light' ? '#2563eb' : '#5b8ff9'}
                 />
                 <XAxis dataKey={'name'} />
-                <YAxis />
+                <YAxis width="auto" />
                 <Tooltip />
                 <CartesianGrid strokeDasharray={'3 3'} />
               </BarChart>

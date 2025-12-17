@@ -1,6 +1,7 @@
 import DashboardH1 from '@/components/DashboardH1';
 import LoadingDataLengthErrors from '@/components/loading_and_errors/LoadingDataLengthErrors';
 import Table from '@/components/Table';
+import Tk from '@/components/Tk';
 import { formatPrice } from '@/helpers/helper';
 import { serverAPI } from '@/helpers/server';
 import customToast from '@/helpers/triggerToast';
@@ -175,8 +176,8 @@ export default function AdvertiseTickets() {
                 </Table.td>
 
                 <Table.td>
-                  <span className="text-sm font-medium">
-                    TK: {formatPrice(t.price)}
+                  <span className="text-sm font-semibold">
+                    <Tk /> {formatPrice(t.price)}
                   </span>
                 </Table.td>
 

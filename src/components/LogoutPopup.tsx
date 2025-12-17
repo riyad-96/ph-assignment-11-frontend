@@ -30,7 +30,7 @@ export default function LogoutPopup() {
                 Cancel
               </button>
               <button
-                className="bg-surface rounded-full border border-red-400 px-5 py-1.5 text-red-500 shadow"
+                className="bg-surface rounded-full border border-red-400 px-5 py-1.5 text-red-500 shadow dark:text-red-400"
                 onClick={() => {
                   signOut(auth);
                   setIsLoggingOut(false);

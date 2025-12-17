@@ -1,6 +1,6 @@
 import { useAuthContext } from '@/hooks/useAuthContext';
 import useWindowSize from '@/hooks/useWindowSize';
-import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
+import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
 
 // #region Sample data
 
@@ -31,7 +31,7 @@ export default function StraightAnglePieChart({
           data={data}
           dataKey={'value'}
           label
-          stroke={theme === 'light' ? 'white' : 'black'}
+          stroke={theme === 'light' ? 'white' : '#1e293b'}
         >
           {data.map(({ name }, i) => (
             <Cell
@@ -40,6 +40,7 @@ export default function StraightAnglePieChart({
             />
           ))}
         </Pie>
+        <Legend />
         <Tooltip />
       </PieChart>
     </ResponsiveContainer>
