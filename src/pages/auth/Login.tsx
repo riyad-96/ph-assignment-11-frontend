@@ -15,6 +15,7 @@ export default function Login() {
     handleSubmit,
     register,
     formState: { errors },
+    setValue,
   } = useForm<LoginFormFieldTypes>();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -93,10 +94,22 @@ export default function Login() {
           </button>
         </div>
 
-        <Button
-          content="Login"
-          isLoading={isSubmitting}
-        />
+        <div className="flex gap-2">
+          <Button
+            content="Login"
+            isLoading={isSubmitting}
+          />
+          <button
+            type="button"
+            onClick={() => {
+              setValue('email', 'guestaccount@gmail.com');
+              setValue('password', 'guest@Secured.00');
+            }}
+            className="bg-content text-surface grid h-10 place-items-center gap-1 rounded-full px-6 tracking-wide"
+          >
+            Guest
+          </button>
+        </div>
 
         <p className="flex justify-center gap-1 text-center text-sm">
           <span>Don't have an account?</span>
